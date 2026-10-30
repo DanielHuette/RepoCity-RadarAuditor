@@ -1,0 +1,20 @@
+{# Google profile figures of the last 28 days against the 28 days before; included by sales.html and monthly.html when the audit had customer access. #}
+{% set arrows = {"up": "▲", "down": "▼", "same": "→"} %}
+<section class="keep-together">
+  <h2>Was Ihr Google-Profil heute bringt</h2>
+  <p>Diese Zahlen stammen direkt aus Ihrem Google-Unternehmensprofil: die letzten 28 Tage im Vergleich mit den 28 Tagen davor.</p>
+  <table>
+    <thead><tr><th>Kennzahl</th><th class="number">Letzte 28 Tage</th><th class="number">28 Tage davor</th><th class="number">Veränderung</th><th></th></tr></thead>
+    <tbody>
+    {% for line in report.profile %}
+      <tr>
+        <td>{{ line.label }}</td>
+        <td class="number">{{ line.value|number(0) }}</td>
+        <td class="number">{{ line.previous|number(0) }}</td>
+        <td class="number">{% if line.change_percent is not none %}{% if line.change_percent > 0 %}+{% endif %}{{ line.change_percent|number(0) }} %{% elif line.value > 0 %}neu{% else %}–{% endif %}</td>
+        <td class="trend-{{ line.trend }}">{{ arrows[line.trend] }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>

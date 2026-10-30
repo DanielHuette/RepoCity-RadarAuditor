@@ -1,0 +1,36 @@
+{# Document template: service_description with one table row per package (initial optimisation, ongoing care). Placeholders are filled by documents/builder.py; wording to be reviewed by a lawyer once. #}
+{% extends "_layout.html" %}
+{% set recurrence_names = {"once": "einmalig", "monthly": "monatlich"} %}
+{% block title %}Leistungsbeschreibung {{ document.customer_name }}{% endblock %}
+{% block content %}
+<h1>Leistungsbeschreibung</h1>
+<table class="meta">
+  <tr><td>Stand</td><td>{{ document.issued_on|date }}</td></tr>
+  {% if document.offer %}<tr><td>Leistungspaket</td><td>{{ document.offer }}</td></tr>{% endif %}
+  {% if document.start_date %}<tr><td>Leistungsbeginn</td><td>{{ document.start_date|date }}</td></tr>{% endif %}
+</table>
+<p>Diese Leistungsbeschreibung legt fest, was in jedem Paket enthalten ist. Sie ist Bestandteil von Angebot und Vertrag.</p>
+<table>
+  <thead><tr><th>Paket</th><th>Enthaltene Leistungen</th><th class="number">Preis netto</th><th>Abrechnung</th></tr></thead>
+  <tbody>
+  {% for package in document.packages %}
+    <tr>
+      <td><strong>{{ package.name }}</strong></td>
+      <td><ul>{% for item in package.items %}<li>{{ item }}</li>{% endfor %}</ul></td>
+      <td class="number">{% if package.net_price is none %}laut Angebot{% else %}{{ package.net_price|currency }}{% endif %}</td>
+      <td>{{ recurrence_names[package.recurrence] }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% if document.agreed_services %}
+<h2>Für Sie vereinbart</h2>
+<ul>{% for service in document.agreed_services %}<li>{{ service }}</li>{% endfor %}</ul>
+{% endif %}
+{% if document.supplier.small_business %}
+<p>Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.</p>
+{% else %}
+<p>Alle Preise verstehen sich zuzüglich der gesetzlichen Umsatzsteuer.</p>
+{% endif %}
+<p>Nicht enthalten sind Kosten Dritter wie Anzeigen, kostenpflichtige Verzeichniseinträge oder Lizenzen; sie werden nur nach Ihrer vorherigen Zustimmung beauftragt.</p>
+{% endblock %}

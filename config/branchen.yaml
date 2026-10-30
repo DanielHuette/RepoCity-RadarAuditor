@@ -1,0 +1,90 @@
+# Branchengruppen: einzige Quelle für Branchen in Server, Berichten und App.
+# id: wird beim Kunden gespeichert und ist Schlüssel in prognose.yaml (enquiry_rate_by_industry).
+# label: Anzeige in App, Bericht und Export.
+# examples: Betriebe der Gruppe, in der App neben dem Namen gezeigt, damit die Wahl schnell geht.
+# services: typische Leistungen; die App schlägt daraus Suchbegriffe "<Leistung> <Ort>" vor.
+# question_term: männliches Hauptwort für die Empfehlungsfragen in fragen.yaml
+#   ("Wer ist ein guter {industry} in {city}?").
+# google_types: Kategorien des Google-Profils (Places API (New), Tabellen A und B der Ortstypen),
+#   an denen die Prüfung nur mit Website-Adresse die Gruppe erkennt; jede Kategorie gehört zu
+#   höchstens einer Gruppe.
+groups:
+  - id: bauhandwerk
+    label: Bauhandwerk
+    examples: [Dachdecker, Maler, Maurer, Fliesenleger]
+    services: [Dachdecker, Maler, Fliesenleger]
+    question_term: Handwerksbetrieb
+    google_types: [roofing_contractor, painter]
+  - id: haustechnik
+    label: Haustechnik
+    examples: [Elektro, Sanitär, Heizung, Solar]
+    services: [Elektriker, Heizung Notdienst, Sanitär Notdienst]
+    question_term: Haustechnikbetrieb
+    google_types: [electrician, plumber]
+  - id: holz_innenausbau
+    label: Holz und Innenausbau
+    examples: [Tischlerei, Küchenbau, Parkett]
+    services: [Tischler, Küchenstudio, Parkettleger]
+    question_term: Tischler
+    google_types: [furniture_store]
+  - id: kfz
+    label: Kfz
+    examples: [Werkstatt, Autohaus, Reifen]
+    services: [Autowerkstatt, Reifenwechsel, Autohaus]
+    question_term: Kfz-Betrieb
+    google_types: [car_repair, car_dealer, tire_shop, car_wash, auto_parts_store, truck_dealer]
+  - id: friseur_kosmetik
+    label: Friseur und Kosmetik
+    examples: [Friseur, Kosmetik, Nagelstudio, Barbier]
+    services: [Friseur, Kosmetikstudio, Nagelstudio]
+    question_term: Friseur
+    google_types: [hair_salon, hair_care, barber_shop, beauty_salon, beautician, nail_salon, makeup_artist, tanning_studio]
+  - id: gastronomie
+    label: Gastronomie
+    examples: [Restaurant, Café, Bar]
+    services: [Restaurant, Café, Bar]
+    question_term: Gastronomiebetrieb
+    google_types: [restaurant, cafe, coffee_shop, bar, pub, bistro, beer_garden, wine_bar, cocktail_bar, brewpub, gastropub, fast_food_restaurant, pizza_restaurant, ice_cream_shop, meal_takeaway, catering_service]
+  - id: baeckerei_lebensmittel
+    label: Bäckerei und Lebensmittel
+    examples: [Bäckerei, Metzgerei, Hofladen]
+    services: [Bäckerei, Metzgerei, Hofladen]
+    question_term: Bäcker
+    google_types: [bakery, butcher_shop, cake_shop, pastry_shop, confectionery, deli, farmers_market, food_store, health_food_store, grocery_store, supermarket]
+  - id: arzt_zahnarzt
+    label: Arzt und Zahnarzt
+    examples: []
+    services: [Hausarzt, Zahnarzt, Arztpraxis]
+    question_term: Arzt
+    google_types: [dentist, dental_clinic, doctor, medical_clinic, medical_center]
+  - id: therapie_pflege
+    label: Therapie und Pflege
+    examples: [Physiotherapie, Ergotherapie, Pflegedienst]
+    services: [Physiotherapie, Ergotherapie, Pflegedienst]
+    question_term: Therapeut
+    google_types: [physiotherapist, chiropractor, massage, foot_care]
+  - id: recht_steuern_beratung
+    label: Recht, Steuern, Beratung
+    examples: [Kanzlei, Steuerberater, Versicherung]
+    services: [Rechtsanwalt, Steuerberater, Versicherungsmakler]
+    question_term: Berater
+    google_types: [lawyer, accounting, insurance_agency, consultant]
+  - id: fitness_sport
+    label: Fitness, Yoga, Sport
+    examples: [Studio, Yoga, Kampfsport, Tanzschule]
+    services: [Fitnessstudio, Yoga, Tanzschule]
+    question_term: Sportanbieter
+    google_types: [gym, fitness_center, yoga_studio, sports_club, sports_school, sports_coaching]
+  - id: handel_dienstleistung
+    label: Handel und Dienstleistung
+    examples: [Einzelhandel, Reinigung, Fahrschule, Immobilien]
+    services: [Reinigungsfirma, Fahrschule, Immobilienmakler]
+    question_term: Dienstleister
+    google_types: [real_estate_agency, laundry, moving_company, locksmith, florist, travel_agency, tailor, courier_service, clothing_store, shoe_store, jewelry_store, book_store, gift_shop, electronics_store, cell_phone_store, hardware_store, pet_store, bicycle_store]
+# Früher gespeicherte Branchen, beim Lesen auf eine Gruppe abgebildet (klein geschrieben).
+legacy:
+  handwerk: bauhandwerk
+  medizin: arzt_zahnarzt
+  recht_steuern: recht_steuern_beratung
+  recht und steuern: recht_steuern_beratung
+  immobilien: handel_dienstleistung

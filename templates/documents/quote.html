@@ -1,0 +1,24 @@
+{# Document template: quote, valid for 14 days, with acceptance line; the CRM quote of an audit_quote brings number, salutation, intro and outro. Placeholders are filled by documents/builder.py; wording to be reviewed by a lawyer once. #}
+{% extends "_layout.html" %}
+{% block title %}Angebot {{ document.customer_name }}{% endblock %}
+{% block content %}
+<h1>Angebot</h1>
+<table class="meta">
+  {% if document.number %}<tr><td>Angebotsnummer</td><td>{{ document.number }}</td></tr>{% endif %}
+  <tr><td>Datum</td><td>{{ document.issued_on|date }}</td></tr>
+  <tr><td>Gültig bis</td><td>{{ document.valid_until|date }}</td></tr>
+</table>
+{% if document.salutation %}<p>{{ document.salutation }}</p>{% endif %}
+{% if document.intro %}
+<p class="notice">{{ document.intro }}</p>
+{% else %}
+<p>Gern biete ich Ihnen die folgenden Leistungen an. Der Umfang jeder Leistung ergibt sich aus der beigefügten Leistungsbeschreibung.</p>
+{% endif %}
+{% include "_positions.html" %}
+<p>Dieses Angebot gilt bis zum {{ document.valid_until|date }}. Mit Ihrer Unterschrift nehmen Sie es an; danach erhalten Sie den Vertrag über die laufende Betreuung.</p>
+{% if document.outro %}<p class="notice">{{ document.outro }}</p>{% endif %}
+<div class="signatures">
+  <div class="signature"><div class="line">Ort, Datum</div></div>
+  <div class="signature"><div class="line">Angenommen: Unterschrift und Stempel {{ document.customer_name }}</div></div>
+</div>
+{% endblock %}

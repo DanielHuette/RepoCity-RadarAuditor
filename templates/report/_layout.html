@@ -1,0 +1,21 @@
+{# Shared frame of every report: print styles, cover with wordmark, legal footer via @page in base.css. #}
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>{% block title %}{% endblock %}</title>
+<style>
+{% include "base.css" %}
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="wordmark">Repo<span>City</span></div>
+  <div class="kind">{% block kind %}{% endblock %}</div>
+  <h1>{{ report.customer_name }}</h1>
+  <div class="meta">{% block meta %}{% endblock %}</div>
+  {% block cover_body %}{% endblock %}
+</div>
+{% block content %}{% endblock %}
+</body>
+</html>

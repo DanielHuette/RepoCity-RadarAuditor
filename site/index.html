@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RepoCity RadarAuditor — Sichtbarkeits-Audit für örtliche Betriebe</title>
+<meta name="description" content="RadarAuditor misst, wie sichtbar ein Betrieb bei Google, auf der Karte, in Verzeichnissen und in KI-Assistenten ist, und was fehlt: Punktzahl mit Ampel, Befunde mit fertiger Lösung, Prognose als Spanne.">
+<link rel="canonical" href="https://radarauditor.speedofthespirit.dev/">
+<link rel="alternate" hreflang="de" href="https://radarauditor.speedofthespirit.dev/">
+<link rel="alternate" hreflang="en" href="https://radarauditor.speedofthespirit.dev/en/">
+<link rel="alternate" hreflang="x-default" href="https://radarauditor.speedofthespirit.dev/">
+<meta name="theme-color" content="#04060b">
+<meta name="author" content="Daniel Hütte">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="de_DE">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="og:site_name" content="RepoCity">
+<meta property="og:title" content="RepoCity RadarAuditor — Sichtbarkeits-Audit für örtliche Betriebe">
+<meta property="og:description" content="Misst, wie sichtbar ein Betrieb bei Google, auf der Karte, in Verzeichnissen und in KI-Assistenten ist, und was fehlt.">
+<meta property="og:url" content="https://radarauditor.speedofthespirit.dev/">
+<meta property="og:image" content="https://radarauditor.speedofthespirit.dev/bilder/vorschau.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="RepoCity RadarAuditor: Sichtbarkeits-Audit für örtliche Betriebe">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/archivo-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles.css">
+<script src="/reiter.js"></script>
+<script src="/organigramm.js" defer></script>
+<script src="/praesentation.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://speedofthespirit.dev/#organization",
+      "name": "RepoCity",
+      "slogan": "AI for everyone",
+      "url": "https://speedofthespirit.dev/",
+      "logo": "https://radarauditor.speedofthespirit.dev/favicon.svg",
+      "email": "kontakt@speedofthespirit.dev",
+      "founder": {
+        "@id": "https://speedofthespirit.dev/#person"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Münster",
+        "addressCountry": "DE"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://speedofthespirit.dev/#person",
+      "name": "Daniel Hütte",
+      "jobTitle": "AI Engineer",
+      "url": "https://speedofthespirit.dev/",
+      "email": "kontakt@speedofthespirit.dev",
+      "homeLocation": {
+        "@type": "Place",
+        "name": "Münster"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/danielhuette",
+        "https://github.com/DanielHuette"
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://radarauditor.speedofthespirit.dev/#software",
+      "name": "RepoCity RadarAuditor",
+      "url": "https://radarauditor.speedofthespirit.dev/",
+      "description": "Misst, wie sichtbar ein örtlicher Betrieb bei Google, auf der Karte, in Verzeichnissen und in KI-Assistenten ist, bewertet das gegen 108 Prüfungen und liefert Befunde mit fertiger Lösung.",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "de",
+      "image": "https://radarauditor.speedofthespirit.dev/bilder/vorschau.png",
+      "screenshot": "https://radarauditor.speedofthespirit.dev/bilder/audit-handy.png",
+      "author": {
+        "@id": "https://speedofthespirit.dev/#person"
+      },
+      "publisher": {
+        "@id": "https://speedofthespirit.dev/#organization"
+      }
+    }
+  ]
+}
+</script>
+<script src="/script.js" defer></script>
+<script type="module" src="/effekte/start.js"></script>
+<script src="/blog/zaehler.js" defer></script>
+</head>
+<body>
+<svg width="0" height="0" class="visually-hidden" aria-hidden="true" focusable="false">
+<defs>
+<linearGradient id="brass" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100"><stop offset="0" stop-color="#f3e3bf"/><stop offset="0.32" stop-color="#cdb07a"/><stop offset="0.55" stop-color="#9c7f52"/><stop offset="0.78" stop-color="#e2c993"/><stop offset="1" stop-color="#8a6c43"/></linearGradient>
+<symbol id="mark" viewBox="0 0 100 100"><g fill="url(#brass)"><path fill-rule="evenodd" d="M50 2.5a47.5 47.5 0 1 1 0 95a47.5 47.5 0 1 1 0-95zm0 5a42.5 42.5 0 1 0 0 85a42.5 42.5 0 1 0 0-85z"/><rect x="31.8" y="46.3" width="8.8" height="18"/><rect x="47.1" y="24.9" width="8.8" height="39.4"/><rect x="62.6" y="36.6" width="8.8" height="27.7"/><rect x="12.4" y="64.9" width="75.2" height="4.4"/></g></symbol>
+</defs>
+</svg>
+<a class="skip" href="#inhalt">Zum Inhalt springen</a>
+<header class="wrap topbar">
+  <a class="brand" href="https://speedofthespirit.dev/" aria-label="RepoCity, zur Hauptseite">
+    <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#mark"/></svg>
+    <span class="brand__name"><strong>REPOCITY</strong><span>AI FOR EVERYONE</span></span>
+  </a>
+  <div class="topbar__end">
+    <a class="signin-link" href="https://app.radarauditor.speedofthespirit.dev/">Anmelden</a>
+    <nav class="lang" aria-label="Sprache">
+    <span aria-current="true" lang="de">DE</span>
+    <a href="/en/" lang="en" hreflang="en">EN</a>
+  </nav>
+  </div>
+</header>
+
+<main id="inhalt">
+  <div class="reiter-tafel" id="projekt" data-reiter-tafel role="tabpanel" aria-labelledby="reiter-projekt">
+  <section class="wrap hero" aria-labelledby="titel">
+    <div>
+      <svg class="hero__mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#mark"/></svg>
+      <h1 id="titel"><span class="visually-hidden">RepoCity </span>RadarAuditor</h1>
+      <p class="lead">RadarAuditor misst, wie sichtbar ein Betrieb bei Google, auf der Karte, in Verzeichnissen und in KI-Assistenten ist — und was fehlt.</p>
+      <p class="hero__note">Für Dachdecker, Zahnärztinnen, Küchenstudios und jeden Betrieb, dessen Kunden aus der Umgebung kommen. Das erste Audit läuft von außen und braucht keinen Zugang zu Ihren Konten.</p>
+      <div class="actions">
+        <a class="button button--primary" href="mailto:kontakt@speedofthespirit.dev?subject=Audit%20anfragen%3A%20RadarAuditor">Audit anfragen</a>
+        <a class="button button--quiet" href="#ablauf">So läuft ein Audit</a>
+      </div>
+    </div>
+    <div class="hero__device">
+      <div class="device">
+        <picture>
+          <source srcset="/bilder/audit-handy.webp" type="image/webp">
+          <img src="/bilder/audit-handy.png" width="480" height="1039" fetchpriority="high" alt="Die App auf dem Handy: Audit der Beispielfirma Dachdeckerei Muster GmbH mit 63 von 100 Punkten und den ersten Bereichen mit Ampelfarbe.">
+        </picture>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="ergebnis">
+    <div class="wrap">
+      <h2 id="ergebnis">Was der Kunde bekommt</h2>
+      <p class="section__intro">Drei Dinge, alle aus Messungen am eigenen Betrieb und an bis zu drei Wettbewerbern aus der Umgebung.</p>
+      <div class="outputs">
+        <article class="panel output">
+          <div class="output__text">
+            <h3>Eine Punktzahl von 0 bis 100, mit Ampel je Bereich</h3>
+            <p>Grün ab 75, gelb ab 50, rot darunter. Auf einen Blick steht fest, ob es am Google-Profil, an der Website oder an den Bewertungen hakt.</p>
+          </div>
+          <div class="output__shot">
+            <picture>
+              <source srcset="/bilder/bereiche-desktop.webp" type="image/webp">
+              <img src="/bilder/bereiche-desktop.png" width="672" height="614" loading="lazy" alt="Bereichsliste der App: je Bereich ein Balken mit Punkten, grün, gelb oder rot, zum Beispiel Verzeichnisse und Datenkonsistenz mit 43 Punkten in Rot.">
+            </picture>
+          </div>
+        </article>
+        <article class="panel output">
+          <div class="output__text">
+            <h3>Befunde in Alltagssprache, mit fertiger Lösung</h3>
+            <p>Jeder Befund sagt, was gemessen wurde, was es kostet und was zu tun ist. Ist die Lösung ein Text oder ein Stück Code, liegt sie zum Kopieren bei.</p>
+          </div>
+          <div class="output__shot output__shot--phone">
+            <picture>
+              <source srcset="/bilder/befund-handy.webp" type="image/webp">
+              <img src="/bilder/befund-handy.png" width="480" height="880" loading="lazy" alt="Ein Befund in der App: Google und KI-Assistenten finden auf der Startseite keine maschinenlesbaren Firmendaten, darunter der fertige Code und der Knopf Kopieren.">
+            </picture>
+          </div>
+        </article>
+        <article class="panel output">
+          <div class="output__text">
+            <h3>Eine Prognose als Spanne, ausdrücklich eine Schätzung</h3>
+            <p>Wie viele Anfragen mehr möglich sind, steht als Spanne von niedrig bis hoch, mit allen Annahmen darunter. Eine Zusage ist das nicht.</p>
+          </div>
+          <div class="estimate" role="img" aria-label="Schema einer Prognose: ein Band zwischen unterer und oberer Schätzung statt einer einzelnen Zahl.">
+            <div class="estimate__band"><span class="estimate__range"></span></div>
+            <div class="estimate__ends"><span>untere Schätzung</span><span>obere Schätzung</span></div>
+            <ul>
+              <li><strong>Klicks auf Platz 1:</strong> 25 bis 35 von 100 Suchenden, deutscher Durchschnitt</li>
+              <li><strong>Anfragen im Bauhandwerk:</strong> 5 bis 10 von 100 Besuchern</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+      <p class="fineprint">Die Bilder zeigen eine frühere Fassung der App mit Beispieldaten.</p>
+    </div>
+  </section>
+
+  <section class="section" id="ablauf" aria-labelledby="ablauf-titel">
+    <div class="wrap">
+      <h2 id="ablauf-titel">So läuft ein Audit</h2>
+      <p class="section__intro">Ein Auftrag macht einmal die Runde. Gerechnet wird nach festen Regeln, geschrieben wird erst am Schluss. Je nach Größe der Website dauert das einige Minuten bis eine halbe Stunde.</p>
+      <div class="panel flow-stage">
+<svg class="flow flow--wide" viewBox="0 0 1100 452" role="img" aria-labelledby="fdde-t fdde-d">
+<title id="fdde-t">Ablauf eines Audits</title><desc id="fdde-d">Die App auf dem Handy legt einen Auftrag in die Warteschlange bei Supabase. Der Sammler-Container auf dem RepoCity-Server holt Daten von Website, Ladezeit, Google-Profil, Suche, Verzeichnissen und KI-Assistenten. Die Bewertung prüft sie gegen 108 Prüfungen. Claude Code schreibt über das Claude-Abo Befunde und Texte. Daraus entsteht der Bericht als PDF, der zurück in die App geht.</desc>
+<defs>
+<filter id="fdde-blur" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="4"/></filter>
+<filter id="fdde-halo" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="7"/></filter>
+<linearGradient id="fdde-panel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101a30"/><stop offset="1" stop-color="#0b1222"/></linearGradient>
+</defs>
+<path id="fdde-loop" d="M146,108 H746 V372 H146 Z" class="d-track"/>
+<path d="M146,108 H746 V372 H146 Z" class="d-track-lit"/>
+<path id="fdde-s0" d="M972,34 H942 C902,34 904,108 834,108" class="d-feed"/>
+<path id="fdde-s1" d="M972,76 H942 C902,76 904,108 834,108" class="d-feed"/>
+<path id="fdde-s2" d="M972,118 H942 C902,118 904,108 834,108" class="d-feed"/>
+<path id="fdde-s3" d="M972,160 H942 C902,160 904,108 834,108" class="d-feed"/>
+<path id="fdde-s4" d="M972,202 H942 C902,202 904,108 834,108" class="d-feed"/>
+<path id="fdde-s5" d="M972,244 H942 C902,244 904,108 834,108" class="d-feed"/>
+<text x="160" y="245" class="d-back" font-size="14">zurück in die App</text>
+<g class="signal" opacity="0.4"><circle r="10.5" fill="#f0d492" opacity="0.85" filter="url(#fdde-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.3s" calcMode="linear" keyPoints="0;0;0.1736;0.1736;0.3472;0.3472;0.5;0.5;0.6736;0.6736;0.8472;0.8472;1" keyTimes="0;0.0685;0.137;0.1986;0.2671;0.4452;0.5137;0.6027;0.6712;0.7877;0.8562;0.9315;1"><mpath href="#fdde-loop"/></animateMotion></g>
+<g class="signal" opacity="0.65"><circle r="13.5" fill="#f0d492" opacity="0.85" filter="url(#fdde-blur)"/><circle r="4.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.45s" calcMode="linear" keyPoints="0;0;0.1736;0.1736;0.3472;0.3472;0.5;0.5;0.6736;0.6736;0.8472;0.8472;1" keyTimes="0;0.0685;0.137;0.1986;0.2671;0.4452;0.5137;0.6027;0.6712;0.7877;0.8562;0.9315;1"><mpath href="#fdde-loop"/></animateMotion></g>
+<g class="signal" opacity="1.0"><circle r="18" fill="#f0d492" opacity="0.85" filter="url(#fdde-blur)"/><circle r="6" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;0.1736;0.1736;0.3472;0.3472;0.5;0.5;0.6736;0.6736;0.8472;0.8472;1" keyTimes="0;0.0685;0.137;0.1986;0.2671;0.4452;0.5137;0.6027;0.6712;0.7877;0.8562;0.9315;1"><mpath href="#fdde-loop"/></animateMotion></g>
+<g class="signal"><circle r="9" fill="#f0d492" opacity="0.75" filter="url(#fdde-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.226;0.2877;1"><mpath href="#fdde-s0"/></animateMotion></g>
+<g class="signal"><circle r="9" fill="#f0d492" opacity="0.75" filter="url(#fdde-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.2411;0.3027;1"><mpath href="#fdde-s1"/></animateMotion></g>
+<g class="signal"><circle r="9" fill="#f0d492" opacity="0.75" filter="url(#fdde-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.2562;0.3178;1"><mpath href="#fdde-s2"/></animateMotion></g>
+<g class="signal"><circle r="9" fill="#f0d492" opacity="0.75" filter="url(#fdde-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.2712;0.3329;1"><mpath href="#fdde-s3"/></animateMotion></g>
+<g class="signal"><circle r="9" fill="#f0d492" opacity="0.75" filter="url(#fdde-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.2863;0.3479;1"><mpath href="#fdde-s4"/></animateMotion></g>
+<g class="signal"><circle r="9" fill="#f0d492" opacity="0.75" filter="url(#fdde-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.3014;0.363;1"><mpath href="#fdde-s5"/></animateMotion></g>
+<g class="pill"><rect x="942" y="18" width="146" height="32" rx="16" fill="#0b1222" stroke="rgba(243,241,234,0.16)"/><text x="958" y="39" class="d-pill" font-size="14">Website</text></g>
+<g class="pill"><rect x="942" y="60" width="146" height="32" rx="16" fill="#0b1222" stroke="rgba(243,241,234,0.16)"/><text x="958" y="81" class="d-pill" font-size="14">Ladezeit</text></g>
+<g class="pill"><rect x="942" y="102" width="146" height="32" rx="16" fill="#0b1222" stroke="rgba(243,241,234,0.16)"/><text x="958" y="123" class="d-pill" font-size="14">Google-Profil</text></g>
+<g class="pill"><rect x="942" y="144" width="146" height="32" rx="16" fill="#0b1222" stroke="rgba(243,241,234,0.16)"/><text x="958" y="165" class="d-pill" font-size="14">Suche</text></g>
+<g class="pill"><rect x="942" y="186" width="146" height="32" rx="16" fill="#0b1222" stroke="rgba(243,241,234,0.16)"/><text x="958" y="207" class="d-pill" font-size="14">Verzeichnisse</text></g>
+<g class="pill"><rect x="942" y="228" width="146" height="32" rx="16" fill="#0b1222" stroke="rgba(243,241,234,0.16)"/><text x="958" y="249" class="d-pill" font-size="14">KI-Assistenten</text></g>
+<g class="node">
+<rect x="28" y="56" width="236" height="104" rx="14" fill="#dcb25c" opacity="0" filter="url(#fdde-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="1;1;0;0;1" keyTimes="0;0.0685;0.0993;0.9877;1"/></rect>
+<rect x="28" y="56" width="236" height="104" rx="14" fill="url(#fdde-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="28" y="56" width="236" height="104" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="1;1;0;0;1" keyTimes="0;0.0685;0.0993;0.9877;1"/></rect>
+<text x="50" y="86" class="d-num" font-size="14">1</text>
+<text x="70" y="86" class="d-title" font-size="18">App auf dem Handy</text>
+<text x="70" y="109" class="d-sub" font-size="14">Fernaudit starten</text>
+
+</g>
+<g class="node">
+<rect x="328" y="56" width="236" height="104" rx="14" fill="#dcb25c" opacity="0" filter="url(#fdde-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.1247;0.137;0.1986;0.2295;1"/></rect>
+<rect x="328" y="56" width="236" height="104" rx="14" fill="url(#fdde-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="328" y="56" width="236" height="104" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.1247;0.137;0.1986;0.2295;1"/></rect>
+<text x="350" y="86" class="d-num" font-size="14">2</text>
+<text x="370" y="86" class="d-title" font-size="18">Supabase</text>
+<text x="370" y="109" class="d-sub" font-size="14">Warteschlange und Ablage</text>
+
+</g>
+<g class="node">
+<rect x="628" y="56" width="236" height="104" rx="14" fill="#dcb25c" opacity="0" filter="url(#fdde-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.2548;0.2671;0.4452;0.476;1"/></rect>
+<rect x="628" y="56" width="236" height="104" rx="14" fill="url(#fdde-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="628" y="56" width="236" height="104" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.2548;0.2671;0.4452;0.476;1"/></rect>
+<text x="650" y="86" class="d-num" font-size="14">3</text>
+<text x="670" y="86" class="d-title" font-size="18">Sammler-Container</text>
+<text x="670" y="109" class="d-sub" font-size="14">holt die Daten aus dem Netz</text>
+
+</g>
+<g class="node">
+<rect x="628" y="320" width="236" height="104" rx="14" fill="#dcb25c" opacity="0" filter="url(#fdde-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.5014;0.5137;0.6027;0.6336;1"/></rect>
+<rect x="628" y="320" width="236" height="104" rx="14" fill="url(#fdde-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="628" y="320" width="236" height="104" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.5014;0.5137;0.6027;0.6336;1"/></rect>
+<text x="650" y="350" class="d-num" font-size="14">4</text>
+<text x="670" y="350" class="d-title" font-size="18">Bewertung</text>
+<text x="670" y="373" class="d-sub" font-size="14">108 Prüfungen, feste Regeln</text>
+
+</g>
+<g class="node">
+<rect x="328" y="320" width="236" height="104" rx="14" fill="#dcb25c" opacity="0" filter="url(#fdde-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.6589;0.6712;0.7877;0.8185;1"/></rect>
+<rect x="328" y="320" width="236" height="104" rx="14" fill="url(#fdde-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="328" y="320" width="236" height="104" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.6589;0.6712;0.7877;0.8185;1"/></rect>
+<text x="350" y="350" class="d-num" font-size="14">5</text>
+<text x="370" y="350" class="d-title" font-size="18">Claude Code</text>
+<text x="370" y="373" class="d-sub" font-size="14">schreibt Befunde und Texte</text>
+
+</g>
+<g class="node">
+<rect x="28" y="320" width="236" height="104" rx="14" fill="#dcb25c" opacity="0" filter="url(#fdde-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.8438;0.8562;0.9315;0.9623;1"/></rect>
+<rect x="28" y="320" width="236" height="104" rx="14" fill="url(#fdde-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="28" y="320" width="236" height="104" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.8438;0.8562;0.9315;0.9623;1"/></rect>
+<text x="50" y="350" class="d-num" font-size="14">6</text>
+<text x="70" y="350" class="d-title" font-size="18">Bericht als PDF</text>
+<text x="70" y="373" class="d-sub" font-size="14">druckfertige Datei</text>
+
+</g>
+</svg>
+<svg class="flow flow--narrow" viewBox="0 0 360 774" role="img" aria-labelledby="fpde-t fpde-d">
+<title id="fpde-t">Ablauf eines Audits</title><desc id="fpde-d">Die App auf dem Handy legt einen Auftrag in die Warteschlange bei Supabase. Der Sammler-Container auf dem RepoCity-Server holt Daten von Website, Ladezeit, Google-Profil, Suche, Verzeichnissen und KI-Assistenten. Die Bewertung prüft sie gegen 108 Prüfungen. Claude Code schreibt über das Claude-Abo Befunde und Texte. Daraus entsteht der Bericht als PDF, der zurück in die App geht.</desc>
+<defs>
+<filter id="fpde-blur" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="4"/></filter>
+<filter id="fpde-halo" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="7"/></filter>
+<linearGradient id="fpde-panel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101a30"/><stop offset="1" stop-color="#0b1222"/></linearGradient>
+</defs>
+<path id="fpde-loop" d="M196,50 V722 H22 V50 Z" class="d-track"/>
+<path d="M196,50 V722 H22 V50 Z" class="d-track-lit"/>
+<text transform="translate(14 386) rotate(-90)" text-anchor="middle" class="d-back" font-size="13">zurück in die App</text>
+<g class="signal" opacity="0.4"><circle r="10.5" fill="#f0d492" opacity="0.85" filter="url(#fpde-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.3s" calcMode="linear" keyPoints="0;0;0.0674;0.0674;0.1348;0.1348;0.2624;0.2624;0.3298;0.3298;0.3972;0.3972;1" keyTimes="0;0.0685;0.137;0.1986;0.2671;0.4452;0.5137;0.6027;0.6712;0.7877;0.8562;0.9315;1"><mpath href="#fpde-loop"/></animateMotion></g>
+<g class="signal" opacity="0.65"><circle r="13.5" fill="#f0d492" opacity="0.85" filter="url(#fpde-blur)"/><circle r="4.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.45s" calcMode="linear" keyPoints="0;0;0.0674;0.0674;0.1348;0.1348;0.2624;0.2624;0.3298;0.3298;0.3972;0.3972;1" keyTimes="0;0.0685;0.137;0.1986;0.2671;0.4452;0.5137;0.6027;0.6712;0.7877;0.8562;0.9315;1"><mpath href="#fpde-loop"/></animateMotion></g>
+<g class="signal" opacity="1.0"><circle r="18" fill="#f0d492" opacity="0.85" filter="url(#fpde-blur)"/><circle r="6" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;0.0674;0.0674;0.1348;0.1348;0.2624;0.2624;0.3298;0.3298;0.3972;0.3972;1" keyTimes="0;0.0685;0.137;0.1986;0.2671;0.4452;0.5137;0.6027;0.6712;0.7877;0.8562;0.9315;1"><mpath href="#fpde-loop"/></animateMotion></g>
+<g class="node">
+<rect x="40" y="12" width="312" height="76" rx="14" fill="#dcb25c" opacity="0" filter="url(#fpde-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="1;1;0;0;1" keyTimes="0;0.0685;0.0993;0.9877;1"/></rect>
+<rect x="40" y="12" width="312" height="76" rx="14" fill="url(#fpde-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="40" y="12" width="312" height="76" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="1;1;0;0;1" keyTimes="0;0.0685;0.0993;0.9877;1"/></rect>
+<text x="62" y="42" class="d-num" font-size="13">1</text>
+<text x="82" y="42" class="d-title" font-size="16">App auf dem Handy</text>
+<text x="82" y="64" class="d-sub" font-size="13">Fernaudit starten</text>
+
+</g>
+<g class="node">
+<rect x="40" y="126" width="312" height="76" rx="14" fill="#dcb25c" opacity="0" filter="url(#fpde-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.1247;0.137;0.1986;0.2295;1"/></rect>
+<rect x="40" y="126" width="312" height="76" rx="14" fill="url(#fpde-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="40" y="126" width="312" height="76" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.1247;0.137;0.1986;0.2295;1"/></rect>
+<text x="62" y="156" class="d-num" font-size="13">2</text>
+<text x="82" y="156" class="d-title" font-size="16">Supabase</text>
+<text x="82" y="178" class="d-sub" font-size="13">Warteschlange und Ablage</text>
+
+</g>
+<g class="node">
+<rect x="40" y="240" width="312" height="178" rx="14" fill="#dcb25c" opacity="0" filter="url(#fpde-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.2548;0.2671;0.4452;0.476;1"/></rect>
+<rect x="40" y="240" width="312" height="178" rx="14" fill="url(#fpde-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="40" y="240" width="312" height="178" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.2548;0.2671;0.4452;0.476;1"/></rect>
+<text x="62" y="270" class="d-num" font-size="13">3</text>
+<text x="82" y="270" class="d-title" font-size="16">Sammler-Container</text>
+<text x="82" y="292" class="d-sub" font-size="13">holt die Daten aus dem Netz</text>
+<rect x="52" y="304" width="140" height="28" rx="14" fill="#060a14" stroke="rgba(243,241,234,0.14)"/><text x="64" y="323" class="d-pill" font-size="13">Website</text>
+<rect x="200" y="304" width="140" height="28" rx="14" fill="#060a14" stroke="rgba(243,241,234,0.14)"/><text x="212" y="323" class="d-pill" font-size="13">Ladezeit</text>
+<rect x="52" y="338" width="140" height="28" rx="14" fill="#060a14" stroke="rgba(243,241,234,0.14)"/><text x="64" y="357" class="d-pill" font-size="13">Google-Profil</text>
+<rect x="200" y="338" width="140" height="28" rx="14" fill="#060a14" stroke="rgba(243,241,234,0.14)"/><text x="212" y="357" class="d-pill" font-size="13">Suche</text>
+<rect x="52" y="372" width="140" height="28" rx="14" fill="#060a14" stroke="rgba(243,241,234,0.14)"/><text x="64" y="391" class="d-pill" font-size="13">Verzeichnisse</text>
+<rect x="200" y="372" width="140" height="28" rx="14" fill="#060a14" stroke="rgba(243,241,234,0.14)"/><text x="212" y="391" class="d-pill" font-size="13">KI-Assistenten</text>
+</g>
+<g class="node">
+<rect x="40" y="456" width="312" height="76" rx="14" fill="#dcb25c" opacity="0" filter="url(#fpde-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.5014;0.5137;0.6027;0.6336;1"/></rect>
+<rect x="40" y="456" width="312" height="76" rx="14" fill="url(#fpde-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="40" y="456" width="312" height="76" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.5014;0.5137;0.6027;0.6336;1"/></rect>
+<text x="62" y="486" class="d-num" font-size="13">4</text>
+<text x="82" y="486" class="d-title" font-size="16">Bewertung</text>
+<text x="82" y="508" class="d-sub" font-size="13">108 Prüfungen, feste Regeln</text>
+
+</g>
+<g class="node">
+<rect x="40" y="570" width="312" height="76" rx="14" fill="#dcb25c" opacity="0" filter="url(#fpde-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.6589;0.6712;0.7877;0.8185;1"/></rect>
+<rect x="40" y="570" width="312" height="76" rx="14" fill="url(#fpde-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="40" y="570" width="312" height="76" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.6589;0.6712;0.7877;0.8185;1"/></rect>
+<text x="62" y="600" class="d-num" font-size="13">5</text>
+<text x="82" y="600" class="d-title" font-size="16">Claude Code</text>
+<text x="82" y="622" class="d-sub" font-size="13">schreibt Befunde und Texte</text>
+
+</g>
+<g class="node">
+<rect x="40" y="684" width="312" height="76" rx="14" fill="#dcb25c" opacity="0" filter="url(#fpde-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.8438;0.8562;0.9315;0.9623;1"/></rect>
+<rect x="40" y="684" width="312" height="76" rx="14" fill="url(#fpde-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="40" y="684" width="312" height="76" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.8438;0.8562;0.9315;0.9623;1"/></rect>
+<text x="62" y="714" class="d-num" font-size="13">6</text>
+<text x="82" y="714" class="d-title" font-size="16">Bericht als PDF</text>
+<text x="82" y="736" class="d-sub" font-size="13">druckfertige Datei</text>
+
+</g>
+<path id="fpde-s0" d="M122,318 L122,296" fill="none" stroke="none"/>
+<g class="signal"><circle r="8" fill="#f0d492" opacity="0.75" filter="url(#fpde-blur)"/><circle r="3" fill="#fbe7b5"/><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" begin="-14.6s" values="0;0;1;0;0" keyTimes="0;0.274;0.2877;0.3219;1"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.274;0.3219;1"><mpath href="#fpde-s0"/></animateMotion></g>
+<path id="fpde-s1" d="M270,318 L270,296" fill="none" stroke="none"/>
+<g class="signal"><circle r="8" fill="#f0d492" opacity="0.75" filter="url(#fpde-blur)"/><circle r="3" fill="#fbe7b5"/><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" begin="-14.6s" values="0;0;1;0;0" keyTimes="0;0.2911;0.3048;0.339;1"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.2911;0.339;1"><mpath href="#fpde-s1"/></animateMotion></g>
+<path id="fpde-s2" d="M122,352 L122,296" fill="none" stroke="none"/>
+<g class="signal"><circle r="8" fill="#f0d492" opacity="0.75" filter="url(#fpde-blur)"/><circle r="3" fill="#fbe7b5"/><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" begin="-14.6s" values="0;0;1;0;0" keyTimes="0;0.3082;0.3219;0.3562;1"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.3082;0.3562;1"><mpath href="#fpde-s2"/></animateMotion></g>
+<path id="fpde-s3" d="M270,352 L270,296" fill="none" stroke="none"/>
+<g class="signal"><circle r="8" fill="#f0d492" opacity="0.75" filter="url(#fpde-blur)"/><circle r="3" fill="#fbe7b5"/><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" begin="-14.6s" values="0;0;1;0;0" keyTimes="0;0.3253;0.339;0.3733;1"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.3253;0.3733;1"><mpath href="#fpde-s3"/></animateMotion></g>
+<path id="fpde-s4" d="M122,386 L122,296" fill="none" stroke="none"/>
+<g class="signal"><circle r="8" fill="#f0d492" opacity="0.75" filter="url(#fpde-blur)"/><circle r="3" fill="#fbe7b5"/><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" begin="-14.6s" values="0;0;1;0;0" keyTimes="0;0.3425;0.3562;0.3904;1"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.3425;0.3904;1"><mpath href="#fpde-s4"/></animateMotion></g>
+<path id="fpde-s5" d="M270,386 L270,296" fill="none" stroke="none"/>
+<g class="signal"><circle r="8" fill="#f0d492" opacity="0.75" filter="url(#fpde-blur)"/><circle r="3" fill="#fbe7b5"/><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" begin="-14.6s" values="0;0;1;0;0" keyTimes="0;0.3596;0.3733;0.4075;1"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.3596;0.4075;1"><mpath href="#fpde-s5"/></animateMotion></g>
+</svg>
+      </div>
+      <ol class="steps">
+        <li><strong>App auf dem Handy</strong>Der Betreiber gibt nur die Website-Adresse ein, wählt die Prüfungen aus und startet das Fernaudit. Betrieb, Ort, Branche und Suchbegriffe ermittelt der Server selbst.</li>
+        <li><strong>Supabase</strong>Der Auftrag landet in der Warteschlange der Datenbank. Scheitert ein Schritt, versucht der Server ihn erneut.</li>
+        <li><strong>Sammler-Container</strong>Läuft auf dem RepoCity-Server. Erkennt zuerst Betrieb, Ort, Branche und Suchbegriffe aus der Website und dem Google-Profil, sucht bis zu drei Wettbewerber auf der Karte und holt dann Website, Ladezeit, Google-Profil, Plätze in der Google- und Bing-Suche, Verzeichnisse und die Antworten von ChatGPT, Claude, Gemini und Perplexity.</li>
+        <li><strong>Bewertung</strong>Jede der 108 Prüfungen ist bestanden, teilweise bestanden, nicht bestanden oder nicht messbar; abgewählte Prüfungen zählen nicht. Die Punkte rechnet Code aus, kein Sprachmodell.</li>
+        <li><strong>Claude Code</strong>Läuft im Sammler-Container, angemeldet mit dem Claude-Abo. Liest Rohdaten und Prüfergebnisse und schreibt je offenem Punkt einen Befund mit Lösung, dazu die Berichtstexte und einen Gesprächstext für den Kunden. Bevor etwas hochgeladen wird, prüft der Sammler das Ergebnis gegen ein festes Datenformat.</li>
+        <li><strong>Bericht als PDF</strong>Der Sammler setzt den Bericht als druckfertige Datei zusammen. Er erscheint in der App und lässt sich am Tablet mit dem Kunden durchgehen.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="bereiche">
+    <div class="wrap">
+      <h2 id="bereiche">Dreizehn Bereiche, eine Zahl</h2>
+      <p class="section__intro">Die Punktzahl ist ein gewichteter Schnitt aus dreizehn Bereichen. Gewichte, Prüfungen und Schwellwerte stehen in einem einzigen Prüfkatalog; die Gewichte ergeben zusammen 100. Ein vierzehnter Bereich zeigt mit Zugang des Kunden Anrufe, Klicks und Anfragen und zählt nicht in die Punktzahl.</p>
+      <div class="ring" data-ring hidden>
+        <div class="ring__stage">
+          <div class="ring__labels" aria-hidden="true"></div>
+          <div class="ring__center" aria-live="polite">
+            <p class="ring__area"></p>
+            <p class="ring__meta"></p>
+          </div>
+          <p class="ring__hint">Ziehen oder scrollen dreht den Ring</p>
+        </div>
+      </div>
+      <ul class="panel areas">
+        <li class="areas__legend" aria-hidden="true"><span>Bereich</span><span>Gewicht</span></li>
+        <li class="area"><span class="area__name">Technik der Website</span><span class="area__bar" aria-hidden="true"><span class="w9"></span></span><span class="area__weight"><span class="visually-hidden">Gewicht </span>9</span></li>
+        <li class="area"><span class="area__name">Aufbau der Seiten</span><span class="area__bar" aria-hidden="true"><span class="w10"></span></span><span class="area__weight"><span class="visually-hidden">Gewicht </span>10</span></li>
+        <li class="area"><span class="area__name">Inhalte und Leistungsseiten</span><span class="area__bar" aria-hidden="true"><span class="w12"></span></span><span class="area__weight"><span class="visually-hidden">Gewicht </span>12</span></li>
+        <li class="area"><span class="area__name">Firmendaten auf der Website</span><span class="area__bar" aria-hidden="true"><span class="w6"></span></span><span class="area__weight"><span class="visually-hidden">Gewicht </span>6</span></li>
+        <li class="area"><span class="area__name">Unsichtbare Angaben für Google und KI</span><span class="area__bar" aria-hidden="true"><span class="w7"></span></span><span class="area__weight"><span class="visually-hidden">Gewicht </span>7</span></li>
+        <li class="area"><span class="area__name">Google-Unternehmensprofil</span><span class="area__bar" aria-hidden="true"><span class="w14"></span></span><span class="area__weight"><span class="visually-hidden">Gewicht </span>14</span><p class="area__question">„Hast du dein Google-Profil in der Hand?“</p></li>
+        <li class="area"><span class="area__name">Bewertungen</span><span class="area__bar" aria-hidden="true"><span class="w8"></span></span><span class="area__weight"><span class="visually-hidden">Gewicht </span>8</span></li>
+        <li class="area"><span class="area__name">Verzeichnisse und Einträge</span><span class="area__bar" aria-hidden="true"><span class="w7"></span></span><span class="area__weight"><span class="visually-hidden">Gewicht </span>7</span><p class="area__question">„Findet man dich auf dem iPhone in Apple Karten?“</p></li>
+        <li class="area"><span class="area__name">Empfehlungen durch Links</span><span class="area__bar" aria-hidden="true"><span class="w6"></span></span><span class="area__weight"><span class="visually-hidden">Gewicht </span>6</span></li>
+        <li class="area"><span class="area__name">Platzierung bei Google und Bing</span><span class="area__bar" aria-hidden="true"><span class="w10"></span></span><span class="area__weight"><span class="visually-hidden">Gewicht </span>10</span></li>
+        <li class="area"><span class="area__name">Sichtbarkeit in KI-Assistenten</span><span class="area__bar" aria-hidden="true"><span class="w5"></span></span><span class="area__weight"><span class="visually-hidden">Gewicht </span>5</span><p class="area__question">„Nennt ChatGPT dich, wenn jemand nach einem Betrieb wie deinem fragt?“</p></li>
+        <li class="area"><span class="area__name">Recht und Vertrauen</span><span class="area__bar" aria-hidden="true"><span class="w4"></span></span><span class="area__weight"><span class="visually-hidden">Gewicht </span>4</span></li>
+        <li class="area"><span class="area__name">Werkzeuge auf der Website</span><span class="area__bar" aria-hidden="true"><span class="w2"></span></span><span class="area__weight"><span class="visually-hidden">Gewicht </span>2</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="grenzen">
+    <div class="wrap">
+      <h2 id="grenzen">Was gemessen wird, und was nicht</h2>
+      <p class="section__intro">Von außen lässt sich viel messen, aber nicht alles. Was fehlt, steht im Bericht als „nicht messbar“ und zählt nicht in die Punkte, statt geschätzt zu werden.</p>
+      <div class="limits">
+        <div class="panel limits__yes">
+          <h3>Von außen messbar, ohne Zugang</h3>
+          <ul>
+            <li>Verschlüsselung, Ladezeit auf Handy und PC, Darstellung auf dem Handy</li>
+            <li>Seitentitel, Überschriften, Texte, tote Links</li>
+            <li>Name, Adresse und Telefon auf der Website im Abgleich mit Google, Apple Karten, Bing und Branchenbüchern</li>
+            <li>Maschinenlesbare Firmenangaben für Google und KI-Assistenten</li>
+            <li>Google-Profil: Kategorien, Öffnungszeiten, Fotos, Zahl und Schnitt der Bewertungen</li>
+            <li>Plätze in der Google- und Bing-Suche und auf der Karte, auch im Raster rund um den Standort, im Vergleich mit den Wettbewerbern</li>
+            <li>Ob ChatGPT, Claude, Gemini und Perplexity den Betrieb nennen und ob stimmt, was sie sagen</li>
+            <li>Impressum und Datenschutzerklärung</li>
+          </ul>
+        </div>
+        <div class="panel limits__no">
+          <h3>Nur mit Zugang des Kunden oder bezahlten Daten</h3>
+          <ul>
+            <li><strong>Anrufe, Routenanfragen, Klicks:</strong> Zahlen aus Google-Profil, Search Console und Analytics gibt es nur mit Zugang.</li>
+            <li><strong>Antworten auf Bewertungen:</strong> der Server liest sie aus Google Maps im Browser; sperrt Maps den Browser, fehlen sie, und ein Audit mit Zugang liest sie aus dem Profil.</li>
+            <li><strong>Neue Bewertungen pro Monat:</strong> Google Maps nennt das Datum einer Bewertung nur ungefähr, etwa „vor 2 Wochen“; sperrt Maps den Browser, gibt Google öffentlich nur die fünf neuesten heraus. Deshalb ist die Zahl eine Schätzung.</li>
+            <li><strong>Beschreibung, Leistungen, Produkte, Beiträge, Fragen und Antworten, Servicegebiete und Merkmale des Google-Profils:</strong> nur in Google Maps im Browser sichtbar; sperrt Maps den Browser, fehlen sie für dieses Audit.</li>
+            <li><strong>Verweise anderer Seiten, Suchvolumen, Suchbegriffe der Wettbewerber, Verlauf der Sichtbarkeit:</strong> nur mit einem bezahlten Datendienst mit Monatslimit; ist es erreicht, stehen diese Prüfungen auf „nicht messbar“.</li>
+            <li><strong>Plätze in der Google-Suche:</strong> die Suche im Browser kann auf eine Sperrseite laufen; dann holt der Server die fehlenden Plätze später nach, mit dem bezahlten Datendienst sofort.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="bau">
+    <div class="wrap">
+      <h2 id="bau">Gebaut als Produkt, nicht als Demo</h2>
+      <div class="panel facts">
+        <table>
+          <caption class="visually-hidden">Technische Eckdaten von RadarAuditor</caption>
+          <tbody>
+            <tr><th scope="row">Python-Tests</th><td><b>1804</b> bestanden</td></tr>
+            <tr><th scope="row">App-Tests</th><td><b>365</b> bestanden</td></tr>
+            <tr><th scope="row">Prüfkatalog</th><td><b>108</b> Prüfungen in 14 Bereichen in einer Datei, einzige Quelle für Gewichte und Schwellwerte</td></tr>
+            <tr><th scope="row">App</th><td>Installierbare Web-App für Handy, Tablet und PC</td></tr>
+            <tr><th scope="row">Sammler</th><td>Docker-Container auf dem RepoCity-Server</td></tr>
+            <tr><th scope="row">Auswertung</th><td>Claude Code im Sammler-Container, angemeldet mit dem Claude-Abo, ohne Kosten je Aufruf</td></tr>
+            <tr><th scope="row">Daten</th><td>Supabase: Datenbank, Anmeldung, Dateiablage und Warteschlange, Standort Frankfurt</td></tr>
+            <tr><th scope="row">Auslieferung</th><td>Cloudflare Pages</td></tr>
+            <tr><th scope="row">Angebote</th><td>Vor Ort in der App: Positionen aus den offenen Punkten der Prüfung mit Produkten und Preisen aus dem CRM; Prüfbericht und Angebot als ein PDF, verschickt über das CRM</td></tr>
+            <tr><th scope="row">Aufträge</th><td>Nach der Annahme bereitet Claude Code die Änderungen an Website und Google-Profil als Entwürfe vor, freigegebene setzt der Sammler um; Auftrag, Rechnung und Monatsprüfung des Abos führt das CRM</td></tr>
+            <tr><th scope="row">Mails</th><td>Claude Code ordnet auf dem Server Antworten auf Angebote und Anfragen unbekannter Absender ein, ganz ohne Werkzeuge</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="fuer-wen">
+    <div class="wrap">
+      <h2 id="fuer-wen">Für wen</h2>
+      <div class="audience">
+        <div>
+          <h3>Betriebe</h3>
+          <p>Das Fernaudit braucht von Ihnen nichts: keinen Zugang, kein Passwort, keinen Termin. Für die laufende Betreuung erteilen Sie einmal Zugang zu Ihrem Google-Profil und, falls vorhanden, zur Search Console. Nach der Anleitung dauert das etwa fünf Minuten, Ihr Passwort bleibt bei Ihnen. Danach kommt jeden Monat ein Bericht, der zeigt, was sich verändert hat.</p>
+          <div class="links"><a href="mailto:kontakt@speedofthespirit.dev?subject=Audit%20anfragen%3A%20RadarAuditor">Audit anfragen: kontakt@speedofthespirit.dev</a></div>
+        </div>
+        <div>
+          <h3>Unternehmen</h3>
+          <p>Ein Prüfkatalog ist die einzige Quelle für Prüfungen, Gewichte und Schwellwerte; Code, App und Texte leiten sich daraus ab. Die Punkte rechnet Code nach festen Regeln, das Sprachmodell schreibt nur die Texte und bekommt jede Zahl aus den Messdaten. Was Claude Code zurückgibt, wird gegen das Datenmodell geprüft, ungültige Ergebnisse bleiben liegen.</p>
+          <div class="links">
+            <a href="https://www.linkedin.com/in/danielhuette" rel="me">LinkedIn</a>
+            <a href="https://github.com/DanielHuette" rel="me">GitHub</a>
+            <a href="mailto:kontakt@speedofthespirit.dev">kontakt@speedofthespirit.dev</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+  <div class="reiter-tafel" id="organigramm" data-reiter-tafel role="tabpanel" aria-labelledby="reiter-organigramm">
+    <section class="section section--tafel" aria-labelledby="org-titel">
+      <div class="wrap">
+        <h2 id="org-titel">Ein Auftrag im RadarAuditor, von der App bis zur Rechnung</h2>
+        <p class="section__intro">Von der Website-Adresse im Handy bis zur Rechnung im CRM: acht Stationen, die sich gegenseitig Arbeit übergeben. Unter jeder Station steht, welche Fähigkeiten dort arbeiten.</p>
+        <div class="org" data-org>
+          <svg class="org__spur" aria-hidden="true" focusable="false"></svg>
+          <ol class="org__stationen">
+            <li class="station" data-station="1">
+              <h3 class="station__titel">App auf Handy, Tablet und PC</h3>
+              <p class="station__tut">Der Betreiber gibt nur die Website-Adresse ein, wählt die Prüfungen und startet das Fernaudit. Offene Audit-Anfragen aus dem CRM stehen unter dem Knopf „Prüfen“; eine Anfrage mit Website füllt das Adressfeld.</p>
+              <p class="station__ort">Cloudflare Pages</p>
+              <ul class="station__skills" aria-label="Fähigkeiten">
+                <li>Installierbare Web-App (Progressive Web App)</li>
+                <li>Preact und TypeScript</li>
+                <li>Diagramme mit Chart.js</li>
+                <li>Offene Anfragen: crm.open_audit_requests</li>
+              </ul>
+            </li>
+            <li class="station" data-station="2">
+              <h3 class="station__titel">Warteschlange in Supabase</h3>
+              <p class="station__tut">Der Auftrag liegt als Job in der Datenbank. Scheitert ein Schritt, wiederholt der Server ihn bis zu dreimal.</p>
+              <p class="station__ort">Supabase, Standort Frankfurt</p>
+              <ul class="station__skills" aria-label="Fähigkeiten">
+                <li>PostgreSQL mit Migrationen</li>
+                <li>Zeilenrechte (Row Level Security)</li>
+                <li>Dateiablage für Rohdaten und Berichte</li>
+              </ul>
+            </li>
+            <li class="station" data-station="3">
+              <h3 class="station__titel">Sammler auf dem Server</h3>
+              <p class="station__tut">Erkennt Betrieb, Ort und Branche selbst und holt Website, Ladezeit, Google-Profil, Plätze in der Suche, Verzeichnisse und Antworten von KI-Assistenten.</p>
+              <p class="station__ort">Docker-Container auf dem RepoCity-Server</p>
+              <ul class="station__skills" aria-label="Fähigkeiten">
+                <li>Python</li>
+                <li>Browser-Automatisierung mit Playwright</li>
+                <li>httpx und BeautifulSoup</li>
+              </ul>
+            </li>
+            <li class="station" data-station="4">
+              <h3 class="station__titel">Bewertung nach festen Regeln</h3>
+              <p class="station__tut">108 Prüfungen aus einem einzigen Prüfkatalog. Die Punkte rechnet Code aus, kein Sprachmodell.</p>
+              <p class="station__ort">im Sammler-Container</p>
+              <ul class="station__skills" aria-label="Fähigkeiten">
+                <li>Prüfkatalog als YAML-Datei</li>
+                <li>Datenmodelle mit Pydantic</li>
+                <li>Tests mit pytest</li>
+              </ul>
+            </li>
+            <li class="station" data-station="5">
+              <h3 class="station__titel">Auswertung mit Claude Code</h3>
+              <p class="station__tut">Schreibt je offenem Punkt einen Befund mit Lösung und die Berichtstexte. Darf nur lesen und zwei Dateien schreiben; das Ergebnis wird gegen ein festes Datenformat geprüft.</p>
+              <p class="station__ort">im Sammler-Container, mit dem Claude-Abo</p>
+              <ul class="station__skills" aria-label="Fähigkeiten">
+                <li>Claude Code ohne Bildschirm mit dem Skill /auswerten</li>
+                <li>Rechte auf das Nötigste begrenzt</li>
+                <li>Prüfung der Ausgabe gegen ein Schema</li>
+              </ul>
+            </li>
+            <li class="station" data-station="6">
+              <h3 class="station__titel">Bericht als PDF</h3>
+              <p class="station__tut">Druckfertiger Bericht mit Diagrammen und Prognose als Spanne; bei der Monatsprüfung als Vorher-Nachher-Bericht.</p>
+              <p class="station__ort">im Sammler-Container</p>
+              <ul class="station__skills" aria-label="Fähigkeiten">
+                <li>PDF mit WeasyPrint</li>
+                <li>Vorlagen mit Jinja2</li>
+                <li>Diagramme mit Matplotlib</li>
+              </ul>
+            </li>
+            <li class="station" data-station="7">
+              <h3 class="station__titel">Angebot vor Ort</h3>
+              <p class="station__tut">Positionen aus den offenen Punkten der Prüfung, Produkte und Preise aus dem CRM. Prüfbericht und Angebot gehen als ein PDF über das CRM hinaus.</p>
+              <p class="station__ort">App, Datenbank des CRM</p>
+              <ul class="station__skills" aria-label="Fähigkeiten">
+                <li>Datenbankfunktionen des CRM statt eigener Schnittstelle</li>
+                <li>Angebot und Versand: crm.create_quote, crm.send_quote</li>
+              </ul>
+            </li>
+            <li class="station" data-station="8">
+              <h3 class="station__titel">CRM und Cockpit</h3>
+              <p class="station__tut">Die Annahme legt den Auftrag an. Claude Code bereitet Änderungen an Website und Google-Profil als Entwürfe vor, freigegebene setzt der Sammler um. Danach schließt das CRM den Auftrag und schickt die Rechnung.</p>
+              <p class="station__ort">RepoCity-CRM und Cockpit</p>
+              <ul class="station__skills" aria-label="Fähigkeiten">
+                <li>Claude Code mit dem Skill /optimieren</li>
+                <li>Datenbank-Auslöser meldet „Auftrag fertig“</li>
+                <li>Antwort-Mails liest Claude Code ganz ohne Werkzeuge</li>
+              </ul>
+            </li>
+          </ol>
+          <p class="org__schleife"><strong>Audit-Anfrage</strong> Eine Audit-Anfrage im CRM nennt Betrieb, Gesprächsart (vor Ort, Telefon oder Video) und eine freie Stunde aus Daniels Kalender. Im Cockpit kommt sie mit „Bestätigen“, „Anderen Termin vorschlagen“ und „Prüfen“; „Prüfen“ legt das Fernaudit ihrer Website in die Warteschlange.</p>
+          <p class="org__schleife" data-schleife><strong>Monatsprüfung</strong> Einmal im Monat meldet das CRM ein Abo fällig. Ein Tipp im Cockpit legt den Auftrag zurück in die Warteschlange, der Bericht zeigt dann vorher und nachher.</p>
+        </div>
+        <p class="org__band">Jede Änderung am Code durchläuft automatisch dieselben Prüfungen mit GitHub Actions: Formatierung und Stil mit ruff, Typen mit mypy, Tests mit pytest, dazu Prüfung, Tests und Bau der App.</p>
+      </div>
+    </section>
+  </div>
+  <div class="reiter-tafel" id="benchmarks" data-reiter-tafel role="tabpanel" aria-labelledby="reiter-benchmarks">
+    <section class="section section--tafel" aria-labelledby="mess-titel">
+      <div class="wrap">
+        <h2 id="mess-titel">Was am RadarAuditor gemessen ist</h2>
+        <p class="section__intro">Einen Lauf gegen einen echten Kunden gab es noch nicht. Gemessen ist deshalb, was im Prüfkatalog und im Code steht: wie viel sich ohne Zugang prüfen lässt, wie die Punktzahl gewichtet ist, woher die Daten kommen und ob alle Tests bestehen.</p>
+
+        <figure class="panel messung messung--einheiten">
+          <figcaption><h3>97 von 108 Prüfungen laufen ohne Passwort und ohne bezahlten Datendienst</h3></figcaption>
+          <div class="einheiten" role="img" aria-label="108 Prüfungen als Kästchen: 97 von außen messbar, 7 nur mit bezahltem Datendienst, 4 nur mit Zugang des Kunden.">
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--zugang"></span>
+            <span class="einheit einheit--zugang"></span>
+            <span class="einheit einheit--zugang"></span>
+            <span class="einheit einheit--zugang"></span>
+          </div>
+          <ul class="legende">
+            <li><span class="einheit einheit--aussen" aria-hidden="true"></span>97 von außen, ohne Zugang</li>
+            <li><span class="einheit einheit--bezahlt" aria-hidden="true"></span>7 nur mit bezahltem Datendienst</li>
+            <li><span class="einheit einheit--zugang" aria-hidden="true"></span>4 nur mit Zugang des Kunden</li>
+          </ul>
+          <p class="messung__satz">Das erste Audit braucht vom Betrieb nichts. Was ohne Zugang nicht geht, steht im Bericht als „nicht messbar“ und zählt nicht in die Punkte.</p>
+        </figure>
+
+        <div class="messung-paar">
+          <figure class="panel messung">
+            <figcaption><h3>So setzt sich die Punktzahl zusammen</h3></figcaption>
+            <p class="messung__satz">Das Google-Unternehmensprofil zählt am meisten: 14 von 100 Punkten. Die fünf Bereiche der eigenen Website kommen zusammen auf 44.</p>
+            <ol class="balken-liste" aria-label="Gewicht der dreizehn Bereiche in der Punktzahl">
+            <li class="balken"><span class="balken__name">Google-Unternehmensprofil</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="100.00" height="10"/></svg><span class="balken__wert">14<span class="visually-hidden"> von 100</span></span></li>
+            <li class="balken"><span class="balken__name">Inhalte und Leistungsseiten</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="85.71" height="10"/></svg><span class="balken__wert">12<span class="visually-hidden"> von 100</span></span></li>
+            <li class="balken"><span class="balken__name">Aufbau der Seiten</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="71.43" height="10"/></svg><span class="balken__wert">10<span class="visually-hidden"> von 100</span></span></li>
+            <li class="balken"><span class="balken__name">Platzierung bei Google und Bing</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="71.43" height="10"/></svg><span class="balken__wert">10<span class="visually-hidden"> von 100</span></span></li>
+            <li class="balken"><span class="balken__name">Technik der Website</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="64.29" height="10"/></svg><span class="balken__wert">9<span class="visually-hidden"> von 100</span></span></li>
+            <li class="balken"><span class="balken__name">Bewertungen</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="57.14" height="10"/></svg><span class="balken__wert">8<span class="visually-hidden"> von 100</span></span></li>
+            <li class="balken"><span class="balken__name">Unsichtbare Angaben für Google und KI</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="50.00" height="10"/></svg><span class="balken__wert">7<span class="visually-hidden"> von 100</span></span></li>
+            <li class="balken"><span class="balken__name">Verzeichnisse und Einträge</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="50.00" height="10"/></svg><span class="balken__wert">7<span class="visually-hidden"> von 100</span></span></li>
+            <li class="balken"><span class="balken__name">Firmendaten auf der Website</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="42.86" height="10"/></svg><span class="balken__wert">6<span class="visually-hidden"> von 100</span></span></li>
+            <li class="balken"><span class="balken__name">Empfehlungen durch Links</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="42.86" height="10"/></svg><span class="balken__wert">6<span class="visually-hidden"> von 100</span></span></li>
+            <li class="balken"><span class="balken__name">Sichtbarkeit in KI-Assistenten</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="35.71" height="10"/></svg><span class="balken__wert">5<span class="visually-hidden"> von 100</span></span></li>
+            <li class="balken"><span class="balken__name">Recht und Vertrauen</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="28.57" height="10"/></svg><span class="balken__wert">4<span class="visually-hidden"> von 100</span></span></li>
+            <li class="balken"><span class="balken__name">Werkzeuge auf der Website</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="14.29" height="10"/></svg><span class="balken__wert">2<span class="visually-hidden"> von 100</span></span></li>
+            </ol>
+            <details class="tabelle">
+              <summary>Als Tabelle</summary>
+              <table>
+                <thead><tr><th scope="col">Bereich</th><th scope="col">Gewicht von 100</th></tr></thead>
+                <tbody>
+                <tr><th scope="row">Google-Unternehmensprofil</th><td>14</td></tr>
+                <tr><th scope="row">Inhalte und Leistungsseiten</th><td>12</td></tr>
+                <tr><th scope="row">Aufbau der Seiten</th><td>10</td></tr>
+                <tr><th scope="row">Platzierung bei Google und Bing</th><td>10</td></tr>
+                <tr><th scope="row">Technik der Website</th><td>9</td></tr>
+                <tr><th scope="row">Bewertungen</th><td>8</td></tr>
+                <tr><th scope="row">Unsichtbare Angaben für Google und KI</th><td>7</td></tr>
+                <tr><th scope="row">Verzeichnisse und Einträge</th><td>7</td></tr>
+                <tr><th scope="row">Firmendaten auf der Website</th><td>6</td></tr>
+                <tr><th scope="row">Empfehlungen durch Links</th><td>6</td></tr>
+                <tr><th scope="row">Sichtbarkeit in KI-Assistenten</th><td>5</td></tr>
+                <tr><th scope="row">Recht und Vertrauen</th><td>4</td></tr>
+                <tr><th scope="row">Werkzeuge auf der Website</th><td>2</td></tr>
+                </tbody>
+              </table>
+            </details>
+          </figure>
+          <figure class="panel messung">
+            <figcaption><h3>Woher die Daten für die Prüfungen kommen</h3></figcaption>
+            <p class="messung__satz">Fast die Hälfte der Prüfungen liest die Website selbst: 48 von 108.</p>
+            <ol class="balken-liste" aria-label="Zahl der Prüfungen je Datenquelle">
+            <li class="balken"><span class="balken__name">Website</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="100.00" height="10"/></svg><span class="balken__wert">48<span class="visually-hidden"> Prüfungen</span></span></li>
+            <li class="balken"><span class="balken__name">Google-Profil und Karte</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="50.00" height="10"/></svg><span class="balken__wert">24<span class="visually-hidden"> Prüfungen</span></span></li>
+            <li class="balken"><span class="balken__name">Google- und Bing-Suche</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="20.83" height="10"/></svg><span class="balken__wert">10<span class="visually-hidden"> Prüfungen</span></span></li>
+            <li class="balken"><span class="balken__name">Verzeichnisse</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="16.67" height="10"/></svg><span class="balken__wert">8<span class="visually-hidden"> Prüfungen</span></span></li>
+            <li class="balken"><span class="balken__name">Bezahlter Datendienst</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="14.58" height="10"/></svg><span class="balken__wert">7<span class="visually-hidden"> Prüfungen</span></span></li>
+            <li class="balken"><span class="balken__name">KI-Assistenten</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="8.33" height="10"/></svg><span class="balken__wert">4<span class="visually-hidden"> Prüfungen</span></span></li>
+            <li class="balken"><span class="balken__name">Zugang des Kunden</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="8.33" height="10"/></svg><span class="balken__wert">4<span class="visually-hidden"> Prüfungen</span></span></li>
+            <li class="balken"><span class="balken__name">Ladezeit-Messung (PageSpeed Insights)</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="6.25" height="10"/></svg><span class="balken__wert">3<span class="visually-hidden"> Prüfungen</span></span></li>
+            </ol>
+            <details class="tabelle">
+              <summary>Als Tabelle</summary>
+              <table>
+                <thead><tr><th scope="col">Quelle</th><th scope="col">Prüfungen</th></tr></thead>
+                <tbody>
+                <tr><th scope="row">Website</th><td>48</td></tr>
+                <tr><th scope="row">Google-Profil und Karte</th><td>24</td></tr>
+                <tr><th scope="row">Google- und Bing-Suche</th><td>10</td></tr>
+                <tr><th scope="row">Verzeichnisse</th><td>8</td></tr>
+                <tr><th scope="row">Bezahlter Datendienst</th><td>7</td></tr>
+                <tr><th scope="row">KI-Assistenten</th><td>4</td></tr>
+                <tr><th scope="row">Zugang des Kunden</th><td>4</td></tr>
+                <tr><th scope="row">Ladezeit-Messung (PageSpeed Insights)</th><td>3</td></tr>
+                </tbody>
+              </table>
+            </details>
+          </figure>
+        </div>
+        <p class="quelle">Quelle: <code>config/pruefkatalog.yaml</code>, Felder <code>weight</code>, <code>source</code>, <code>requires_paid</code> und <code>requires_access</code>.</p>
+
+        <h3 class="messung__zwischen">Prüfläufe am 30. Oktober 2026</h3>
+        <p class="messung__satz messung__satz--frei">Dieselben Prüfungen laufen bei jedem Push automatisch. Am 30. Oktober 2026 bestanden alle.</p>
+        <div class="kacheln">
+          <div class="kachel">
+            <p class="kachel__zahl">1804</p>
+            <p class="kachel__was"><span class="kachel__ok" aria-hidden="true"></span>Python-Tests bestanden</p>
+            <p class="kachel__wie">mit PostgreSQL für die Datenbank-Migrationen</p>
+          </div>
+          <div class="kachel">
+            <p class="kachel__zahl">365</p>
+            <p class="kachel__was"><span class="kachel__ok" aria-hidden="true"></span>App-Tests bestanden</p>
+            <p class="kachel__wie">in 43 Testdateien</p>
+          </div>
+          <div class="kachel">
+            <p class="kachel__zahl">83</p>
+            <p class="kachel__was"><span class="kachel__ok" aria-hidden="true"></span>Quelldateien ohne Typfehler</p>
+            <p class="kachel__wie">mypy im strengen Modus</p>
+          </div>
+          <div class="kachel">
+            <p class="kachel__zahl">0</p>
+            <p class="kachel__was"><span class="kachel__ok" aria-hidden="true"></span>Befunde bei Stil und Format</p>
+            <p class="kachel__wie">ruff check und ruff format</p>
+          </div>
+        </div>
+        <p class="quelle">Quelle: <code>Dokumentation/BUILD_REPORT.md</code>, Abschnitt der letzten Prüfläufe.</p>
+      </div>
+    </section>
+  </div>
+  <div class="reiter-tafel" id="praesentation" data-reiter-tafel role="tabpanel" aria-labelledby="reiter-praesentation">
+    <section class="section section--tafel" aria-labelledby="film-titel">
+      <div class="wrap">
+        <h2 id="film-titel">RadarAuditor in acht Szenen</h2>
+        <div class="film" data-film>
+          <div class="film__bild">
+            <section class="szene szene--frage" aria-roledescription="Szene" aria-label="1 von 8: Die Frage">
+              <div class="szene__motiv" aria-hidden="true">
+                <div class="radar"><span class="radar__strahl"></span><span class="radar__punkt"></span><span class="radar__punkt"></span><span class="radar__punkt radar__punkt--gold"></span></div>
+                <p class="szene__marke">RadarAuditor</p>
+              </div>
+              <p class="szene__text">Kunden suchen einen Betrieb in der Nähe. Wird Ihrer gefunden?</p>
+            </section>
+            <section class="szene szene--eingabe" aria-roledescription="Szene" aria-label="2 von 8: Eingabe">
+              <div class="szene__motiv" aria-hidden="true">
+                <div class="handy">
+                  <p class="handy__kopf">Prüfen</p>
+                  <p class="handy__feld"><span class="handy__tippen">dachdeckerei-muster.de</span></p>
+                  <p class="handy__knopf">Prüfung starten</p>
+                  <ul class="handy__schritte"><li>Wartet</li><li>Sammelt</li><li>Bewertet</li><li>Wertet aus</li><li>Fertig</li></ul>
+                </div>
+              </div>
+              <p class="szene__text">Eine Website-Adresse genügt. Betrieb, Ort und Branche erkennt der Server selbst.</p>
+            </section>
+            <section class="szene szene--sammeln" aria-roledescription="Szene" aria-label="3 von 8: Sammeln">
+              <div class="szene__motiv" aria-hidden="true">
+                <div class="nabe">
+                  <p class="nabe__mitte">Sammler</p>
+                  <span class="nabe__quelle">Website</span>
+                  <span class="nabe__quelle">Ladezeit</span>
+                  <span class="nabe__quelle">Google-Profil</span>
+                  <span class="nabe__quelle">Suche</span>
+                  <span class="nabe__quelle">Verzeichnisse</span>
+                  <span class="nabe__quelle">KI-Assistenten</span>
+                </div>
+              </div>
+              <p class="szene__text">Der Sammler holt die Daten so aus dem Netz, wie ein Kunde sie sieht.</p>
+            </section>
+            <section class="szene szene--bewerten" aria-roledescription="Szene" aria-label="4 von 8: Bewerten">
+              <div class="szene__motiv" aria-hidden="true">
+                <div class="tacho">
+                  <svg viewBox="0 0 120 120"><circle class="tacho__spur" cx="60" cy="60" r="50"/><circle class="tacho__wert" cx="60" cy="60" r="50"/></svg>
+                </div>
+                <ul class="ampeln"><li class="ampel ampel--gut"></li><li class="ampel ampel--mittel"></li><li class="ampel ampel--schlecht"></li><li class="ampel ampel--gut"></li></ul>
+              </div>
+              <p class="szene__text">Feste Regeln vergeben die Punkte. Kein Sprachmodell rechnet mit.</p>
+            </section>
+            <section class="szene szene--schreiben" aria-roledescription="Szene" aria-label="5 von 8: Schreiben">
+              <div class="szene__motiv" aria-hidden="true">
+                <div class="befund">
+                  <p class="befund__titel">Google findet keine Firmendaten auf der Startseite</p>
+                  <span class="befund__zeile"></span>
+                  <span class="befund__zeile"></span>
+                  <span class="befund__zeile"></span>
+                  <p class="befund__code">&lt;script type="application/ld+json"&gt;</p>
+                  <p class="befund__kopieren">Kopieren</p>
+                </div>
+              </div>
+              <p class="szene__text">Claude Code schreibt jeden Befund in Alltagssprache, mit fertiger Lösung zum Kopieren.</p>
+            </section>
+            <section class="szene szene--bericht" aria-roledescription="Szene" aria-label="6 von 8: Bericht">
+              <div class="szene__motiv" aria-hidden="true">
+                <div class="stapel">
+                  <span class="blatt"></span>
+                  <span class="blatt"></span>
+                  <span class="blatt blatt--vorn"><span class="blatt__kopf"></span><span class="blatt__saeulen"><i></i><i></i><i></i><i></i></span><span class="blatt__zeile"></span><span class="blatt__zeile blatt__zeile--kurz"></span></span>
+                </div>
+              </div>
+              <p class="szene__text">Bericht und Angebot kommen als ein PDF ins Gespräch mit dem Kunden.</p>
+            </section>
+            <section class="szene szene--crm" aria-roledescription="Szene" aria-label="7 von 8: Übergabe">
+              <div class="szene__motiv" aria-hidden="true">
+                <ul class="kreis">
+                  <li>Auftrag</li>
+                  <li>Änderungen</li>
+                  <li>Rechnung</li>
+                  <li>Monatsprüfung</li>
+                </ul>
+              </div>
+              <p class="szene__text">Das CRM übernimmt: Auftrag, Rechnung und jeden Monat eine neue Prüfung.</p>
+            </section>
+            <section class="szene szene--werkzeuge" aria-roledescription="Szene" aria-label="8 von 8: Gebaut mit">
+              <div class="szene__motiv">
+                <ul class="werkzeuge" aria-label="Fähigkeiten">
+                  <li>Python</li>
+                  <li>Browser-Automatisierung mit Playwright</li>
+                  <li>Docker</li>
+                  <li>Supabase und PostgreSQL</li>
+                  <li>Zeilenrechte (Row Level Security)</li>
+                  <li>Claude Code mit eigenen Skills</li>
+                  <li>Prüfung der Ausgabe gegen ein Schema</li>
+                  <li>Preact und TypeScript</li>
+                  <li>Installierbare Web-App</li>
+                  <li>PDF mit WeasyPrint</li>
+                  <li>Tests mit pytest</li>
+                  <li>GitHub Actions</li>
+                </ul>
+              </div>
+              <p class="szene__text">Gebaut als Produkt: ein Server, eine App und Claude Code, verbunden über eine Datenbank.</p>
+            </section>
+          </div>
+          <div class="film__steuerung">
+            <button type="button" class="film__knopf" aria-pressed="false" data-abspielen="Abspielen" data-anhalten="Anhalten"><span class="film__knopf-zeichen" aria-hidden="true"></span><span class="film__knopf-text">Abspielen</span></button>
+            <ol class="film__kapitel" aria-label="Kapitel">
+              <li><button type="button" data-kapitel><span class="kapitel__name">Die Frage</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Eingabe</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Sammeln</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Bewerten</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Schreiben</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Bericht</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Übergabe</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Gebaut mit</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__row">
+    <div class="footer__brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#mark"/></svg>
+      <span>RepoCity · AI for everyone · Münster</span>
+    </div>
+    <nav aria-label="Weitere Seiten">
+      <ul>
+        <li><a href="https://speedofthespirit.dev/">Hauptseite</a></li>
+        <li><a href="https://www.linkedin.com/in/danielhuette">LinkedIn</a></li>
+        <li><a href="https://github.com/DanielHuette">GitHub</a></li>
+        <li><a href="https://speedofthespirit.dev/impressum/">Impressum</a></li>
+        <li><a href="https://speedofthespirit.dev/datenschutz/">Datenschutz</a></li>
+      </ul>
+    </nav>
+    <nav class="lang" aria-label="Sprache wählen">
+      <span aria-current="true" lang="de">DE</span>
+      <a href="/en/" lang="en" hreflang="en">EN</a>
+    </nav>
+  </div>
+</footer>
+<nav class="dock" aria-label="Ansichten der Projektseite">
+  <div class="dock__leiste" role="tablist" aria-label="Ansichten der Projektseite">
+    <a class="dock__reiter" role="tab" id="reiter-projekt" href="#projekt" data-reiter="projekt" aria-controls="projekt" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 12 18 6"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg><span>Projekt</span></a>
+    <a class="dock__reiter" role="tab" id="reiter-organigramm" href="#organigramm" data-reiter="organigramm" aria-controls="organigramm" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3.5" width="7" height="5" rx="1.5"/><rect x="14" y="15.5" width="7" height="5" rx="1.5"/><path d="M6.5 8.5v5.5a2 2 0 0 0 2 2H14"/><path d="M17.5 15.5V10a2 2 0 0 0-2-2H10"/></svg><span>Organigramm</span></a>
+    <a class="dock__reiter" role="tab" id="reiter-benchmarks" href="#benchmarks" data-reiter="benchmarks" aria-controls="benchmarks" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20h16"/><path d="M7 16v-5"/><path d="M12 16V5"/><path d="M17 16v-8"/></svg><span>Benchmarks</span></a>
+    <a class="dock__reiter" role="tab" id="reiter-praesentation" href="#praesentation" data-reiter="praesentation" aria-controls="praesentation" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="19" height="13" rx="2.5"/><path d="m10 8.5 5 2.5-5 2.5z" fill="currentColor"/><path d="M8 21h8"/></svg><span>Präsentation</span></a>
+  </div>
+</nav>
+</body>
+</html>

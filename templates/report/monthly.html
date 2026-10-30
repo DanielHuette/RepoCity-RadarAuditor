@@ -1,0 +1,91 @@
+{# Monthly report: before-after scores, Google profile figures (with access), ranking changes, what was done, next month's plan, score trend. Without texte.json the neutral sentences below are used. #}
+{% extends "_layout.html" %}
+{% set arrows = {"up": "▲", "down": "▼", "same": "→"} %}
+{% set severity_names = {3: "hoch", 2: "mittel", 1: "gering"} %}
+{% macro position(value) %}{% if value is none %}–{% else %}{{ value }}{% endif %}{% endmacro %}
+{% block title %}Monatsbericht {{ report.customer_name }}{% endblock %}
+{% block kind %}Monatsbericht{% endblock %}
+{% block meta %}Vergleich {{ report.previous_date|date }} mit {{ report.report_date|date }}{% endblock %}
+{% block cover_body %}
+<div class="score-block">
+  <div class="score-number">{{ report.total.after|number(0) }}<small> von 100 Punkten</small></div>
+  <div class="score-caption">Beim letzten Bericht waren es {{ report.total.before|number(0) }} Punkte.</div>
+</div>
+{% endblock %}
+
+{% block content %}
+<section>
+  {% if report.total.trend == "up" %}
+  <h2>Ihre Sichtbarkeit ist gestiegen</h2>
+  {% elif report.total.trend == "down" %}
+  <h2>Ihre Sichtbarkeit ist gesunken</h2>
+  {% else %}
+  <h2>Ihre Sichtbarkeit ist stabil geblieben</h2>
+  {% endif %}
+  {% if report.texts and report.texts.before_after %}
+  <p>{{ report.texts.before_after }}</p>
+  {% else %}
+  <p>Ihr Gesamtwert lag beim letzten Bericht bei {{ report.total.before|number(0) }} und liegt jetzt bei {{ report.total.after|number(0) }} von 100 Punkten. Die Tabelle zeigt, in welchen Bereichen sich etwas bewegt hat.</p>
+  {% endif %}
+  {% if report.charts.trend %}<img class="chart" src="{{ report.charts.trend }}" alt="Verlauf des Gesamtwerts">{% endif %}
+  <table>
+    <thead><tr><th>Bereich</th><th class="number">Vorher</th><th class="number">Jetzt</th><th></th></tr></thead>
+    <tbody>
+    {% for area in report.areas %}
+      <tr><td>{{ area.label }}</td><td class="number">{{ area.before|number(0) }}</td><td class="number">{{ area.after|number(0) }}</td><td class="trend-{{ area.trend }}">{{ arrows[area.trend] }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+{% if report.profile %}{% include "_profile.html" %}{% endif %}
+
+<section>
+  <h2>So haben sich Ihre Plätze bei Google verändert</h2>
+  {% if report.rankings %}
+  <p class="range-label">Platz 1 ist der erste Treffer; – heißt: nicht unter den ersten Treffern.</p>
+  <table>
+    <thead><tr><th>Suchbegriff</th><th class="number">Suche vorher</th><th class="number">jetzt</th><th></th><th class="number">Karte vorher</th><th class="number">jetzt</th><th></th></tr></thead>
+    <tbody>
+    {% for change in report.rankings %}
+      <tr>
+        <td>{{ change.phrase }}</td>
+        <td class="number">{{ position(change.organic_before) }}</td><td class="number">{{ position(change.organic_after) }}</td><td class="trend-{{ change.organic_trend }}">{{ arrows[change.organic_trend] }}</td>
+        <td class="number">{{ position(change.local_before) }}</td><td class="number">{{ position(change.local_after) }}</td><td class="trend-{{ change.local_trend }}">{{ arrows[change.local_trend] }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>In diesem Monat lagen keine Platzierungen zum Vergleich vor.</p>
+  {% endif %}
+</section>
+
+<section class="new-page">
+  <h2>Das haben wir für Sie erledigt</h2>
+  {% for finding in report.done %}
+  <div class="finding severity-1">
+    <h3>{{ finding.title }}</h3>
+    <p><span class="label">Erledigt:</span> {{ finding.fix }}</p>
+  </div>
+  {% else %}
+  <p>Seit dem letzten Bericht ist noch keine Maßnahme vollständig messbar abgeschlossen.</p>
+  {% endfor %}
+</section>
+
+<section>
+  <h2>Das nehmen wir uns als Nächstes vor</h2>
+  {% if report.next_steps %}
+  <table>
+    <thead><tr><th>Bereich</th><th>Maßnahme</th><th>Dringlichkeit</th></tr></thead>
+    <tbody>
+    {% for finding in report.next_steps %}
+      <tr><td>{{ finding.area_name }}</td><td><strong>{{ finding.title }}</strong><br>{{ finding.fix }}</td><td>{{ severity_names[finding.severity] }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>Alle gemessenen Prüfungen sind bestanden; wir halten den Stand und beobachten Ihre Wettbewerber.</p>
+  {% endif %}
+</section>
+{% endblock %}

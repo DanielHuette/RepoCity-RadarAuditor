@@ -1,0 +1,77 @@
+{# Letterhead of every business document: supplier, recipient, date and number, footer with tax and bank details on every page. #}
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>{% block title %}{% endblock %}</title>
+<style>
+@page {
+  size: A4;
+  margin: 20mm 20mm 32mm 25mm;
+  @bottom-center { content: element(footer); }
+  @top-right {
+    content: "Seite " counter(page) " von " counter(pages);
+    font-family: "Archivo", "DejaVu Sans", sans-serif;
+    font-size: 7.5pt;
+    color: #6b6a64;
+  }
+}
+html { font-family: "Archivo", "DejaVu Sans", sans-serif; font-size: 10pt; line-height: 1.45; color: #04060b; }
+body { margin: 0; }
+.footer { position: running(footer); font-size: 7.5pt; color: #6b6a64; border-top: 0.3mm solid #dcb25c; padding-top: 2mm; width: 100%; }
+.footer td { border: none; padding: 0 3mm 0 0; vertical-align: top; }
+.head { display: table; width: 100%; margin-bottom: 14mm; }
+.head .sender-line { font-size: 7.5pt; color: #6b6a64; margin-bottom: 2mm; }
+.recipient { display: table-cell; width: 60%; vertical-align: bottom; }
+.supplier { display: table-cell; width: 40%; text-align: right; font-size: 9pt; vertical-align: top; }
+.supplier strong { font-size: 11pt; }
+.wordmark { color: #a9803a; font-weight: bold; letter-spacing: 0.2em; text-transform: uppercase; font-size: 8pt; }
+h1 { font-size: 16pt; margin: 0 0 2mm 0; }
+h2 { font-size: 11.5pt; margin: 6mm 0 2mm 0; }
+.meta { margin-bottom: 8mm; }
+.meta td { border: none; padding: 0 6mm 0 0; }
+table { width: 100%; border-collapse: collapse; margin: 3mm 0; }
+th { text-align: left; border-bottom: 0.4mm solid #04060b; padding: 1.5mm 2mm; font-size: 9pt; }
+td { border-bottom: 0.2mm solid #d9d6cc; padding: 1.5mm 2mm; vertical-align: top; }
+.number { text-align: right; white-space: nowrap; }
+.sum td { border-bottom: none; }
+.sum.gross td { font-weight: bold; border-top: 0.4mm solid #04060b; }
+.notice { margin-top: 5mm; white-space: pre-line; }
+.signatures { display: table; width: 100%; margin-top: 22mm; }
+.signature { display: table-cell; width: 50%; padding-right: 10mm; }
+.signature .line { border-top: 0.3mm solid #04060b; padding-top: 1.5mm; font-size: 8.5pt; }
+ol.clauses { padding-left: 5mm; }
+ol.clauses li { margin-bottom: 3mm; }
+</style>
+</head>
+<body>
+{% set supplier = document.supplier %}
+<div class="footer">
+  <table>
+    <tr>
+      <td>{{ supplier.name }}{% if supplier.owner %}<br>Inhaber: {{ supplier.owner }}{% endif %}<br>{{ supplier.street }}, {{ supplier.postal_code }} {{ supplier.city }}</td>
+      <td>{{ supplier.email }}{% if supplier.phone %}<br>{{ supplier.phone }}{% endif %}</td>
+      <td>{% if supplier.tax_number %}Steuernummer: {{ supplier.tax_number }}{% endif %}{% if supplier.vat_id %}{% if supplier.tax_number %}<br>{% endif %}USt-IdNr.: {{ supplier.vat_id }}{% endif %}</td>
+      <td>{{ supplier.bank_name }}<br>IBAN: {{ supplier.iban }}<br>BIC: {{ supplier.bic }}</td>
+    </tr>
+  </table>
+</div>
+<div class="head">
+  <div class="recipient">
+    <div class="sender-line">{{ supplier.name }} · {{ supplier.street }} · {{ supplier.postal_code }} {{ supplier.city }}</div>
+    {{ document.customer_name }}<br>
+    {{ document.customer_street }}<br>
+    {{ document.customer_postal_code }} {{ document.customer_city }}
+  </div>
+  <div class="supplier">
+    <div class="wordmark">RepoCity</div>
+    <strong>{{ supplier.name }}</strong><br>
+    {{ supplier.street }}<br>
+    {{ supplier.postal_code }} {{ supplier.city }}<br>
+    {{ supplier.email }}
+  </div>
+</div>
+{% block content %}{% endblock %}
+{% if document.note %}<p class="notice">{{ document.note }}</p>{% endif %}
+</body>
+</html>

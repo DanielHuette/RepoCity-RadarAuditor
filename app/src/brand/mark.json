@@ -1,0 +1,13 @@
+{
+  "viewBox": 64,
+  "circle": { "cx": 32, "cy": 32, "r": 28, "stroke": 2.8 },
+  "horizon": { "x1": 9, "x2": 55, "y": 43, "stroke": 2.8 },
+  "bars": [
+    { "x": 21, "y": 29, "width": 5.5, "height": 14 },
+    { "x": 29.25, "y": 17, "width": 5.5, "height": 26 },
+    { "x": 37.5, "y": 33, "width": 5.5, "height": 10 }
+  ],
+  "brass": { "light": "#FBE3A4", "base": "#ECC46A", "deep": "#C99A45" },
+  "night": "#04060B",
+  "glow": "#163A7A"
+}

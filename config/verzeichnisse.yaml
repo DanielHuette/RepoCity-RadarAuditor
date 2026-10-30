@@ -1,0 +1,46 @@
+# German directories checked for a listing. Each entry: name, search URL pattern, selectors used by collectors/directories.py.
+directories:
+  - name: Google Unternehmensprofil
+    kind: core
+  - name: Apple Business Connect
+    kind: core
+  - name: Bing Places
+    kind: core
+  - name: Gelbe Seiten
+    kind: core
+    search_url: https://www.gelbeseiten.de/suche/{name}/{city}
+  - name: Das Örtliche
+    kind: core
+    search_url: https://www.dasoertliche.de/?kw={name}&ci={city}
+  - name: 11880
+    kind: core
+    search_url: https://www.11880.com/suche/{name}/{city}
+  - name: GoLocal
+    kind: core
+  - name: Cylex
+    kind: core
+  - name: Meinestadt
+    kind: core
+  - name: Werkenntdenbesten
+    kind: core
+  - name: Dialo
+    kind: secondary
+  - name: Branchenbuch Deutschland
+    kind: secondary
+  - name: Facebook
+    kind: social
+  - name: Instagram
+    kind: social
+  - name: Wikidata
+    kind: entity
+industry_specific:
+  bauhandwerk: [MyHammer, Check24 Profis, Handwerkskammer, Innung]
+  haustechnik: [MyHammer, Check24 Profis, Handwerkskammer, Innung]
+  holz_innenausbau: [MyHammer, Check24 Profis, Handwerkskammer, Innung]
+  kfz: [Autoscout24 Händler, mobile.de Händler]
+  gastronomie: [TripAdvisor, OpenTable]
+  arzt_zahnarzt: [Jameda, Doctolib]
+  therapie_pflege: [Jameda, Doctolib]
+  recht_steuern_beratung: [Anwalt.de, Steuerberater.de]
+  handel_dienstleistung: [ImmobilienScout24 Anbieter]
+bewertungsportale: [ProvenExpert, Trustpilot, kununu]

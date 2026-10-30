@@ -1,0 +1,43 @@
+{
+  "name": "repocity-radarauditor-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "catalogue": "node scripts/build-catalogue.mjs && node scripts/build-industries.mjs",
+    "predev": "npm run catalogue",
+    "dev": "vite",
+    "prebuild": "npm run catalogue",
+    "build": "vite build",
+    "preview": "vite preview",
+    "precheck": "npm run catalogue",
+    "check": "tsc --noEmit && eslint src",
+    "pretest": "npm run catalogue",
+    "test": "vitest run",
+    "icons": "node scripts/make-icons.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.47.0",
+    "chart.js": "^4.4.7",
+    "preact": "^10.25.0",
+    "preact-iso": "^2.8.0",
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@preact/preset-vite": "^2.9.0",
+    "@types/three": "0.170.0",
+    "eslint": "^9.17.0",
+    "happy-dom": "20.14.5",
+    "js-yaml": "^4.3.2",
+    "sharp": "^0.34.5",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.71.2",
+    "vite": "^6.0.0",
+    "vite-plugin-pwa": "^0.21.0",
+    "vitest": "^3.2.7"
+  }
+}

@@ -1,0 +1,37 @@
+# RepoCity RadarAuditor
+
+> Visibility audit for local businesses in Germany (roofers, dentists, kitchen studios and similar). RadarAuditor measures how visible a business is on Google, on Google Maps, in directories and in AI assistants (ChatGPT, Claude, Gemini, Perplexity), and what is missing. Built by Daniel Hütte, AI engineer from Münster, as part of the RepoCity portfolio.
+
+## What the customer gets
+- A score from 0 to 100 with a traffic light per area (green from 75, amber from 50, red below).
+- Findings in plain German, each with what was measured, what it costs and a ready-to-copy fix (text, code or profile entry).
+- A forecast of additional enquiries as a low-to-high range, always labelled as an estimate.
+
+## How an audit runs
+1. The operator enters only the website address in an installable web app, picks the checks and starts a remote audit.
+2. The job is queued in Supabase.
+3. A collector in a Docker container on the RepoCity server identifies the business, town, industry and search terms, finds up to three competitors on the map and fetches the website, load time, Google profile, Google and Bing search positions, directories and the answers of AI assistants.
+4. Scoring evaluates 108 checks from one check catalogue by fixed rules; no language model computes points.
+5. Claude Code, running in the collector container on the Claude subscription, writes findings and report texts; its output is validated against the data model.
+6. The collector builds the report as a PDF file, which appears in the app.
+
+## Quotes and orders
+The operator builds the quote on site in the app from the open points of the audit, with products and prices from the CRM; audit report and quote go out as one PDF through the CRM. After acceptance Claude Code prepares the changes to website and Google profile as drafts, and the collector applies the approved ones. The CRM handles the order, invoices and the monthly audit of a subscription; the RadarAuditor writes no invoices.
+
+## Thirteen weighted areas (weights add up to 100)
+Website technology 9; Page structure 10; Content and service pages 12; Company details on the website 6; Hidden data for Google and AI 7; Google Business Profile 14; Reviews 8; Directories and listings 7; Recommendations through links 6; Ranking on Google and Bing 10; Visibility in AI assistants 5; Law and trust 4; Tools on the website 2. A fourteenth area, Results with customer access, shows calls, clicks and enquiries and does not count towards the score.
+
+## Limits
+Calls, clicks and enquiries need customer access. Owner replies to reviews and several Google profile fields are read from Google Maps in the browser and are missing when Maps blocks the browser. New reviews per month are an estimate because Google Maps dates reviews only roughly. Links from other sites, search volume, competitors' search terms and the visibility trend come from a paid data service with a monthly limit. Searches in the browser can hit a block page; the server fetches the missing positions later.
+
+## Status
+Built and tested (1804 Python tests, 365 app tests). The first run against a real business is still to come.
+
+## Pages
+- German: https://radarauditor.speedofthespirit.dev/
+- English: https://radarauditor.speedofthespirit.dev/en/
+- Tabs (same anchors in both languages): #projekt (project page), #organigramm (how an order flows through app, queue, collector, scoring, Claude Code, report, quote and CRM), #benchmarks (measured figures from the check catalogue and the test runs), #praesentation (the project in eight scenes)
+- Main site: https://speedofthespirit.dev/
+- Contact: kontakt@speedofthespirit.dev
+- LinkedIn: https://www.linkedin.com/in/danielhuette
+- GitHub: https://github.com/DanielHuette

@@ -1,0 +1,16 @@
+# Fragen an die KI-Assistenten (ChatGPT, Claude, Gemini, Perplexity).
+# Platzhalter: {industry} Gewerk aus dem Hauptsuchbegriff ohne Ort (etwa "Elektriker"), ohne
+# Suchbegriff die Betriebsart der Branchengruppe (question_term in branchen.yaml, etwa
+# "Haustechnikbetrieb"), {city} Ort, {service} Leistung aus den Suchbegriffen des Kunden.
+# empfehlung: Fragen nach einer Empfehlung, gewertet in Prüfung k1.
+# problem: Fragen, die ein Anliegen beschreiben, gewertet in Prüfung k2.
+# Prüfung k1 erkennt Empfehlungsfragen an "empfiehlst", "guter" oder "Top 3"; neue
+# Empfehlungsfragen brauchen eines dieser Wörter, Problemfragen keines davon.
+empfehlung:
+  - "Wer ist ein guter {industry} in {city}?"
+  - "Welchen {industry} in {city} empfiehlst du?"
+  - "Top 3 {industry} {city}"
+problem:
+  - "{service} in {city}, wen beauftragen?"
+  - "Ich brauche {service} in {city}, wer macht das gut?"
+  - "{service} {city} Erfahrungen"

@@ -1,0 +1,134 @@
+{# Sales report: cover with total score, traffic lights, Google profile figures (with access), competitor comparison with keyword gap (with paid data), top findings, all findings, forecast range, subscription, offer. Without texte.json the neutral sentences below are used. #}
+{% extends "_layout.html" %}
+{% set severity_names = {3: "hoch", 2: "mittel", 1: "gering"} %}
+{% set level_names = {"ok": "gut", "warn": "ausbaufähig", "bad": "kritisch"} %}
+{% block title %}Sichtbarkeitsbericht {{ report.customer_name }}{% endblock %}
+{% block kind %}Sichtbarkeitsbericht{% endblock %}
+{% block meta %}{{ report.customer_address }} · Stand {{ report.report_date|date }}{% endblock %}
+{% block cover_body %}
+<div class="score-block">
+  {% if report.total_score is not none %}
+  <div class="score-number">{{ report.total_score|number(0) }}<small> von 100 Punkten</small></div>
+  <div class="score-caption">So gut finden Kunden Sie heute bei Google, in Google Maps, in Verzeichnissen und in KI-Assistenten.</div>
+  {% else %}
+  <div class="score-caption">Für einen Gesamtwert lagen in diesem Audit zu wenige Messwerte vor.</div>
+  {% endif %}
+</div>
+<p class="introduction">
+{% if report.texts %}{{ report.texts.introduction }}{% else %}Dieser Bericht zeigt, wie sichtbar Ihr Betrieb heute für Menschen ist, die in Ihrer Gegend nach Ihren Leistungen suchen. Alle Zahlen stammen aus öffentlich zugänglichen Quellen und wurden ohne Zugriff auf Ihre Konten gemessen.{% endif %}
+</p>
+{% endblock %}
+
+{% block content %}
+<section>
+  <h2>So sichtbar sind Sie heute</h2>
+  {% if report.texts %}
+  <p>{{ report.texts.summary }}</p>
+  {% else %}
+  <p>Wir haben {{ report.areas|length }} Bereiche geprüft, von der Technik Ihrer Website bis zu Empfehlungen durch KI-Assistenten.{% if report.strongest_area %} Am stärksten sind Sie im Bereich „{{ report.strongest_area.name }}“ mit {{ report.strongest_area.score|number(0) }} von 100 Punkten.{% endif %}{% if report.weakest_area %} Am meisten Potenzial liegt im Bereich „{{ report.weakest_area.name }}“ mit {{ report.weakest_area.score|number(0) }} Punkten.{% endif %}</p>
+  {% endif %}
+  {% if report.charts.areas %}<img class="chart" src="{{ report.charts.areas }}" alt="Punkte je Bereich">{% endif %}
+</section>
+
+{% if report.profile %}{% include "_profile.html" %}{% endif %}
+
+<section class="new-page">
+  <h2>Ihre Wettbewerber im Vergleich</h2>
+  {% if report.charts.competitors %}
+  <img class="chart" src="{{ report.charts.competitors }}" alt="Vergleich der Google-Profile">
+  {% else %}
+  <p>Für einen Vergleich der Google-Profile lagen in diesem Audit keine Daten Ihrer Wettbewerber vor.</p>
+  {% endif %}
+  {% if report.charts.rankings %}<img class="chart" src="{{ report.charts.rankings }}" alt="Plätze bei Google je Suchbegriff">{% endif %}
+  {% if report.charts.grid %}<img class="chart square" src="{{ report.charts.grid }}" alt="Plätze in Google Maps rund um Ihren Standort">{% endif %}
+  {% if report.keyword_gap %}
+  <h3>Suchbegriffe, bei denen Ihre Wettbewerber gefunden werden und Sie nicht</h3>
+  <table>
+    <thead><tr><th>Suchbegriff</th><th class="number">Suchen pro Monat</th><th>Wettbewerber</th><th class="number">Platz</th></tr></thead>
+    <tbody>
+    {% for keyword in report.keyword_gap %}
+      <tr><td>{{ keyword.phrase }}</td><td class="number">{{ keyword.volume|number(0) }}</td><td>{{ keyword.competitor_domain }}</td><td class="number">{% if keyword.competitor_position is none %}–{% else %}{{ keyword.competitor_position }}{% endif %}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</section>
+
+<section class="new-page">
+  <h2>Die drei Befunde, die Sie am meisten kosten</h2>
+  {% for finding in report.top_findings %}
+  <div class="finding severity-{{ finding.severity }}">
+    <h3>{{ finding.title }}</h3>
+    <p><span class="label">Was wir gemessen haben:</span> {{ finding.explanation }}</p>
+    <p><span class="label">Was es Sie kostet:</span> {{ finding.customer_impact }}</p>
+    <p><span class="label">Was zu tun ist:</span> {{ finding.fix }}</p>
+  </div>
+  {% else %}
+  <p>In diesem Audit wurden keine Befunde festgestellt.</p>
+  {% endfor %}
+</section>
+
+<section>
+  <h2>Alle Befunde</h2>
+  {% if report.finding_groups %}
+  <table>
+    <thead><tr><th>Befund</th><th>Maßnahme</th><th>Dringlichkeit</th></tr></thead>
+    <tbody>
+    {% for group in report.finding_groups %}
+      <tr class="group-row"><td colspan="3">{{ group.area_name }}</td></tr>
+      {% for finding in group.findings %}
+      <tr><td>{{ finding.title }}</td><td>{{ finding.fix }}</td><td>{{ severity_names[finding.severity] }}</td></tr>
+      {% endfor %}
+    {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>Alle gemessenen Prüfungen sind bestanden.</p>
+  {% endif %}
+  <table>
+    <thead><tr><th>Bereich</th><th class="number">Punkte</th><th>Einschätzung</th></tr></thead>
+    <tbody>
+    {% for area in report.areas %}
+      <tr><td>{{ area.name }}</td><td class="number">{{ area.score|number(0) }}</td><td class="level level-{{ area.level }}">{{ level_names[area.level] }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="new-page">
+  <h2>Was eine Optimierung bringen kann</h2>
+  {% set forecast = report.forecast %}
+  {% if forecast.keywords_counted %}
+  <p class="range-label">Anfragen über Google pro Monat heute</p>
+  <p class="range">{{ forecast.enquiries_now_low|number(1) }} bis {{ forecast.enquiries_now_high|number(1) }}</p>
+  <p class="range-label">Anfragen über Google pro Monat nach der Optimierung</p>
+  <p class="range">{{ forecast.enquiries_after_low|number(1) }} bis {{ forecast.enquiries_after_high|number(1) }}</p>
+  {% else %}
+  <p>Für eine Schätzung fehlen in diesem Audit gemessene Plätze zu Ihren Suchbegriffen.</p>
+  {% endif %}
+  {% if report.texts %}<p>{{ report.texts.forecast_note }}</p>{% endif %}
+  <div class="estimate-note">Das ist eine Schätzung, keine Zusage. Wie viele Anfragen tatsächlich kommen, hängt von Saison, Wettbewerb und Ihrem Angebot ab.</div>
+  <h3>Diese Annahmen stecken in der Schätzung</h3>
+  <ul class="assumptions">
+  {% for assumption in forecast.assumptions %}<li>{{ assumption }}</li>{% endfor %}
+  </ul>
+</section>
+
+<section>
+  <h2>Warum eine laufende Betreuung</h2>
+  {% if report.texts %}
+  <p>{{ report.texts.subscription_reason }}</p>
+  {% else %}
+  <p>Google, Google Maps und KI-Assistenten ändern laufend, wen sie zeigen und empfehlen, und Ihre Wettbewerber holen auf. Eine monatliche Messung zeigt früh, wo Sie Plätze verlieren, und hält Ihr Profil, Ihre Website und Ihre Einträge aktuell.</p>
+  {% endif %}
+</section>
+
+<section class="offer">
+  <h2>Ihr Angebot</h2>
+  {% if report.texts %}
+  <p>{{ report.texts.offer_text }}</p>
+  {% else %}
+  <p>Gern beheben wir die Befunde aus diesem Bericht und betreuen Ihre Sichtbarkeit danach monatlich. Ein schriftliches Angebot mit festen Preisen erhalten Sie nach einem kurzen Gespräch.</p>
+  {% endif %}
+</section>
+{% endblock %}

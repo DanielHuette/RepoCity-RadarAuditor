@@ -1,0 +1,55 @@
+[project]
+name = "radarauditor"
+version = "0.1.0"
+description = "Local visibility audits, scoring, reports and billing for German businesses"
+requires-python = ">=3.12"
+readme = "README.md"
+dependencies = [
+  "pydantic>=2.9",
+  "pydantic-settings>=2.6",
+  "typer>=0.15",
+  "httpx>=0.28",
+  "beautifulsoup4>=4.12",
+  "lxml>=5.3",
+  "playwright>=1.49",
+  "supabase>=2.10",
+  "pyyaml>=6.0",
+  "jinja2>=3.1",
+  "weasyprint>=63",
+  "matplotlib>=3.9",
+  "tenacity>=9.0",
+  "python-dateutil>=2.9",
+  "tzdata>=2024.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3", "pytest-asyncio>=0.24", "ruff>=0.8", "mypy>=1.13", "types-PyYAML", "types-python-dateutil", "respx>=0.22"]
+
+[project.scripts]
+radarauditor = "radarauditor.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/radarauditor"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "D"]
+pydocstyle = { convention = "google" }
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D103"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

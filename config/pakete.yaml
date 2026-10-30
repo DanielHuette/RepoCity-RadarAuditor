@@ -1,0 +1,32 @@
+# Leistungspakete für Angebot, Leistungsbeschreibung und Vertrag. Die Preise kommen aus dem Formular der App:
+# das einmalige Paket kostet "Einrichtung, netto", das monatliche "Monatlich, netto". Die Leistungen folgen den
+# Bereichen des Prüfkatalogs (config/pruefkatalog.yaml). {package} ist der Paketname hier, {offer} das
+# Leistungspaket aus dem Formular.
+name_format: "{package} „{offer}“"
+position_format:
+  once: "{package} „{offer}“, einmalig"
+  monthly: "{package} „{offer}“, monatlich"
+packages:
+  - name: Erstoptimierung
+    recurrence: once
+    items:
+      - "Technische Grundlage der Website: verschlüsselte Adresse, Ladezeit, mobile Darstellung, Sitemap"
+      - "Seitenstruktur und Meta-Angaben: Seitentitel, Beschreibungen und Überschriften je Seite"
+      - "Inhalt und Nachfrage-Abdeckung: eine Seite je gesuchter Leistung, Texte mit Ort"
+      - "Firmendaten auf der Website: Name, Adresse und Telefonnummer einheitlich auf jeder Seite"
+      - "Strukturierte Daten: Firmen-, Leistungs- und Bewertungsangaben für Suchmaschinen und KI-Assistenten"
+      - "Google-Unternehmensprofil: vollständig ausgefüllt, Kategorien, Leistungen, Fotos, Öffnungszeiten"
+      - "Bewertungen: Ablauf zum Einholen und Beantworten von Bewertungen"
+      - "Verzeichnisse und Datenkonsistenz: Einträge in Apple Karten, Bing Places und Branchenbüchern angelegt und bereinigt"
+      - "Links und Autorität: Verweise aus Verbänden, Partnern und lokalen Seiten"
+      - "Recht und Vertrauen: Impressum, Datenschutzerklärung und Cookie-Hinweis geprüft"
+  - name: Laufende Betreuung
+    recurrence: monthly
+    items:
+      - "Monatliches Audit mit Bericht im Vorher-Nachher-Vergleich"
+      - "Rankings und Sichtbarkeit in der Suche: Plätze je Suchbegriff und auf der Karte beobachten"
+      - "Sichtbarkeit in KI-Assistenten: Testfragen an ChatGPT, Claude, Gemini und Perplexity, Inhalte nachschärfen"
+      - "Google-Unternehmensprofil: zwei Beiträge im Monat, neue Fotos, Schutz vor fremden Änderungen"
+      - "Bewertungen: Antwortvorschläge für jede neue Bewertung"
+      - "Verzeichnisse und Datenkonsistenz: Firmendaten überwachen und Abweichungen korrigieren"
+      - "Technische Grundlage der Website: Fehler und Ladezeit überwachen"

@@ -1,0 +1,25 @@
+# Wording drawn into the report charts. Titles are statements, not labels.
+charts:
+  area_traffic_lights: "Punkte je Bereich: grün ab 70, gelb ab 40, rot darunter"
+  competitor_comparison: "So stehen Sie bei Google gegen Ihre Wettbewerber"
+  grid_map: "Hier zeigt Google Maps Sie in der Kartenliste"
+  score_trend: "So hat sich Ihr Gesamtwert entwickelt"
+  ranking_table: "Ihre Plätze bei Google im Vergleich"
+  ranking_legend: "Platz in der normalen Suche / in der Kartenliste, – = nicht unter den ersten Treffern"
+subjects:
+  customer: "Sie"
+metrics:
+  reviews: "Bewertungen"
+  rating: "Sterne"
+  photos: "Fotos"
+# Google profile figures shown in the reports for audits with customer access, in this order.
+profile_metrics:
+  BUSINESS_IMPRESSIONS_MOBILE_SEARCH: "Aufrufe in der Google-Suche auf dem Handy"
+  BUSINESS_IMPRESSIONS_DESKTOP_SEARCH: "Aufrufe in der Google-Suche am Computer"
+  BUSINESS_IMPRESSIONS_MOBILE_MAPS: "Aufrufe in Google Maps auf dem Handy"
+  BUSINESS_IMPRESSIONS_DESKTOP_MAPS: "Aufrufe in Google Maps am Computer"
+  CALL_CLICKS: "Anrufe"
+  BUSINESS_DIRECTION_REQUESTS: "Routenanfragen"
+  WEBSITE_CLICKS: "Klicks auf Ihre Website"
+  BUSINESS_CONVERSATIONS: "Nachrichten"
+  BUSINESS_BOOKINGS: "Buchungen"

@@ -1,0 +1,28 @@
+{# Document template: contract for ongoing care. LEGAL REVIEW REQUIRED: a lawyer must review this wording once before first use; afterwards the template is only filled. Placeholders are filled by documents/builder.py. #}
+{% extends "_layout.html" %}
+{% set recurrence_names = {"once": "einmalig", "monthly": "monatlich"} %}
+{% block title %}Vertrag {{ document.customer_name }}{% endblock %}
+{% block content %}
+<h1>Vertrag über die Betreuung der Online-Sichtbarkeit</h1>
+<h2>Vertragsparteien</h2>
+<p>
+  {{ document.supplier.name }}{% if document.supplier.owner %}, Inhaber {{ document.supplier.owner }}{% endif %}, {{ document.supplier.street }}, {{ document.supplier.postal_code }} {{ document.supplier.city }}<br>
+  – nachfolgend „Auftragnehmer“ –<br>
+  und<br>
+  {{ document.customer_name }}, {{ document.customer_street }}, {{ document.customer_postal_code }} {{ document.customer_city }}<br>
+  – nachfolgend „Auftraggeber“ –
+</p>
+<ol class="clauses">
+  <li><strong>Vertragsgegenstand.</strong> Der Auftragnehmer erbringt die Leistungen nach der Leistungsbeschreibung vom {{ document.issued_on|date }}, die Bestandteil dieses Vertrags ist.{% if document.packages %} Vereinbart sind: {% for package in document.packages %}{{ package.name }} ({{ package.net_price|currency }} netto, {{ recurrence_names[package.recurrence] }}){% if not loop.last %}; {% endif %}{% endfor %}.{% endif %} Der Auftragnehmer schuldet eine fachgerechte Ausführung, keinen bestimmten Platz in Suchmaschinen, Kartendiensten oder KI-Assistenten.</li>
+  <li><strong>Laufzeit und Kündigung.</strong> Der Vertrag beginnt am {{ document.start_date|date }}{% if document.minimum_term_months %} und hat eine Mindestlaufzeit von {{ document.minimum_term_months }} {{ "Monat" if document.minimum_term_months == 1 else "Monaten" }}; danach läuft er{% else %} und läuft{% endif %} auf unbestimmte Zeit. Er kann von beiden Seiten mit einer Frist von {{ "einem Monat" if document.notice_period_months == 1 else document.notice_period_months ~ " Monaten" }} zum Ende eines Kalendermonats gekündigt werden{% if document.minimum_term_months %}, frühestens zum Ende der Mindestlaufzeit{% endif %}. Das Recht zur außerordentlichen Kündigung bleibt unberührt.</li>
+  <li><strong>Vergütung.</strong> Die laufende Betreuung kostet {{ document.monthly_fee_net|currency }} netto im Monat{% if document.setup_fee_net %}, die einmalige Erstoptimierung {{ document.setup_fee_net|currency }} netto{% endif %}{% if document.supplier.small_business %}; gemäß § 19 UStG wird keine Umsatzsteuer berechnet{% else %}, jeweils zuzüglich der gesetzlichen Umsatzsteuer{% endif %}. Die monatliche Vergütung wird zu Beginn jedes Monats in Rechnung gestellt und ist innerhalb von {{ document.supplier.payment_terms_days }} Tagen fällig.</li>
+  <li><strong>Mitwirkung des Auftraggebers.</strong> Der Auftraggeber stellt die nötigen Zugänge (zum Beispiel zum Google-Unternehmensprofil und zur Website) bereit, liefert benötigte Angaben und Fotos rechtzeitig und prüft Texte, die in seinem Namen veröffentlicht werden, innerhalb von fünf Werktagen. Verzögerungen durch fehlende Mitwirkung gehen nicht zu Lasten des Auftragnehmers.</li>
+  <li><strong>Datenschutz.</strong> Soweit der Auftragnehmer personenbezogene Daten im Auftrag verarbeitet, schließen die Parteien einen Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO, der diesem Vertrag als Anlage beigefügt wird.</li>
+  <li><strong>Haftung.</strong> Der Auftragnehmer haftet unbeschränkt bei Vorsatz und grober Fahrlässigkeit sowie bei Verletzung von Leben, Körper oder Gesundheit. Im Übrigen ist die Haftung auf die Vergütung eines Vertragsjahres, also {{ document.liability_cap|currency }} netto, begrenzt.</li>
+  <li><strong>Schriftform.</strong> Änderungen und Ergänzungen dieses Vertrags bedürfen der Schriftform; das gilt auch für den Verzicht auf die Schriftform. Sollte eine Bestimmung unwirksam sein, bleibt der übrige Vertrag wirksam.</li>
+</ol>
+<div class="signatures">
+  <div class="signature"><div class="line">Ort, Datum, Unterschrift Auftragnehmer<br>{{ document.supplier.name }}</div></div>
+  <div class="signature"><div class="line">Ort, Datum, Unterschrift Auftraggeber<br>{{ document.customer_name }}</div></div>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+/* RepoCity brand tokens, measured from the logo and the website. */
+/* Self-hosted instead of Google Fonts: loading from Google transmits visitor IP addresses (LG München, 3 O 17493/20). */
+@font-face {
+  font-family: "Archivo";
+  src: url("/fonts/Archivo-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --night: #04060b;
+  --night-raised: #0b1222;
+  --night-glow: #163a7a;
+  --night-mid: #0b1d3e;
+  /* Gold is the only highlight colour: selected, active, clicked, focused. Always solid, never faded. */
+  --gold: #ecc46a;
+  --gold-light: #fbe3a4;
+  --gold-deep: #c99a45;
+  --gold-text: #f5d27a;
+  --gold-surface: linear-gradient(135deg, #fbe3a4 0%, #ecc46a 45%, #c99a45 100%);
+  --gold-glow: rgba(240, 200, 110, 0.35);
+  --gold-glow-strong: rgba(248, 218, 140, 0.55);
+  --on-gold: #04060b;
+  --text: #ffffff;
+  --text-muted: #ecebe6;
+  --placeholder: rgba(236, 235, 230, 0.6);
+  --placeholder-on-gold: rgba(4, 6, 11, 0.62);
+  --control: #ffffff;
+  --text-shadow-nav: 0 1px 2px rgba(0, 0, 0, 0.7);
+  --ok: #4fbf7a;
+  --warn: #e0a83a;
+  --ok-halo: rgba(79, 191, 122, 0.18);
+  --warn-line: rgba(224, 168, 58, 0.45);
+  --warn-surface: rgba(224, 168, 58, 0.08);
+  --bad: #d8584d;
+  --ok-border: rgba(79, 191, 122, 0.4);
+  --warn-border: rgba(224, 168, 58, 0.4);
+  --bad-border: rgba(216, 88, 77, 0.45);
+  --busy-border: rgba(143, 167, 214, 0.4);
+  --ok-line: rgba(79, 191, 122, 0.45);
+  --ok-surface: rgba(79, 191, 122, 0.08);
+  --bad-line: rgba(216, 88, 77, 0.5);
+  --bad-surface: rgba(216, 88, 77, 0.08);
+  --ok-glow: rgba(79, 191, 122, 0.55);
+  --warn-glow: rgba(224, 168, 58, 0.55);
+  --bad-glow: rgba(216, 88, 77, 0.55);
+  --light-rim: rgba(255, 255, 255, 0.04);
+  --diff-surface: rgba(4, 6, 11, 0.55);
+  --diff-removed-surface: rgba(216, 88, 77, 0.14);
+  --diff-removed-text: #f0b3ad;
+  --diff-added-surface: rgba(79, 191, 122, 0.14);
+  --diff-added-text: #a9e3bf;
+  --code-surface: rgba(4, 6, 11, 0.7);
+  --measured-surface: rgba(4, 6, 11, 0.45);
+  --gridmap-cell-surface: rgba(255, 255, 255, 0.03);
+  --chart-line: rgba(243, 241, 234, 0.08);
+  --series-2: #8fa7d6;
+  --series-3: #6f86b5;
+  --series-4: #a9a79f;
+  --series-5: #5b6b8c;
+  --font-display: "Archivo", system-ui, sans-serif;
+  --font-body: "Archivo", system-ui, sans-serif;
+  --radius: 14px;
+  --radius-panel: 16px;
+  --radius-small: 10px;
+  --surface: transparent;
+  --surface-strong: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.12);
+  --border-quiet: rgba(255, 255, 255, 0.08);
+  --border-field: rgba(255, 255, 255, 0.3);
+  --border-tag: rgba(255, 255, 255, 0.5);
+  --shadow-raised: 0 14px 30px -10px rgba(0, 0, 0, 0.8);
+  --glow-static: 0 0 10px 1px var(--gold-glow);
+  --touch: 44px;
+  --nav-height: 64px;
+  --sidenav-width: 84px;
+  /* Two light sources that never overlap: one on the navigation, one behind the page's main action. */
+  --light-menu: radial-gradient(110px 78% at 42px 0%, rgba(22, 58, 122, 1) 0%, rgba(11, 29, 62, 0.85) 45%, rgba(11, 29, 62, 0) 100%);
+  --light-action: radial-gradient(34% 40% at 55% 56%, #163a7a 0%, #0b1d3e 45%, #04060b 100%);
+  --light-action-bottom: radial-gradient(260px 200px at 55% calc(100% - 50px), #163a7a 0%, #0b1d3e 45%, rgba(4, 6, 11, 0) 100%);
+  --light-menu-phone: radial-gradient(75% 84px at 50% 100%, rgba(22, 58, 122, 1) 0%, rgba(11, 29, 62, 0.85) 45%, rgba(11, 29, 62, 0) 100%);
+  --light-action-phone: radial-gradient(70% 26% at 50% 56%, #163a7a 0%, #0b1d3e 45%, #04060b 100%);
+  --light-action-bottom-phone: radial-gradient(220px 40px at 50% calc(100% - 114px - env(safe-area-inset-bottom)), #163a7a 0%, #0b1d3e 45%, rgba(4, 6, 11, 0) 100%);
+  /* Centred on the "Prüfen" button, which stands at 56 % of the area above the bottom navigation. */
+  --light-start-phone: radial-gradient(70% 26% at 50% calc((100% - var(--nav-height) - env(safe-area-inset-bottom)) * 0.56), #163a7a 0%, #0b1d3e 45%, #04060b 100%);
+  color-scheme: dark;
+}
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--night);
+  color: var(--text);
+  font-family: var(--font-body);
+}

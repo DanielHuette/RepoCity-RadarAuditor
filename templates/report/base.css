@@ -1,0 +1,141 @@
+/* Print styles in the RepoCity palette: night blue cover, gold accents, Archivo where installed. */
+@page {
+  size: A4;
+  margin: 22mm 18mm 24mm 18mm;
+  @bottom-left {
+    content: "RepoCity · Daniel Hütte · Münster · kontakt@speedofthespirit.dev";
+    font-family: "Archivo", "DejaVu Sans", sans-serif;
+    font-size: 7.5pt;
+    color: #6b6a64;
+  }
+  @bottom-right {
+    content: "Seite " counter(page) " von " counter(pages);
+    font-family: "Archivo", "DejaVu Sans", sans-serif;
+    font-size: 7.5pt;
+    color: #6b6a64;
+  }
+}
+@page cover {
+  margin: 0;
+  background: #04060b;
+  @bottom-left { content: none; }
+  @bottom-right { content: none; }
+}
+
+html {
+  font-family: "Archivo", "DejaVu Sans", sans-serif;
+  font-size: 10pt;
+  line-height: 1.5;
+  color: #04060b;
+  background: #ffffff;
+}
+body { margin: 0; }
+
+.cover {
+  page: cover;
+  page-break-after: always;
+  height: 297mm;
+  box-sizing: border-box;
+  padding: 34mm 22mm 24mm 22mm;
+  background: #04060b;
+  color: #f3f1ea;
+}
+.wordmark {
+  font-size: 15pt;
+  font-weight: bold;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: #dcb25c;
+}
+.wordmark span { color: #f3f1ea; }
+.cover .kind {
+  margin-top: 46mm;
+  font-size: 10pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #a9a79f;
+}
+.cover h1 {
+  margin: 4mm 0 2mm 0;
+  font-size: 26pt;
+  line-height: 1.15;
+  color: #f3f1ea;
+}
+.cover .meta { color: #a9a79f; }
+.score-block { margin-top: 22mm; }
+.score-number {
+  font-size: 72pt;
+  font-weight: bold;
+  line-height: 1;
+  color: #dcb25c;
+}
+.score-number small { font-size: 18pt; color: #a9a79f; font-weight: normal; }
+.score-caption { color: #a9a79f; margin-top: 2mm; }
+.cover .introduction { margin-top: 16mm; max-width: 150mm; color: #f3f1ea; }
+
+h2 {
+  font-size: 16pt;
+  line-height: 1.25;
+  margin: 0 0 5mm 0;
+  padding-top: 3mm;
+  border-top: 1.2mm solid #dcb25c;
+  break-after: avoid;
+}
+h3 { font-size: 11.5pt; margin: 5mm 0 1.5mm 0; break-after: avoid; }
+section { margin-bottom: 9mm; }
+section.new-page { break-before: page; }
+section.keep-together { break-inside: avoid; }
+p { margin: 0 0 3mm 0; }
+
+.chart { display: block; width: 100%; margin: 2mm 0 4mm 0; border-radius: 2mm; break-inside: avoid; }
+.chart.square { width: 48%; }
+
+.finding {
+  break-inside: avoid;
+  border-left: 1mm solid #d8584d;
+  padding: 1mm 0 1mm 4mm;
+  margin-bottom: 5mm;
+}
+.finding.severity-2 { border-left-color: #e0a83a; }
+.finding.severity-1 { border-left-color: #4fbf7a; }
+.finding .label { font-weight: bold; color: #a9803a; }
+
+table { width: 100%; border-collapse: collapse; margin: 2mm 0 5mm 0; font-size: 9pt; }
+th {
+  text-align: left;
+  font-weight: bold;
+  border-bottom: 0.4mm solid #04060b;
+  padding: 1.5mm 2mm;
+}
+td { border-bottom: 0.2mm solid #d9d6cc; padding: 1.5mm 2mm; vertical-align: top; }
+td.number, th.number { text-align: right; white-space: nowrap; }
+tr { break-inside: avoid; }
+.group-row td { background: #f4f1e8; font-weight: bold; }
+
+.level { font-weight: bold; }
+.level-ok, .trend-up { color: #2e8a52; }
+.level-warn { color: #a9803a; }
+.level-bad, .trend-down { color: #b2433a; }
+.trend-same { color: #6b6a64; }
+
+.range {
+  font-size: 22pt;
+  font-weight: bold;
+  color: #04060b;
+}
+.range-label { color: #6b6a64; }
+.estimate-note {
+  background: #f4f1e8;
+  border-left: 1mm solid #dcb25c;
+  padding: 2mm 4mm;
+  margin: 3mm 0;
+}
+ul.assumptions { margin: 0; padding-left: 5mm; font-size: 9pt; color: #3a3935; }
+ul.assumptions li { margin-bottom: 1mm; }
+.offer {
+  background: #04060b;
+  color: #f3f1ea;
+  padding: 6mm;
+  border-radius: 2mm;
+}
+.offer h2 { color: #f3f1ea; }

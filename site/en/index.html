@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RepoCity RadarAuditor — Visibility audit for local businesses</title>
+<meta name="description" content="RadarAuditor measures how visible a local business is on Google, on the map, in directories and in AI assistants, and what is missing: a score with traffic lights, findings with a ready fix, a forecast as a range.">
+<link rel="canonical" href="https://radarauditor.speedofthespirit.dev/en/">
+<link rel="alternate" hreflang="de" href="https://radarauditor.speedofthespirit.dev/">
+<link rel="alternate" hreflang="en" href="https://radarauditor.speedofthespirit.dev/en/">
+<link rel="alternate" hreflang="x-default" href="https://radarauditor.speedofthespirit.dev/">
+<meta name="theme-color" content="#04060b">
+<meta name="author" content="Daniel Hütte">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="de_DE">
+<meta property="og:site_name" content="RepoCity">
+<meta property="og:title" content="RepoCity RadarAuditor — Visibility audit for local businesses">
+<meta property="og:description" content="Measures how visible a local business is on Google, on the map, in directories and in AI assistants, and what is missing.">
+<meta property="og:url" content="https://radarauditor.speedofthespirit.dev/en/">
+<meta property="og:image" content="https://radarauditor.speedofthespirit.dev/bilder/vorschau.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="RepoCity RadarAuditor: visibility audit for local businesses">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="/fonts/archivo-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/styles.css">
+<script src="/reiter.js"></script>
+<script src="/organigramm.js" defer></script>
+<script src="/praesentation.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://speedofthespirit.dev/#organization",
+      "name": "RepoCity",
+      "slogan": "AI for everyone",
+      "url": "https://speedofthespirit.dev/",
+      "logo": "https://radarauditor.speedofthespirit.dev/favicon.svg",
+      "email": "kontakt@speedofthespirit.dev",
+      "founder": {
+        "@id": "https://speedofthespirit.dev/#person"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Münster",
+        "addressCountry": "DE"
+      }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://speedofthespirit.dev/#person",
+      "name": "Daniel Hütte",
+      "jobTitle": "AI Engineer",
+      "url": "https://speedofthespirit.dev/",
+      "email": "kontakt@speedofthespirit.dev",
+      "homeLocation": {
+        "@type": "Place",
+        "name": "Münster"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/danielhuette",
+        "https://github.com/DanielHuette"
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://radarauditor.speedofthespirit.dev/#software",
+      "name": "RepoCity RadarAuditor",
+      "url": "https://radarauditor.speedofthespirit.dev/en/",
+      "description": "Measures how visible a local business is on Google, on the map, in directories and in AI assistants, scores it against 108 checks and delivers findings with a ready fix.",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "de",
+      "image": "https://radarauditor.speedofthespirit.dev/bilder/vorschau.png",
+      "screenshot": "https://radarauditor.speedofthespirit.dev/bilder/audit-handy.png",
+      "author": {
+        "@id": "https://speedofthespirit.dev/#person"
+      },
+      "publisher": {
+        "@id": "https://speedofthespirit.dev/#organization"
+      }
+    }
+  ]
+}
+</script>
+<script src="/script.js" defer></script>
+<script type="module" src="/effekte/start.js"></script>
+</head>
+<body>
+<svg width="0" height="0" class="visually-hidden" aria-hidden="true" focusable="false">
+<defs>
+<linearGradient id="brass" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="100" y2="100"><stop offset="0" stop-color="#f3e3bf"/><stop offset="0.32" stop-color="#cdb07a"/><stop offset="0.55" stop-color="#9c7f52"/><stop offset="0.78" stop-color="#e2c993"/><stop offset="1" stop-color="#8a6c43"/></linearGradient>
+<symbol id="mark" viewBox="0 0 100 100"><g fill="url(#brass)"><path fill-rule="evenodd" d="M50 2.5a47.5 47.5 0 1 1 0 95a47.5 47.5 0 1 1 0-95zm0 5a42.5 42.5 0 1 0 0 85a42.5 42.5 0 1 0 0-85z"/><rect x="31.8" y="46.3" width="8.8" height="18"/><rect x="47.1" y="24.9" width="8.8" height="39.4"/><rect x="62.6" y="36.6" width="8.8" height="27.7"/><rect x="12.4" y="64.9" width="75.2" height="4.4"/></g></symbol>
+</defs>
+</svg>
+<a class="skip" href="#content">Skip to content</a>
+<header class="wrap topbar">
+  <a class="brand" href="https://speedofthespirit.dev/" aria-label="RepoCity, to the main site">
+    <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#mark"/></svg>
+    <span class="brand__name"><strong>REPOCITY</strong><span>AI FOR EVERYONE</span></span>
+  </a>
+  <div class="topbar__end">
+    <a class="signin-link" href="https://app.radarauditor.speedofthespirit.dev/">Sign in</a>
+    <nav class="lang" aria-label="Language">
+    <a href="/" lang="de" hreflang="de">DE</a>
+    <span aria-current="true" lang="en">EN</span>
+  </nav>
+  </div>
+</header>
+
+<main id="content">
+  <div class="reiter-tafel" id="projekt" data-reiter-tafel role="tabpanel" aria-labelledby="reiter-projekt">
+  <section class="wrap hero" aria-labelledby="title">
+    <div>
+      <svg class="hero__mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#mark"/></svg>
+      <h1 id="title"><span class="visually-hidden">RepoCity </span>RadarAuditor</h1>
+      <p class="lead">RadarAuditor measures how visible a business is on Google, on the map, in directories and in AI assistants — and what is missing.</p>
+      <p class="hero__note">For roofers, dentists, kitchen studios and every business whose customers come from nearby. The first audit runs from the outside and needs no access to your accounts.</p>
+      <div class="actions">
+        <a class="button button--primary" href="mailto:kontakt@speedofthespirit.dev?subject=Audit%20request%3A%20RadarAuditor">Request an audit</a>
+        <a class="button button--quiet" href="#flow">How an audit runs</a>
+      </div>
+    </div>
+    <div class="hero__device">
+      <div class="device">
+        <picture>
+          <source srcset="/bilder/audit-handy.webp" type="image/webp">
+          <img src="/bilder/audit-handy.png" width="480" height="1039" fetchpriority="high" alt="The app on a phone: audit of the sample business Dachdeckerei Muster GmbH with 63 out of 100 points and the first areas in traffic-light colours. The app is in German.">
+        </picture>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="outcome">
+    <div class="wrap">
+      <h2 id="outcome">What the customer gets</h2>
+      <p class="section__intro">Three things, all from measurements of the business itself and of up to three competitors nearby.</p>
+      <div class="outputs">
+        <article class="panel output">
+          <div class="output__text">
+            <h3>A score from 0 to 100, with a traffic light per area</h3>
+            <p>Green from 75, amber from 50, red below. At a glance it is clear whether the Google profile, the website or the reviews hold the business back.</p>
+          </div>
+          <div class="output__shot">
+            <picture>
+              <source srcset="/bilder/bereiche-desktop.webp" type="image/webp">
+              <img src="/bilder/bereiche-desktop.png" width="672" height="614" loading="lazy" alt="Area list in the app: one bar per area with points in green, amber or red, for example directories and data consistency at 43 points in red. The app is in German.">
+            </picture>
+          </div>
+        </article>
+        <article class="panel output">
+          <div class="output__text">
+            <h3>Findings in plain language, with a ready fix</h3>
+            <p>Each finding says what was measured, what it costs and what to do. When the fix is a text or a piece of code, it comes ready to copy.</p>
+          </div>
+          <div class="output__shot output__shot--phone">
+            <picture>
+              <source srcset="/bilder/befund-handy.webp" type="image/webp">
+              <img src="/bilder/befund-handy.png" width="480" height="880" loading="lazy" alt="A finding in the app: Google and AI assistants find no machine-readable company data on the home page, followed by the ready code and a copy button. The app is in German.">
+            </picture>
+          </div>
+        </article>
+        <article class="panel output">
+          <div class="output__text">
+            <h3>A forecast as a range, explicitly an estimate</h3>
+            <p>How many more enquiries are possible is shown as a range from low to high, with every assumption listed underneath. It is not a promise.</p>
+          </div>
+          <div class="estimate" role="img" aria-label="Sketch of a forecast: a band between a low and a high estimate instead of a single number.">
+            <div class="estimate__band"><span class="estimate__range"></span></div>
+            <div class="estimate__ends"><span>low estimate</span><span>high estimate</span></div>
+            <ul>
+              <li><strong>Clicks on position 1:</strong> 25 to 35 of 100 searchers, German average</li>
+              <li><strong>Enquiries in the building trades:</strong> 5 to 10 of 100 visitors</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+      <p class="fineprint">The images show an earlier version of the app with sample data.</p>
+    </div>
+  </section>
+
+  <section class="section" id="flow" aria-labelledby="flow-title">
+    <div class="wrap">
+      <h2 id="flow-title">How an audit runs</h2>
+      <p class="section__intro">A job goes round once. Scoring follows fixed rules; writing happens only at the end. Depending on the size of the website it takes a few minutes to half an hour.</p>
+      <div class="panel flow-stage">
+<svg class="flow flow--wide" viewBox="0 0 1100 452" role="img" aria-labelledby="fden-t fden-d">
+<title id="fden-t">How an audit runs</title><desc id="fden-d">The app on the phone puts a job into the Supabase queue. The collector container on the RepoCity server fetches data from the website, load time, Google profile, search, directories and AI assistants. Scoring checks it against 108 checks. Claude Code writes findings and texts on the Claude subscription. The result is a PDF report that goes back into the app.</desc>
+<defs>
+<filter id="fden-blur" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="4"/></filter>
+<filter id="fden-halo" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="7"/></filter>
+<linearGradient id="fden-panel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101a30"/><stop offset="1" stop-color="#0b1222"/></linearGradient>
+</defs>
+<path id="fden-loop" d="M146,108 H746 V372 H146 Z" class="d-track"/>
+<path d="M146,108 H746 V372 H146 Z" class="d-track-lit"/>
+<path id="fden-s0" d="M972,34 H942 C902,34 904,108 834,108" class="d-feed"/>
+<path id="fden-s1" d="M972,76 H942 C902,76 904,108 834,108" class="d-feed"/>
+<path id="fden-s2" d="M972,118 H942 C902,118 904,108 834,108" class="d-feed"/>
+<path id="fden-s3" d="M972,160 H942 C902,160 904,108 834,108" class="d-feed"/>
+<path id="fden-s4" d="M972,202 H942 C902,202 904,108 834,108" class="d-feed"/>
+<path id="fden-s5" d="M972,244 H942 C902,244 904,108 834,108" class="d-feed"/>
+<text x="160" y="245" class="d-back" font-size="14">back into the app</text>
+<g class="signal" opacity="0.4"><circle r="10.5" fill="#f0d492" opacity="0.85" filter="url(#fden-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.3s" calcMode="linear" keyPoints="0;0;0.1736;0.1736;0.3472;0.3472;0.5;0.5;0.6736;0.6736;0.8472;0.8472;1" keyTimes="0;0.0685;0.137;0.1986;0.2671;0.4452;0.5137;0.6027;0.6712;0.7877;0.8562;0.9315;1"><mpath href="#fden-loop"/></animateMotion></g>
+<g class="signal" opacity="0.65"><circle r="13.5" fill="#f0d492" opacity="0.85" filter="url(#fden-blur)"/><circle r="4.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.45s" calcMode="linear" keyPoints="0;0;0.1736;0.1736;0.3472;0.3472;0.5;0.5;0.6736;0.6736;0.8472;0.8472;1" keyTimes="0;0.0685;0.137;0.1986;0.2671;0.4452;0.5137;0.6027;0.6712;0.7877;0.8562;0.9315;1"><mpath href="#fden-loop"/></animateMotion></g>
+<g class="signal" opacity="1.0"><circle r="18" fill="#f0d492" opacity="0.85" filter="url(#fden-blur)"/><circle r="6" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;0.1736;0.1736;0.3472;0.3472;0.5;0.5;0.6736;0.6736;0.8472;0.8472;1" keyTimes="0;0.0685;0.137;0.1986;0.2671;0.4452;0.5137;0.6027;0.6712;0.7877;0.8562;0.9315;1"><mpath href="#fden-loop"/></animateMotion></g>
+<g class="signal"><circle r="9" fill="#f0d492" opacity="0.75" filter="url(#fden-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.226;0.2877;1"><mpath href="#fden-s0"/></animateMotion></g>
+<g class="signal"><circle r="9" fill="#f0d492" opacity="0.75" filter="url(#fden-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.2411;0.3027;1"><mpath href="#fden-s1"/></animateMotion></g>
+<g class="signal"><circle r="9" fill="#f0d492" opacity="0.75" filter="url(#fden-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.2562;0.3178;1"><mpath href="#fden-s2"/></animateMotion></g>
+<g class="signal"><circle r="9" fill="#f0d492" opacity="0.75" filter="url(#fden-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.2712;0.3329;1"><mpath href="#fden-s3"/></animateMotion></g>
+<g class="signal"><circle r="9" fill="#f0d492" opacity="0.75" filter="url(#fden-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.2863;0.3479;1"><mpath href="#fden-s4"/></animateMotion></g>
+<g class="signal"><circle r="9" fill="#f0d492" opacity="0.75" filter="url(#fden-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.3014;0.363;1"><mpath href="#fden-s5"/></animateMotion></g>
+<g class="pill"><rect x="942" y="18" width="146" height="32" rx="16" fill="#0b1222" stroke="rgba(243,241,234,0.16)"/><text x="958" y="39" class="d-pill" font-size="14">Website</text></g>
+<g class="pill"><rect x="942" y="60" width="146" height="32" rx="16" fill="#0b1222" stroke="rgba(243,241,234,0.16)"/><text x="958" y="81" class="d-pill" font-size="14">Load time</text></g>
+<g class="pill"><rect x="942" y="102" width="146" height="32" rx="16" fill="#0b1222" stroke="rgba(243,241,234,0.16)"/><text x="958" y="123" class="d-pill" font-size="14">Google profile</text></g>
+<g class="pill"><rect x="942" y="144" width="146" height="32" rx="16" fill="#0b1222" stroke="rgba(243,241,234,0.16)"/><text x="958" y="165" class="d-pill" font-size="14">Search</text></g>
+<g class="pill"><rect x="942" y="186" width="146" height="32" rx="16" fill="#0b1222" stroke="rgba(243,241,234,0.16)"/><text x="958" y="207" class="d-pill" font-size="14">Directories</text></g>
+<g class="pill"><rect x="942" y="228" width="146" height="32" rx="16" fill="#0b1222" stroke="rgba(243,241,234,0.16)"/><text x="958" y="249" class="d-pill" font-size="14">AI assistants</text></g>
+<g class="node">
+<rect x="28" y="56" width="236" height="104" rx="14" fill="#dcb25c" opacity="0" filter="url(#fden-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="1;1;0;0;1" keyTimes="0;0.0685;0.0993;0.9877;1"/></rect>
+<rect x="28" y="56" width="236" height="104" rx="14" fill="url(#fden-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="28" y="56" width="236" height="104" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="1;1;0;0;1" keyTimes="0;0.0685;0.0993;0.9877;1"/></rect>
+<text x="50" y="86" class="d-num" font-size="14">1</text>
+<text x="70" y="86" class="d-title" font-size="18">App on the phone</text>
+<text x="70" y="109" class="d-sub" font-size="14">start a remote audit</text>
+
+</g>
+<g class="node">
+<rect x="328" y="56" width="236" height="104" rx="14" fill="#dcb25c" opacity="0" filter="url(#fden-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.1247;0.137;0.1986;0.2295;1"/></rect>
+<rect x="328" y="56" width="236" height="104" rx="14" fill="url(#fden-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="328" y="56" width="236" height="104" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.1247;0.137;0.1986;0.2295;1"/></rect>
+<text x="350" y="86" class="d-num" font-size="14">2</text>
+<text x="370" y="86" class="d-title" font-size="18">Supabase</text>
+<text x="370" y="109" class="d-sub" font-size="14">queue and file storage</text>
+
+</g>
+<g class="node">
+<rect x="628" y="56" width="236" height="104" rx="14" fill="#dcb25c" opacity="0" filter="url(#fden-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.2548;0.2671;0.4452;0.476;1"/></rect>
+<rect x="628" y="56" width="236" height="104" rx="14" fill="url(#fden-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="628" y="56" width="236" height="104" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.2548;0.2671;0.4452;0.476;1"/></rect>
+<text x="650" y="86" class="d-num" font-size="14">3</text>
+<text x="670" y="86" class="d-title" font-size="18">Collector container</text>
+<text x="670" y="109" class="d-sub" font-size="14">fetches data from the web</text>
+
+</g>
+<g class="node">
+<rect x="628" y="320" width="236" height="104" rx="14" fill="#dcb25c" opacity="0" filter="url(#fden-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.5014;0.5137;0.6027;0.6336;1"/></rect>
+<rect x="628" y="320" width="236" height="104" rx="14" fill="url(#fden-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="628" y="320" width="236" height="104" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.5014;0.5137;0.6027;0.6336;1"/></rect>
+<text x="650" y="350" class="d-num" font-size="14">4</text>
+<text x="670" y="350" class="d-title" font-size="18">Scoring</text>
+<text x="670" y="373" class="d-sub" font-size="14">108 checks, fixed rules</text>
+
+</g>
+<g class="node">
+<rect x="328" y="320" width="236" height="104" rx="14" fill="#dcb25c" opacity="0" filter="url(#fden-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.6589;0.6712;0.7877;0.8185;1"/></rect>
+<rect x="328" y="320" width="236" height="104" rx="14" fill="url(#fden-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="328" y="320" width="236" height="104" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.6589;0.6712;0.7877;0.8185;1"/></rect>
+<text x="350" y="350" class="d-num" font-size="14">5</text>
+<text x="370" y="350" class="d-title" font-size="18">Claude Code</text>
+<text x="370" y="373" class="d-sub" font-size="14">writes findings and texts</text>
+
+</g>
+<g class="node">
+<rect x="28" y="320" width="236" height="104" rx="14" fill="#dcb25c" opacity="0" filter="url(#fden-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.8438;0.8562;0.9315;0.9623;1"/></rect>
+<rect x="28" y="320" width="236" height="104" rx="14" fill="url(#fden-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="28" y="320" width="236" height="104" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.8438;0.8562;0.9315;0.9623;1"/></rect>
+<text x="50" y="350" class="d-num" font-size="14">6</text>
+<text x="70" y="350" class="d-title" font-size="18">Report as PDF</text>
+<text x="70" y="373" class="d-sub" font-size="14">print-ready file</text>
+
+</g>
+</svg>
+<svg class="flow flow--narrow" viewBox="0 0 360 774" role="img" aria-labelledby="fpen-t fpen-d">
+<title id="fpen-t">How an audit runs</title><desc id="fpen-d">The app on the phone puts a job into the Supabase queue. The collector container on the RepoCity server fetches data from the website, load time, Google profile, search, directories and AI assistants. Scoring checks it against 108 checks. Claude Code writes findings and texts on the Claude subscription. The result is a PDF report that goes back into the app.</desc>
+<defs>
+<filter id="fpen-blur" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="4"/></filter>
+<filter id="fpen-halo" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="7"/></filter>
+<linearGradient id="fpen-panel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101a30"/><stop offset="1" stop-color="#0b1222"/></linearGradient>
+</defs>
+<path id="fpen-loop" d="M196,50 V722 H22 V50 Z" class="d-track"/>
+<path d="M196,50 V722 H22 V50 Z" class="d-track-lit"/>
+<text transform="translate(14 386) rotate(-90)" text-anchor="middle" class="d-back" font-size="13">back into the app</text>
+<g class="signal" opacity="0.4"><circle r="10.5" fill="#f0d492" opacity="0.85" filter="url(#fpen-blur)"/><circle r="3.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.3s" calcMode="linear" keyPoints="0;0;0.0674;0.0674;0.1348;0.1348;0.2624;0.2624;0.3298;0.3298;0.3972;0.3972;1" keyTimes="0;0.0685;0.137;0.1986;0.2671;0.4452;0.5137;0.6027;0.6712;0.7877;0.8562;0.9315;1"><mpath href="#fpen-loop"/></animateMotion></g>
+<g class="signal" opacity="0.65"><circle r="13.5" fill="#f0d492" opacity="0.85" filter="url(#fpen-blur)"/><circle r="4.5" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.45s" calcMode="linear" keyPoints="0;0;0.0674;0.0674;0.1348;0.1348;0.2624;0.2624;0.3298;0.3298;0.3972;0.3972;1" keyTimes="0;0.0685;0.137;0.1986;0.2671;0.4452;0.5137;0.6027;0.6712;0.7877;0.8562;0.9315;1"><mpath href="#fpen-loop"/></animateMotion></g>
+<g class="signal" opacity="1.0"><circle r="18" fill="#f0d492" opacity="0.85" filter="url(#fpen-blur)"/><circle r="6" fill="#fbe7b5"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;0.0674;0.0674;0.1348;0.1348;0.2624;0.2624;0.3298;0.3298;0.3972;0.3972;1" keyTimes="0;0.0685;0.137;0.1986;0.2671;0.4452;0.5137;0.6027;0.6712;0.7877;0.8562;0.9315;1"><mpath href="#fpen-loop"/></animateMotion></g>
+<g class="node">
+<rect x="40" y="12" width="312" height="76" rx="14" fill="#dcb25c" opacity="0" filter="url(#fpen-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="1;1;0;0;1" keyTimes="0;0.0685;0.0993;0.9877;1"/></rect>
+<rect x="40" y="12" width="312" height="76" rx="14" fill="url(#fpen-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="40" y="12" width="312" height="76" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="1;1;0;0;1" keyTimes="0;0.0685;0.0993;0.9877;1"/></rect>
+<text x="62" y="42" class="d-num" font-size="13">1</text>
+<text x="82" y="42" class="d-title" font-size="16">App on the phone</text>
+<text x="82" y="64" class="d-sub" font-size="13">start a remote audit</text>
+
+</g>
+<g class="node">
+<rect x="40" y="126" width="312" height="76" rx="14" fill="#dcb25c" opacity="0" filter="url(#fpen-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.1247;0.137;0.1986;0.2295;1"/></rect>
+<rect x="40" y="126" width="312" height="76" rx="14" fill="url(#fpen-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="40" y="126" width="312" height="76" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.1247;0.137;0.1986;0.2295;1"/></rect>
+<text x="62" y="156" class="d-num" font-size="13">2</text>
+<text x="82" y="156" class="d-title" font-size="16">Supabase</text>
+<text x="82" y="178" class="d-sub" font-size="13">queue and file storage</text>
+
+</g>
+<g class="node">
+<rect x="40" y="240" width="312" height="178" rx="14" fill="#dcb25c" opacity="0" filter="url(#fpen-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.2548;0.2671;0.4452;0.476;1"/></rect>
+<rect x="40" y="240" width="312" height="178" rx="14" fill="url(#fpen-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="40" y="240" width="312" height="178" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.2548;0.2671;0.4452;0.476;1"/></rect>
+<text x="62" y="270" class="d-num" font-size="13">3</text>
+<text x="82" y="270" class="d-title" font-size="16">Collector container</text>
+<text x="82" y="292" class="d-sub" font-size="13">fetches data from the web</text>
+<rect x="52" y="304" width="140" height="28" rx="14" fill="#060a14" stroke="rgba(243,241,234,0.14)"/><text x="64" y="323" class="d-pill" font-size="13">Website</text>
+<rect x="200" y="304" width="140" height="28" rx="14" fill="#060a14" stroke="rgba(243,241,234,0.14)"/><text x="212" y="323" class="d-pill" font-size="13">Load time</text>
+<rect x="52" y="338" width="140" height="28" rx="14" fill="#060a14" stroke="rgba(243,241,234,0.14)"/><text x="64" y="357" class="d-pill" font-size="13">Google profile</text>
+<rect x="200" y="338" width="140" height="28" rx="14" fill="#060a14" stroke="rgba(243,241,234,0.14)"/><text x="212" y="357" class="d-pill" font-size="13">Search</text>
+<rect x="52" y="372" width="140" height="28" rx="14" fill="#060a14" stroke="rgba(243,241,234,0.14)"/><text x="64" y="391" class="d-pill" font-size="13">Directories</text>
+<rect x="200" y="372" width="140" height="28" rx="14" fill="#060a14" stroke="rgba(243,241,234,0.14)"/><text x="212" y="391" class="d-pill" font-size="13">AI assistants</text>
+</g>
+<g class="node">
+<rect x="40" y="456" width="312" height="76" rx="14" fill="#dcb25c" opacity="0" filter="url(#fpen-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.5014;0.5137;0.6027;0.6336;1"/></rect>
+<rect x="40" y="456" width="312" height="76" rx="14" fill="url(#fpen-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="40" y="456" width="312" height="76" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.5014;0.5137;0.6027;0.6336;1"/></rect>
+<text x="62" y="486" class="d-num" font-size="13">4</text>
+<text x="82" y="486" class="d-title" font-size="16">Scoring</text>
+<text x="82" y="508" class="d-sub" font-size="13">108 checks, fixed rules</text>
+
+</g>
+<g class="node">
+<rect x="40" y="570" width="312" height="76" rx="14" fill="#dcb25c" opacity="0" filter="url(#fpen-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.6589;0.6712;0.7877;0.8185;1"/></rect>
+<rect x="40" y="570" width="312" height="76" rx="14" fill="url(#fpen-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="40" y="570" width="312" height="76" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.6589;0.6712;0.7877;0.8185;1"/></rect>
+<text x="62" y="600" class="d-num" font-size="13">5</text>
+<text x="82" y="600" class="d-title" font-size="16">Claude Code</text>
+<text x="82" y="622" class="d-sub" font-size="13">writes findings and texts</text>
+
+</g>
+<g class="node">
+<rect x="40" y="684" width="312" height="76" rx="14" fill="#dcb25c" opacity="0" filter="url(#fpen-halo)"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.8438;0.8562;0.9315;0.9623;1"/></rect>
+<rect x="40" y="684" width="312" height="76" rx="14" fill="url(#fpen-panel)" stroke="rgba(220,178,92,0.32)" stroke-width="1"/>
+<rect x="40" y="684" width="312" height="76" rx="14" fill="none" stroke="#dcb25c" stroke-width="1.5" opacity="0"><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;0.8438;0.8562;0.9315;0.9623;1"/></rect>
+<text x="62" y="714" class="d-num" font-size="13">6</text>
+<text x="82" y="714" class="d-title" font-size="16">Report as PDF</text>
+<text x="82" y="736" class="d-sub" font-size="13">print-ready file</text>
+
+</g>
+<path id="fpen-s0" d="M122,318 L122,296" fill="none" stroke="none"/>
+<g class="signal"><circle r="8" fill="#f0d492" opacity="0.75" filter="url(#fpen-blur)"/><circle r="3" fill="#fbe7b5"/><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" begin="-14.6s" values="0;0;1;0;0" keyTimes="0;0.274;0.2877;0.3219;1"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.274;0.3219;1"><mpath href="#fpen-s0"/></animateMotion></g>
+<path id="fpen-s1" d="M270,318 L270,296" fill="none" stroke="none"/>
+<g class="signal"><circle r="8" fill="#f0d492" opacity="0.75" filter="url(#fpen-blur)"/><circle r="3" fill="#fbe7b5"/><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" begin="-14.6s" values="0;0;1;0;0" keyTimes="0;0.2911;0.3048;0.339;1"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.2911;0.339;1"><mpath href="#fpen-s1"/></animateMotion></g>
+<path id="fpen-s2" d="M122,352 L122,296" fill="none" stroke="none"/>
+<g class="signal"><circle r="8" fill="#f0d492" opacity="0.75" filter="url(#fpen-blur)"/><circle r="3" fill="#fbe7b5"/><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" begin="-14.6s" values="0;0;1;0;0" keyTimes="0;0.3082;0.3219;0.3562;1"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.3082;0.3562;1"><mpath href="#fpen-s2"/></animateMotion></g>
+<path id="fpen-s3" d="M270,352 L270,296" fill="none" stroke="none"/>
+<g class="signal"><circle r="8" fill="#f0d492" opacity="0.75" filter="url(#fpen-blur)"/><circle r="3" fill="#fbe7b5"/><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" begin="-14.6s" values="0;0;1;0;0" keyTimes="0;0.3253;0.339;0.3733;1"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.3253;0.3733;1"><mpath href="#fpen-s3"/></animateMotion></g>
+<path id="fpen-s4" d="M122,386 L122,296" fill="none" stroke="none"/>
+<g class="signal"><circle r="8" fill="#f0d492" opacity="0.75" filter="url(#fpen-blur)"/><circle r="3" fill="#fbe7b5"/><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" begin="-14.6s" values="0;0;1;0;0" keyTimes="0;0.3425;0.3562;0.3904;1"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.3425;0.3904;1"><mpath href="#fpen-s4"/></animateMotion></g>
+<path id="fpen-s5" d="M270,386 L270,296" fill="none" stroke="none"/>
+<g class="signal"><circle r="8" fill="#f0d492" opacity="0.75" filter="url(#fpen-blur)"/><circle r="3" fill="#fbe7b5"/><animate attributeName="opacity" dur="14.6s" repeatCount="indefinite" begin="-14.6s" values="0;0;1;0;0" keyTimes="0;0.3596;0.3733;0.4075;1"/><animateMotion dur="14.6s" repeatCount="indefinite" begin="-14.6s" calcMode="linear" keyPoints="0;0;1;1" keyTimes="0;0.3596;0.4075;1"><mpath href="#fpen-s5"/></animateMotion></g>
+</svg>
+      </div>
+      <ol class="steps">
+        <li><strong>App on the phone</strong>The operator enters only the website address, picks the checks and starts the remote audit. The server works out the business, town, industry and search terms itself.</li>
+        <li><strong>Supabase</strong>The job lands in the database queue. If a step fails, the server tries it again.</li>
+        <li><strong>Collector container</strong>Runs on the RepoCity server. First identifies the business, town, industry and search terms from the website and the Google profile, finds up to three competitors on the map, then fetches the website, load time, Google profile, positions in Google and Bing search, directories and the answers of ChatGPT, Claude, Gemini and Perplexity.</li>
+        <li><strong>Scoring</strong>Each of the 108 checks is passed, partly passed, failed or not measurable; deselected checks do not count. Code computes the points, not a language model.</li>
+        <li><strong>Claude Code</strong>Runs in the collector container, signed in with the Claude subscription. Reads the raw data and check results and writes one finding with a fix per open point, plus the report texts and a talking script for the customer. Before anything is uploaded, the collector validates the result against a fixed data format.</li>
+        <li><strong>Report as PDF</strong>The collector assembles the report as a print-ready file. It appears in the app and can be walked through with the customer on a tablet.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="areas">
+    <div class="wrap">
+      <h2 id="areas">Thirteen areas, one number</h2>
+      <p class="section__intro">The score is a weighted average of thirteen areas. Weights, checks and thresholds live in a single check catalogue; the weights add up to 100. A fourteenth area shows calls, clicks and enquiries when the customer grants access and does not count towards the score.</p>
+      <div class="ring" data-ring hidden>
+        <div class="ring__stage">
+          <div class="ring__labels" aria-hidden="true"></div>
+          <div class="ring__center" aria-live="polite">
+            <p class="ring__area"></p>
+            <p class="ring__meta"></p>
+          </div>
+          <p class="ring__hint">Drag or scroll to turn the ring</p>
+        </div>
+      </div>
+      <ul class="panel areas">
+        <li class="areas__legend" aria-hidden="true"><span>Area</span><span>Weight</span></li>
+        <li class="area"><span class="area__name">Website technology</span><span class="area__bar" aria-hidden="true"><span class="w9"></span></span><span class="area__weight"><span class="visually-hidden">Weight </span>9</span></li>
+        <li class="area"><span class="area__name">Page structure</span><span class="area__bar" aria-hidden="true"><span class="w10"></span></span><span class="area__weight"><span class="visually-hidden">Weight </span>10</span></li>
+        <li class="area"><span class="area__name">Content and service pages</span><span class="area__bar" aria-hidden="true"><span class="w12"></span></span><span class="area__weight"><span class="visually-hidden">Weight </span>12</span></li>
+        <li class="area"><span class="area__name">Company details on the website</span><span class="area__bar" aria-hidden="true"><span class="w6"></span></span><span class="area__weight"><span class="visually-hidden">Weight </span>6</span></li>
+        <li class="area"><span class="area__name">Hidden data for Google and AI</span><span class="area__bar" aria-hidden="true"><span class="w7"></span></span><span class="area__weight"><span class="visually-hidden">Weight </span>7</span></li>
+        <li class="area"><span class="area__name">Google Business Profile</span><span class="area__bar" aria-hidden="true"><span class="w14"></span></span><span class="area__weight"><span class="visually-hidden">Weight </span>14</span><p class="area__question">“Do you have your Google profile in your own hands?”</p></li>
+        <li class="area"><span class="area__name">Reviews</span><span class="area__bar" aria-hidden="true"><span class="w8"></span></span><span class="area__weight"><span class="visually-hidden">Weight </span>8</span></li>
+        <li class="area"><span class="area__name">Directories and listings</span><span class="area__bar" aria-hidden="true"><span class="w7"></span></span><span class="area__weight"><span class="visually-hidden">Weight </span>7</span><p class="area__question">“Can people find you on the iPhone in Apple Maps?”</p></li>
+        <li class="area"><span class="area__name">Recommendations through links</span><span class="area__bar" aria-hidden="true"><span class="w6"></span></span><span class="area__weight"><span class="visually-hidden">Weight </span>6</span></li>
+        <li class="area"><span class="area__name">Ranking on Google and Bing</span><span class="area__bar" aria-hidden="true"><span class="w10"></span></span><span class="area__weight"><span class="visually-hidden">Weight </span>10</span></li>
+        <li class="area"><span class="area__name">Visibility in AI assistants</span><span class="area__bar" aria-hidden="true"><span class="w5"></span></span><span class="area__weight"><span class="visually-hidden">Weight </span>5</span><p class="area__question">“Does ChatGPT name you when someone asks for a business like yours?”</p></li>
+        <li class="area"><span class="area__name">Law and trust</span><span class="area__bar" aria-hidden="true"><span class="w4"></span></span><span class="area__weight"><span class="visually-hidden">Weight </span>4</span></li>
+        <li class="area"><span class="area__name">Tools on the website</span><span class="area__bar" aria-hidden="true"><span class="w2"></span></span><span class="area__weight"><span class="visually-hidden">Weight </span>2</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="limits">
+    <div class="wrap">
+      <h2 id="limits">What is measured, and what is not</h2>
+      <p class="section__intro">A lot can be measured from the outside, but not everything. What is missing appears in the report as “not measurable” and does not count towards the points, instead of being guessed.</p>
+      <div class="limits">
+        <div class="panel limits__yes">
+          <h3>Measurable from the outside, no access needed</h3>
+          <ul>
+            <li>Encryption, load time on phone and PC, layout on the phone</li>
+            <li>Page titles, headings, texts, broken links</li>
+            <li>Name, address and phone on the website compared with Google, Apple Maps, Bing and business directories</li>
+            <li>Machine-readable company data for Google and AI assistants</li>
+            <li>Google profile: categories, opening hours, photos, number and average of reviews</li>
+            <li>Positions in Google and Bing search and on the map, including a grid around the location, compared with the competitors</li>
+            <li>Whether ChatGPT, Claude, Gemini and Perplexity name the business, and whether what they say is correct</li>
+            <li>Legal notice and privacy policy</li>
+          </ul>
+        </div>
+        <div class="panel limits__no">
+          <h3>Only with customer access or paid data</h3>
+          <ul>
+            <li><strong>Calls, route requests, clicks:</strong> figures from the Google profile, Search Console and Analytics are only available with access.</li>
+            <li><strong>Replies to reviews:</strong> the server reads them from Google Maps in the browser; if Maps blocks the browser they are missing, and an audit with access reads them from the profile.</li>
+            <li><strong>New reviews per month:</strong> Google Maps gives the date of a review only roughly, such as “2 weeks ago”; if Maps blocks the browser, Google only returns the five newest publicly. So the figure is an estimate.</li>
+            <li><strong>Description, services, products, posts, questions and answers, service areas and attributes of the Google profile:</strong> only visible in Google Maps in the browser; if Maps blocks the browser they are missing for that audit.</li>
+            <li><strong>Links from other sites, search volume, competitors’ search terms, visibility trend:</strong> only with a paid data service with a monthly limit; once it is reached these checks are “not measurable”.</li>
+            <li><strong>Positions in Google search:</strong> searching in the browser can hit a block page; then the server fetches the missing positions later, or at once with the paid data service.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="built">
+    <div class="wrap">
+      <h2 id="built">Built as a product, not as a demo</h2>
+      <div class="panel facts">
+        <table>
+          <caption class="visually-hidden">Technical facts about RadarAuditor</caption>
+          <tbody>
+            <tr><th scope="row">Python tests</th><td><b>1804</b> passing</td></tr>
+            <tr><th scope="row">App tests</th><td><b>365</b> passing</td></tr>
+            <tr><th scope="row">Check catalogue</th><td><b>108</b> checks in 14 areas in one file, the single source for weights and thresholds</td></tr>
+            <tr><th scope="row">App</th><td>Installable web app for phone, tablet and PC</td></tr>
+            <tr><th scope="row">Collector</th><td>Docker container on the RepoCity server</td></tr>
+            <tr><th scope="row">Analysis</th><td>Claude Code in the collector container, signed in with the Claude subscription, no cost per call</td></tr>
+            <tr><th scope="row">Data</th><td>Supabase: database, sign-in, file storage and queue, hosted in Frankfurt</td></tr>
+            <tr><th scope="row">Delivery</th><td>Cloudflare Pages</td></tr>
+            <tr><th scope="row">Quotes</th><td>On site in the app: positions from the open points of the audit with products and prices from the CRM; audit report and quote as one PDF, sent through the CRM</td></tr>
+            <tr><th scope="row">Orders</th><td>After acceptance Claude Code prepares the changes to website and Google profile as drafts, and the collector applies the approved ones; the CRM handles the order, the invoice and the monthly audit of the subscription</td></tr>
+            <tr><th scope="row">Mail</th><td>On the server, Claude Code sorts replies to quotes and enquiries from unknown senders, without any tools</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="audience">
+    <div class="wrap">
+      <h2 id="audience">Who it is for</h2>
+      <div class="audience">
+        <div>
+          <h3>Businesses</h3>
+          <p>The remote audit needs nothing from you: no access, no password, no appointment. For ongoing care you grant access to your Google profile once and, if you use it, to Search Console. Following the guide this takes about five minutes, and your password stays with you. After that a report arrives every month showing what has changed.</p>
+          <div class="links"><a href="mailto:kontakt@speedofthespirit.dev?subject=Audit%20request%3A%20RadarAuditor">Request an audit: kontakt@speedofthespirit.dev</a></div>
+        </div>
+        <div>
+          <h3>Companies</h3>
+          <p>One check catalogue is the single source for checks, weights and thresholds; code, app and texts derive from it. Code computes the points by fixed rules; the language model only writes the texts and takes every number from the measured data. What Claude Code returns is validated against the data model, and invalid results stay behind.</p>
+          <div class="links">
+            <a href="https://www.linkedin.com/in/danielhuette" rel="me">LinkedIn</a>
+            <a href="https://github.com/DanielHuette" rel="me">GitHub</a>
+            <a href="mailto:kontakt@speedofthespirit.dev">kontakt@speedofthespirit.dev</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+  <div class="reiter-tafel" id="organigramm" data-reiter-tafel role="tabpanel" aria-labelledby="reiter-organigramm">
+    <section class="section section--tafel" aria-labelledby="org-titel">
+      <div class="wrap">
+        <h2 id="org-titel">An order in RadarAuditor, from the app to the invoice</h2>
+        <p class="section__intro">From the website address typed on a phone to the invoice in the CRM: eight stations that hand work to each other. Each station lists the skills at work there.</p>
+        <div class="org" data-org>
+          <svg class="org__spur" aria-hidden="true" focusable="false"></svg>
+          <ol class="org__stationen">
+            <li class="station" data-station="1">
+              <h3 class="station__titel">App on phone, tablet and PC</h3>
+              <p class="station__tut">The operator enters only the website address, picks the checks and starts the remote audit. Open audit requests from the CRM are listed below the “Prüfen” (audit) button; a request with a website fills in the address field.</p>
+              <p class="station__ort">Cloudflare Pages</p>
+              <ul class="station__skills" aria-label="Skills">
+                <li>Installable web app (Progressive Web App)</li>
+                <li>Preact and TypeScript</li>
+                <li>Charts with Chart.js</li>
+                <li>Open requests: crm.open_audit_requests</li>
+              </ul>
+            </li>
+            <li class="station" data-station="2">
+              <h3 class="station__titel">Queue in Supabase</h3>
+              <p class="station__tut">The order waits as a job in the database. When a step fails, the server retries it up to three times.</p>
+              <p class="station__ort">Supabase, hosted in Frankfurt</p>
+              <ul class="station__skills" aria-label="Skills">
+                <li>PostgreSQL with migrations</li>
+                <li>Row level security</li>
+                <li>File storage for raw data and reports</li>
+              </ul>
+            </li>
+            <li class="station" data-station="3">
+              <h3 class="station__titel">Collector on the server</h3>
+              <p class="station__tut">Identifies business, city and industry by itself and fetches the website, load time, Google profile, search positions, directories and answers from AI assistants.</p>
+              <p class="station__ort">Docker container on the RepoCity server</p>
+              <ul class="station__skills" aria-label="Skills">
+                <li>Python</li>
+                <li>Browser automation with Playwright</li>
+                <li>httpx and BeautifulSoup</li>
+              </ul>
+            </li>
+            <li class="station" data-station="4">
+              <h3 class="station__titel">Scoring by fixed rules</h3>
+              <p class="station__tut">108 checks from a single check catalogue. Code computes the points, not a language model.</p>
+              <p class="station__ort">in the collector container</p>
+              <ul class="station__skills" aria-label="Skills">
+                <li>Check catalogue as a YAML file</li>
+                <li>Data models with Pydantic</li>
+                <li>Tests with pytest</li>
+              </ul>
+            </li>
+            <li class="station" data-station="5">
+              <h3 class="station__titel">Evaluation with Claude Code</h3>
+              <p class="station__tut">Writes a finding with a fix for every open point, plus the report texts. It may only read and write two files; the result is validated against a fixed data format.</p>
+              <p class="station__ort">in the collector container, on the Claude subscription</p>
+              <ul class="station__skills" aria-label="Skills">
+                <li>Headless Claude Code with the skill /auswerten</li>
+                <li>Permissions cut to the minimum</li>
+                <li>Output validated against a schema</li>
+              </ul>
+            </li>
+            <li class="station" data-station="6">
+              <h3 class="station__titel">Report as PDF</h3>
+              <p class="station__tut">Print-ready report with charts and a forecast as a range; for the monthly audit a before-after report.</p>
+              <p class="station__ort">in the collector container</p>
+              <ul class="station__skills" aria-label="Skills">
+                <li>PDF with WeasyPrint</li>
+                <li>Templates with Jinja2</li>
+                <li>Charts with Matplotlib</li>
+              </ul>
+            </li>
+            <li class="station" data-station="7">
+              <h3 class="station__titel">Quote on site</h3>
+              <p class="station__tut">Positions from the open points of the audit, products and prices from the CRM. Audit report and quote leave as one PDF through the CRM.</p>
+              <p class="station__ort">App, CRM database</p>
+              <ul class="station__skills" aria-label="Skills">
+                <li>CRM database functions instead of a separate interface</li>
+                <li>Quote and sending: crm.create_quote, crm.send_quote</li>
+              </ul>
+            </li>
+            <li class="station" data-station="8">
+              <h3 class="station__titel">CRM and Cockpit</h3>
+              <p class="station__tut">Acceptance creates the order. Claude Code drafts changes to website and Google profile, the collector applies the approved ones. Then the CRM completes the order and sends the invoice.</p>
+              <p class="station__ort">RepoCity CRM and Cockpit</p>
+              <ul class="station__skills" aria-label="Skills">
+                <li>Claude Code with the skill /optimieren</li>
+                <li>Database trigger reports “order finished”</li>
+                <li>Claude Code reads reply mails without any tools</li>
+              </ul>
+            </li>
+          </ol>
+          <p class="org__schleife"><strong>Audit request</strong> An audit request in the CRM names the business, the meeting type (on site, phone or video) and a free hour from Daniel's calendar. In the Cockpit it arrives with “Bestätigen” (confirm), “Anderen Termin vorschlagen” (propose another time) and “Prüfen” (audit); “Prüfen” puts the remote audit of its website into the queue.</p>
+          <p class="org__schleife" data-schleife><strong>Monthly audit</strong> Once a month the CRM marks a subscription due. One tap in the Cockpit puts the order back into the queue, and the report then shows before and after.</p>
+        </div>
+        <p class="org__band">Every change to the code runs through the same checks with GitHub Actions: formatting and style with ruff, types with mypy, tests with pytest, plus check, tests and build of the app.</p>
+      </div>
+    </section>
+  </div>
+  <div class="reiter-tafel" id="benchmarks" data-reiter-tafel role="tabpanel" aria-labelledby="reiter-benchmarks">
+    <section class="section section--tafel" aria-labelledby="mess-titel">
+      <div class="wrap">
+        <h2 id="mess-titel">What is measured on RadarAuditor</h2>
+        <p class="section__intro">There has been no run against a real customer yet. What is measured is therefore what the check catalogue and the code contain: how much can be checked without access, how the score is weighted, where the data comes from and whether every test passes.</p>
+
+        <figure class="panel messung messung--einheiten">
+          <figcaption><h3>97 of 108 checks run without a password and without a paid data service</h3></figcaption>
+          <div class="einheiten" role="img" aria-label="108 checks as squares: 97 measurable from the outside, 7 only with a paid data service, 4 only with customer access.">
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--aussen"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--bezahlt"></span>
+            <span class="einheit einheit--zugang"></span>
+            <span class="einheit einheit--zugang"></span>
+            <span class="einheit einheit--zugang"></span>
+            <span class="einheit einheit--zugang"></span>
+          </div>
+          <ul class="legende">
+            <li><span class="einheit einheit--aussen" aria-hidden="true"></span>97 from the outside, no access</li>
+            <li><span class="einheit einheit--bezahlt" aria-hidden="true"></span>7 only with a paid data service</li>
+            <li><span class="einheit einheit--zugang" aria-hidden="true"></span>4 only with customer access</li>
+          </ul>
+          <p class="messung__satz">The first audit needs nothing from the business. What cannot be measured without access reads “not measurable” in the report and does not count towards the score.</p>
+        </figure>
+
+        <div class="messung-paar">
+          <figure class="panel messung">
+            <figcaption><h3>How the score is made up</h3></figcaption>
+            <p class="messung__satz">The Google Business Profile weighs most: 14 of 100 points. The five areas of the business’s own website add up to 44.</p>
+            <ol class="balken-liste" aria-label="Weight of the thirteen areas in the score">
+            <li class="balken"><span class="balken__name">Google Business Profile</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="100.00" height="10"/></svg><span class="balken__wert">14<span class="visually-hidden"> of 100</span></span></li>
+            <li class="balken"><span class="balken__name">Content and service pages</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="85.71" height="10"/></svg><span class="balken__wert">12<span class="visually-hidden"> of 100</span></span></li>
+            <li class="balken"><span class="balken__name">Page structure</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="71.43" height="10"/></svg><span class="balken__wert">10<span class="visually-hidden"> of 100</span></span></li>
+            <li class="balken"><span class="balken__name">Ranking on Google and Bing</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="71.43" height="10"/></svg><span class="balken__wert">10<span class="visually-hidden"> of 100</span></span></li>
+            <li class="balken"><span class="balken__name">Website technology</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="64.29" height="10"/></svg><span class="balken__wert">9<span class="visually-hidden"> of 100</span></span></li>
+            <li class="balken"><span class="balken__name">Reviews</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="57.14" height="10"/></svg><span class="balken__wert">8<span class="visually-hidden"> of 100</span></span></li>
+            <li class="balken"><span class="balken__name">Hidden data for Google and AI</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="50.00" height="10"/></svg><span class="balken__wert">7<span class="visually-hidden"> of 100</span></span></li>
+            <li class="balken"><span class="balken__name">Directories and listings</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="50.00" height="10"/></svg><span class="balken__wert">7<span class="visually-hidden"> of 100</span></span></li>
+            <li class="balken"><span class="balken__name">Company data on the website</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="42.86" height="10"/></svg><span class="balken__wert">6<span class="visually-hidden"> of 100</span></span></li>
+            <li class="balken"><span class="balken__name">Recommendations through links</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="42.86" height="10"/></svg><span class="balken__wert">6<span class="visually-hidden"> of 100</span></span></li>
+            <li class="balken"><span class="balken__name">Visibility in AI assistants</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="35.71" height="10"/></svg><span class="balken__wert">5<span class="visually-hidden"> of 100</span></span></li>
+            <li class="balken"><span class="balken__name">Legal and trust</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="28.57" height="10"/></svg><span class="balken__wert">4<span class="visually-hidden"> of 100</span></span></li>
+            <li class="balken"><span class="balken__name">Tools on the website</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="14.29" height="10"/></svg><span class="balken__wert">2<span class="visually-hidden"> of 100</span></span></li>
+            </ol>
+            <details class="tabelle">
+              <summary>Show as table</summary>
+              <table>
+                <thead><tr><th scope="col">Area</th><th scope="col">Weight of 100</th></tr></thead>
+                <tbody>
+                <tr><th scope="row">Google Business Profile</th><td>14</td></tr>
+                <tr><th scope="row">Content and service pages</th><td>12</td></tr>
+                <tr><th scope="row">Page structure</th><td>10</td></tr>
+                <tr><th scope="row">Ranking on Google and Bing</th><td>10</td></tr>
+                <tr><th scope="row">Website technology</th><td>9</td></tr>
+                <tr><th scope="row">Reviews</th><td>8</td></tr>
+                <tr><th scope="row">Hidden data for Google and AI</th><td>7</td></tr>
+                <tr><th scope="row">Directories and listings</th><td>7</td></tr>
+                <tr><th scope="row">Company data on the website</th><td>6</td></tr>
+                <tr><th scope="row">Recommendations through links</th><td>6</td></tr>
+                <tr><th scope="row">Visibility in AI assistants</th><td>5</td></tr>
+                <tr><th scope="row">Legal and trust</th><td>4</td></tr>
+                <tr><th scope="row">Tools on the website</th><td>2</td></tr>
+                </tbody>
+              </table>
+            </details>
+          </figure>
+          <figure class="panel messung">
+            <figcaption><h3>Where the data for the checks comes from</h3></figcaption>
+            <p class="messung__satz">Almost half of the checks read the website itself: 48 of 108.</p>
+            <ol class="balken-liste" aria-label="Number of checks per data source">
+            <li class="balken"><span class="balken__name">Website</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="100.00" height="10"/></svg><span class="balken__wert">48<span class="visually-hidden"> checks</span></span></li>
+            <li class="balken"><span class="balken__name">Google profile and map</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="50.00" height="10"/></svg><span class="balken__wert">24<span class="visually-hidden"> checks</span></span></li>
+            <li class="balken"><span class="balken__name">Google and Bing search</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="20.83" height="10"/></svg><span class="balken__wert">10<span class="visually-hidden"> checks</span></span></li>
+            <li class="balken"><span class="balken__name">Directories</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="16.67" height="10"/></svg><span class="balken__wert">8<span class="visually-hidden"> checks</span></span></li>
+            <li class="balken"><span class="balken__name">Paid data service</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="14.58" height="10"/></svg><span class="balken__wert">7<span class="visually-hidden"> checks</span></span></li>
+            <li class="balken"><span class="balken__name">AI assistants</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="8.33" height="10"/></svg><span class="balken__wert">4<span class="visually-hidden"> checks</span></span></li>
+            <li class="balken"><span class="balken__name">Customer access</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="8.33" height="10"/></svg><span class="balken__wert">4<span class="visually-hidden"> checks</span></span></li>
+            <li class="balken"><span class="balken__name">Load-time test (PageSpeed Insights)</span><svg class="balken__spur" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true" focusable="false"><rect class="balken__grund" width="100" height="10"/><rect class="balken__fuellung" width="6.25" height="10"/></svg><span class="balken__wert">3<span class="visually-hidden"> checks</span></span></li>
+            </ol>
+            <details class="tabelle">
+              <summary>Show as table</summary>
+              <table>
+                <thead><tr><th scope="col">Source</th><th scope="col">Checks</th></tr></thead>
+                <tbody>
+                <tr><th scope="row">Website</th><td>48</td></tr>
+                <tr><th scope="row">Google profile and map</th><td>24</td></tr>
+                <tr><th scope="row">Google and Bing search</th><td>10</td></tr>
+                <tr><th scope="row">Directories</th><td>8</td></tr>
+                <tr><th scope="row">Paid data service</th><td>7</td></tr>
+                <tr><th scope="row">AI assistants</th><td>4</td></tr>
+                <tr><th scope="row">Customer access</th><td>4</td></tr>
+                <tr><th scope="row">Load-time test (PageSpeed Insights)</th><td>3</td></tr>
+                </tbody>
+              </table>
+            </details>
+          </figure>
+        </div>
+        <p class="quelle">Source: <code>config/pruefkatalog.yaml</code>, fields <code>weight</code>, <code>source</code>, <code>requires_paid</code> and <code>requires_access</code>.</p>
+
+        <h3 class="messung__zwischen">Check runs on 30 October 2026</h3>
+        <p class="messung__satz messung__satz--frei">The same checks run automatically on every push. On 30 October 2026 all of them passed.</p>
+        <div class="kacheln">
+          <div class="kachel">
+            <p class="kachel__zahl">1804</p>
+            <p class="kachel__was"><span class="kachel__ok" aria-hidden="true"></span>Python tests passed</p>
+            <p class="kachel__wie">with PostgreSQL for the database migrations</p>
+          </div>
+          <div class="kachel">
+            <p class="kachel__zahl">365</p>
+            <p class="kachel__was"><span class="kachel__ok" aria-hidden="true"></span>app tests passed</p>
+            <p class="kachel__wie">in 43 test files</p>
+          </div>
+          <div class="kachel">
+            <p class="kachel__zahl">83</p>
+            <p class="kachel__was"><span class="kachel__ok" aria-hidden="true"></span>source files without type errors</p>
+            <p class="kachel__wie">mypy in strict mode</p>
+          </div>
+          <div class="kachel">
+            <p class="kachel__zahl">0</p>
+            <p class="kachel__was"><span class="kachel__ok" aria-hidden="true"></span>style and format findings</p>
+            <p class="kachel__wie">ruff check and ruff format</p>
+          </div>
+        </div>
+        <p class="quelle">Source: <code>Dokumentation/BUILD_REPORT.md</code>, section of the latest check runs.</p>
+      </div>
+    </section>
+  </div>
+  <div class="reiter-tafel" id="praesentation" data-reiter-tafel role="tabpanel" aria-labelledby="reiter-praesentation">
+    <section class="section section--tafel" aria-labelledby="film-titel">
+      <div class="wrap">
+        <h2 id="film-titel">RadarAuditor in eight scenes</h2>
+        <div class="film" data-film>
+          <div class="film__bild">
+            <section class="szene szene--frage" aria-roledescription="scene" aria-label="1 of 8: The question">
+              <div class="szene__motiv" aria-hidden="true">
+                <div class="radar"><span class="radar__strahl"></span><span class="radar__punkt"></span><span class="radar__punkt"></span><span class="radar__punkt radar__punkt--gold"></span></div>
+                <p class="szene__marke">RadarAuditor</p>
+              </div>
+              <p class="szene__text">Customers look for a business nearby. Will they find yours?</p>
+            </section>
+            <section class="szene szene--eingabe" aria-roledescription="scene" aria-label="2 of 8: Input">
+              <div class="szene__motiv" aria-hidden="true">
+                <div class="handy">
+                  <p class="handy__kopf">Check</p>
+                  <p class="handy__feld"><span class="handy__tippen">dachdeckerei-muster.de</span></p>
+                  <p class="handy__knopf">Start audit</p>
+                  <ul class="handy__schritte"><li>Waiting</li><li>Collecting</li><li>Scoring</li><li>Evaluating</li><li>Done</li></ul>
+                </div>
+              </div>
+              <p class="szene__text">A website address is enough. The server works out business, city and industry by itself.</p>
+            </section>
+            <section class="szene szene--sammeln" aria-roledescription="scene" aria-label="3 of 8: Collecting">
+              <div class="szene__motiv" aria-hidden="true">
+                <div class="nabe">
+                  <p class="nabe__mitte">Collector</p>
+                  <span class="nabe__quelle">Website</span>
+                  <span class="nabe__quelle">Load time</span>
+                  <span class="nabe__quelle">Google profile</span>
+                  <span class="nabe__quelle">Search</span>
+                  <span class="nabe__quelle">Directories</span>
+                  <span class="nabe__quelle">AI assistants</span>
+                </div>
+              </div>
+              <p class="szene__text">The collector fetches the data from the web the way a customer sees it.</p>
+            </section>
+            <section class="szene szene--bewerten" aria-roledescription="scene" aria-label="4 of 8: Scoring">
+              <div class="szene__motiv" aria-hidden="true">
+                <div class="tacho">
+                  <svg viewBox="0 0 120 120"><circle class="tacho__spur" cx="60" cy="60" r="50"/><circle class="tacho__wert" cx="60" cy="60" r="50"/></svg>
+                </div>
+                <ul class="ampeln"><li class="ampel ampel--gut"></li><li class="ampel ampel--mittel"></li><li class="ampel ampel--schlecht"></li><li class="ampel ampel--gut"></li></ul>
+              </div>
+              <p class="szene__text">Fixed rules award the points. No language model does the maths.</p>
+            </section>
+            <section class="szene szene--schreiben" aria-roledescription="scene" aria-label="5 of 8: Writing">
+              <div class="szene__motiv" aria-hidden="true">
+                <div class="befund">
+                  <p class="befund__titel">Google finds no company data on the home page</p>
+                  <span class="befund__zeile"></span>
+                  <span class="befund__zeile"></span>
+                  <span class="befund__zeile"></span>
+                  <p class="befund__code">&lt;script type="application/ld+json"&gt;</p>
+                  <p class="befund__kopieren">Copy</p>
+                </div>
+              </div>
+              <p class="szene__text">Claude Code writes every finding in plain language, with a ready fix to copy.</p>
+            </section>
+            <section class="szene szene--bericht" aria-roledescription="scene" aria-label="6 of 8: Report">
+              <div class="szene__motiv" aria-hidden="true">
+                <div class="stapel">
+                  <span class="blatt"></span>
+                  <span class="blatt"></span>
+                  <span class="blatt blatt--vorn"><span class="blatt__kopf"></span><span class="blatt__saeulen"><i></i><i></i><i></i><i></i></span><span class="blatt__zeile"></span><span class="blatt__zeile blatt__zeile--kurz"></span></span>
+                </div>
+              </div>
+              <p class="szene__text">Report and quote come to the customer meeting as one PDF.</p>
+            </section>
+            <section class="szene szene--crm" aria-roledescription="scene" aria-label="7 of 8: Hand-over">
+              <div class="szene__motiv" aria-hidden="true">
+                <ul class="kreis">
+                  <li>Order</li>
+                  <li>Changes</li>
+                  <li>Invoice</li>
+                  <li>Monthly audit</li>
+                </ul>
+              </div>
+              <p class="szene__text">The CRM takes over: order, invoice and a fresh audit every month.</p>
+            </section>
+            <section class="szene szene--werkzeuge" aria-roledescription="scene" aria-label="8 of 8: Built with">
+              <div class="szene__motiv">
+                <ul class="werkzeuge" aria-label="Skills">
+                  <li>Python</li>
+                  <li>Browser automation with Playwright</li>
+                  <li>Docker</li>
+                  <li>Supabase and PostgreSQL</li>
+                  <li>Row level security</li>
+                  <li>Claude Code with its own skills</li>
+                  <li>Output validated against a schema</li>
+                  <li>Preact and TypeScript</li>
+                  <li>Installable web app</li>
+                  <li>PDF with WeasyPrint</li>
+                  <li>Tests with pytest</li>
+                  <li>GitHub Actions</li>
+                </ul>
+              </div>
+              <p class="szene__text">Built as a product: a server, an app and Claude Code, joined by one database.</p>
+            </section>
+          </div>
+          <div class="film__steuerung">
+            <button type="button" class="film__knopf" aria-pressed="false" data-abspielen="Play" data-anhalten="Pause"><span class="film__knopf-zeichen" aria-hidden="true"></span><span class="film__knopf-text">Play</span></button>
+            <ol class="film__kapitel" aria-label="Chapters">
+              <li><button type="button" data-kapitel><span class="kapitel__name">The question</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Input</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Collecting</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Scoring</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Writing</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Report</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Hand-over</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Built with</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__row">
+    <div class="footer__brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true" focusable="false"><use href="#mark"/></svg>
+      <span>RepoCity · AI for everyone · Münster</span>
+    </div>
+    <nav aria-label="More pages">
+      <ul>
+        <li><a href="https://speedofthespirit.dev/">Main site</a></li>
+        <li><a href="https://www.linkedin.com/in/danielhuette">LinkedIn</a></li>
+        <li><a href="https://github.com/DanielHuette">GitHub</a></li>
+        <li><a href="https://speedofthespirit.dev/legal-notice/">Legal notice</a></li>
+        <li><a href="https://speedofthespirit.dev/privacy/">Privacy</a></li>
+      </ul>
+    </nav>
+    <nav class="lang" aria-label="Choose language">
+      <a href="/" lang="de" hreflang="de">DE</a>
+      <span aria-current="true" lang="en">EN</span>
+    </nav>
+  </div>
+</footer>
+<nav class="dock" aria-label="Views of the project page">
+  <div class="dock__leiste" role="tablist" aria-label="Views of the project page">
+    <a class="dock__reiter" role="tab" id="reiter-projekt" href="#projekt" data-reiter="projekt" aria-controls="projekt" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8.5"/><path d="M12 12 18 6"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg><span>Project</span></a>
+    <a class="dock__reiter" role="tab" id="reiter-organigramm" href="#organigramm" data-reiter="organigramm" aria-controls="organigramm" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="3.5" width="7" height="5" rx="1.5"/><rect x="14" y="15.5" width="7" height="5" rx="1.5"/><path d="M6.5 8.5v5.5a2 2 0 0 0 2 2H14"/><path d="M17.5 15.5V10a2 2 0 0 0-2-2H10"/></svg><span>Org chart</span></a>
+    <a class="dock__reiter" role="tab" id="reiter-benchmarks" href="#benchmarks" data-reiter="benchmarks" aria-controls="benchmarks" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20h16"/><path d="M7 16v-5"/><path d="M12 16V5"/><path d="M17 16v-8"/></svg><span>Benchmarks</span></a>
+    <a class="dock__reiter" role="tab" id="reiter-praesentation" href="#praesentation" data-reiter="praesentation" aria-controls="praesentation" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="2.5" y="4.5" width="19" height="13" rx="2.5"/><path d="m10 8.5 5 2.5-5 2.5z" fill="currentColor"/><path d="M8 21h8"/></svg><span>Presentation</span></a>
+  </div>
+</nav>
+</body>
+</html>

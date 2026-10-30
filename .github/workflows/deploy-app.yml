@@ -1,0 +1,38 @@
+# Publishes the field app to Cloudflare Pages (app.radarauditor.speedofthespirit.dev), only on
+# purpose: a push to the branch app-veroeffentlichen, which is pushed once the owner has approved a release.
+# Pushes to main build and test in ci.yml but never publish the app.
+name: Deploy app
+
+on:
+  push:
+    branches: [app-veroeffentlichen]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-app
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults: { run: { working-directory: app } }
+    env:
+      # Project URL and anon key are public by design: they ship in the browser bundle, and row level
+      # security protects the data.
+      VITE_SUPABASE_URL: https://yizvntdwdajlgcbjcves.supabase.co
+      VITE_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlpenZudGR3ZGFqbGdjYmpjdmVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIxNTc4NzksImV4cCI6MjEwNzczMzg3OX0.Gpk-QXpo1CaxyOogurryFX1Nc7_cxORbGASXS9iaBJc
+      VITE_CRM_ORIGIN: https://crm.speedofthespirit.dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run build
+      - run: npx --yes wrangler@3 pages deploy dist --project-name radarauditor-app --branch main --commit-dirty=true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

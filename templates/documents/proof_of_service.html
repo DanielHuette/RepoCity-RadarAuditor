@@ -1,0 +1,23 @@
+{# Document template: proof_of_service listing the activities of one month. Placeholders are filled by documents/builder.py; wording to be reviewed by a lawyer once. #}
+{% extends "_layout.html" %}
+{% block title %}Leistungsnachweis {{ document.period or document.month }}{% endblock %}
+{% block content %}
+<h1>Leistungsnachweis</h1>
+<table class="meta">
+  {% if document.period %}
+  <tr><td>Zeitraum</td><td><strong>{{ document.period }}</strong></td></tr>
+  {% else %}
+  <tr><td>Monat</td><td><strong>{{ document.month[5:] }}/{{ document.month[:4] }}</strong></td></tr>
+  {% endif %}
+  <tr><td>Datum</td><td>{{ document.issued_on|date }}</td></tr>
+</table>
+<p>Im genannten {{ "Zeitraum" if document.period else "Monat" }} habe ich für Sie folgende Leistungen erbracht:</p>
+<table>
+  <thead><tr><th>Nr.</th><th>Tätigkeit</th></tr></thead>
+  <tbody>
+  {% for activity in document.activities %}
+    <tr><td>{{ loop.index }}</td><td>{{ activity }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

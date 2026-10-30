@@ -1,0 +1,25 @@
+{# Positions with net, VAT and gross; small businesses show the § 19 UStG sentence instead of VAT. #}
+<table>
+  <thead>
+    <tr><th>Pos.</th><th>Leistung</th><th class="number">Menge</th><th class="number">Einzelpreis netto</th><th class="number">Gesamt netto</th></tr>
+  </thead>
+  <tbody>
+  {% for position in document.positions %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td>{{ position.description }}</td>
+      <td class="number">{{ position.quantity|number(0 if position.quantity % 1 == 0 else 2) }}</td>
+      <td class="number">{{ position.unit_net|currency }}</td>
+      <td class="number">{{ position.net|currency }}</td>
+    </tr>
+  {% endfor %}
+    <tr class="sum"><td colspan="4">Summe netto</td><td class="number">{{ totals.net|currency }}</td></tr>
+    {% if document.small_business %}
+    <tr class="sum gross"><td colspan="4">Gesamtbetrag</td><td class="number">{{ totals.gross|currency }}</td></tr>
+    {% else %}
+    <tr class="sum"><td colspan="4">Umsatzsteuer {{ totals.vat_rate|number(0) }} %</td><td class="number">{{ totals.vat|currency }}</td></tr>
+    <tr class="sum gross"><td colspan="4">Gesamtbetrag brutto</td><td class="number">{{ totals.gross|currency }}</td></tr>
+    {% endif %}
+  </tbody>
+</table>
+{% if document.small_business %}<p>Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.</p>{% endif %}

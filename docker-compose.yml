@@ -1,0 +1,51 @@
+# Worker on the server; steps in Dokumentation/SERVER.md.
+#   docker compose up -d                                   start or update the worker
+#   docker compose exec worker claude auth login           one-time Claude Code login
+#   docker compose stop worker && docker compose --profile login run --rm --service-ports login
+#                                                          one-time browser logins, then
+#   docker compose start worker
+name: radarauditor
+
+x-worker: &worker
+  build: .
+  image: radarauditor-worker:latest
+  env_file: .env
+  # The paths inside the container win over the PC paths a copied .env may carry.
+  environment:
+    BROWSER_PROFILE_DIR: /data/browser-profile
+    RADAR_WORK_DIR: /data/work
+    ANALYSIS_PROJECT_DIR: /opt/radarauditor
+    CLAUDE_CONFIG_DIR: /home/radar/.claude
+  volumes:
+    - browser-profile:/data/browser-profile
+    - claude-login:/home/radar/.claude
+    - work:/data/work
+  # The speech service of the phone assistant on the same server, for spoken Cockpit requests
+  # (SPEECH_URL=http://host.docker.internal:8090 in .env).
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+  # Chromium keeps the profile lock under the host name; both services share it so a lock left
+  # behind by one is recognised as stale by the other.
+  hostname: radarauditor
+  shm_size: 1gb
+
+services:
+  worker:
+    <<: *worker
+    restart: always
+
+  login:
+    <<: *worker
+    profiles: [login]
+    command: ["browser-login"]
+    restart: "no"
+    # noVNC of the login browser; bound to the loopback address, reached only through an SSH tunnel.
+    ports:
+      - "127.0.0.1:6080:6080"
+    healthcheck:
+      disable: true
+
+volumes:
+  browser-profile:
+  claude-login:
+  work:

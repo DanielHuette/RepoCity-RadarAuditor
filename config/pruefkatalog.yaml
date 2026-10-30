@@ -1,0 +1,1069 @@
+# Prüfkatalog RadarAuditor. Einzige Quelle für Prüfungen, Gewichte, Schwellwerte und Kundenwortlaut.
+# Gewichte der Bereiche summieren auf 100. Prüfungen mit requires_paid oder requires_access werden
+# ohne Bezahldienst bzw. ohne Kundenzugang nicht gewertet; ihr Gewicht verteilt sich im Bereich.
+# source: crawler | pagespeed | places | serp | directories | assistants | paid | access | manual
+# measured_by: woher der Messwert kommt, wo die Quelle nicht schon aus source folgt.
+# paid = DataForSEO, in den Einstellungen (Quelle dataforseo) standardmäßig an, mit Monatslimit;
+# ist das Limit erreicht, stehen diese Prüfungen auf „nicht messbar“ mit „Monatslimit erreicht“.
+
+areas:
+  - id: a
+    name: 'Technik der Website'
+    weight: 9
+    checks:
+      - id: a1
+        name: 'Verschlüsselte Seite unter einer einzigen Adresse'
+        why: 'Ohne das Schloss im Browser warnt Google deine Besucher, und mehrere Adressen teilen deine Sichtbarkeit auf.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Ist deine Seite verschlüsselt und unter genau einer Adresse erreichbar?
+        customer_impact: Ohne Schloss im Browser warnt Google Besucher; mehrere Adressen teilen deine Sichtbarkeit auf.
+      - id: a2
+        name: 'Seite lädt am Handy in unter 2,5 Sekunden'
+        why: 'Jede Sekunde Warten kostet Anrufe, weil Besucher vorher wegklicken.'
+        source: pagespeed
+        requires_paid: false
+        requires_access: false
+        thresholds: {lcp_ms_max: 2500, cls_max: 0.1, inp_ms_max: 200, mobile_score_min: 70}
+        customer_question: Lädt deine Seite auf dem Handy in unter 2,5 Sekunden?
+        customer_impact: Jede Sekunde mehr kostet Anrufe, weil Besucher abspringen; Google stuft langsame Seiten zurück.
+      - id: a3
+        name: 'Seite am Handy ohne Zoomen bedienbar'
+        why: 'Die meisten Kunden suchen am Handy und geben auf, wenn sie zoomen müssen.'
+        source: pagespeed
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Ist deine Seite auf dem Handy bedienbar, ohne zu zoomen?
+        customer_impact: Die meisten Kunden suchen am Handy und geben auf, wenn sie zoomen müssen.
+      - id: a4
+        name: 'Google findet alle deine Seiten'
+        why: 'Eine Seite, die Google nicht kennt, bringt dir keinen einzigen Kunden.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Findet Google alle deine Seiten?
+        customer_impact: Seiten, die Google nicht kennt, bringen keine Kunden.
+      - id: a5
+        name: 'Keine toten Links'
+        why: 'Ein Link ins Leere wirkt ungepflegt, auf Besucher wie auf Google.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {max_broken: 0, max_redirect_hops: 2}
+        customer_question: Führen alle Links auf deiner Seite zum Ziel?
+        customer_impact: Tote Links wirken ungepflegt, auf Besucher und auf Google.
+      - id: a6
+        name: 'Jede Seite gibt es für Google nur einmal'
+        why: 'Gibt es eine Seite in mehreren Fassungen, machen sie sich bei Google gegenseitig Konkurrenz.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Weiß Google, welche Fassung einer Seite die richtige ist?
+        customer_impact: Ohne diese Angabe konkurrieren Kopien deiner Seite miteinander.
+      - id: a7
+        name: 'Bilder klein und beschrieben'
+        why: 'Große Bilder bremsen die Seite, und unbeschriebene Bilder findet die Bildersuche nicht.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {max_image_kb: 300, max_missing_alt: 0}
+        customer_question: Sind deine Bilder klein genug und beschrieben?
+        customer_impact: Große Bilder bremsen die Seite; fehlende Beschreibungen kosten Sichtbarkeit in der Bildersuche.
+      - id: a8
+        name: 'Text auch ohne Zusatzprogramme lesbar'
+        why: 'Was erst ein Programm im Browser auf die Seite holt, übersehen Google und KI-Assistenten oft.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Kann Google deinen Text lesen, ohne die Seite auszuführen?
+        customer_impact: Was nur per Skript erscheint, übersehen Suchmaschinen und KI-Assistenten oft.
+      - id: a9
+        name: 'Seite als deutsch gekennzeichnet'
+        why: 'Sonst ordnet Google deine Seite womöglich dem falschen Land zu.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Ist deine Seite als deutsch gekennzeichnet?
+        customer_impact: Google ordnet die Seite sonst dem falschen Sprachraum zu.
+      - id: a10
+        name: 'Keine Sicherheitswarnungen im Browser'
+        why: 'Eine Warnung reicht, damit ein Kunde die Seite sofort wieder schließt.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Ist deine Seite sauber abgesichert?
+        customer_impact: Browser-Warnungen schrecken Kunden ab.
+
+  - id: b
+    name: 'Aufbau der Seiten'
+    weight: 10
+    checks:
+      - id: b1
+        name: 'Jede Seite nennt oben Leistung und Ort'
+        why: 'Google liest die Hauptüberschrift als Thema der Seite, und der Kunde weiß sofort, dass er richtig ist.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Sagt die Überschrift jeder Seite, was du wo anbietest?
+        customer_impact: Google liest die Hauptüberschrift als Thema der Seite.
+      - id: b2
+        name: 'Titel bei Google nennt, wonach Kunden suchen'
+        why: 'Der Titel ist die blaue Zeile im Suchergebnis und entscheidet, ob jemand klickt.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {min_chars: 30, max_chars: 60}
+        customer_question: Steht in deinem Seitentitel, wonach Kunden suchen?
+        customer_impact: Der Titel ist die blaue Zeile bei Google; er entscheidet, ob geklickt wird.
+      - id: b3
+        name: 'Eigener Vorschautext bei Google je Seite'
+        why: 'Fehlt er, nimmt Google irgendeinen Satz von der Seite, meist einen unpassenden.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {min_chars: 70, max_chars: 155}
+        customer_question: Hat jede Seite einen eigenen Vorschautext für Google?
+        customer_impact: Ohne Vorschautext schreibt Google selbst etwas, meist Unpassendes.
+      - id: b4
+        name: 'Überschriften sauber gegliedert'
+        why: 'Eine klare Gliederung hilft Google und KI-Assistenten zu verstehen, was du anbietest.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Sind deine Überschriften sauber gegliedert?
+        customer_impact: Eine klare Gliederung hilft Google und KI-Assistenten, Inhalte zuzuordnen.
+      - id: b5
+        name: 'Jede Leistung in höchstens drei Klicks erreichbar'
+        why: 'Was tief versteckt ist, finden weder Kunden noch Google.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {max_depth: 3}
+        customer_question: Sind deine Leistungen von der Startseite aus schnell erreichbar?
+        customer_impact: Versteckte Seiten werden seltener gefunden, von Kunden und von Google.
+      - id: b6
+        name: 'Verständliche Seitenadressen'
+        why: '„/dachsanierung-muenster“ wird öfter geklickt als „/seite-17“.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Sagt die Internetadresse einer Seite, worum es geht?
+        customer_impact: '"/dachsanierung-muenster" wird öfter geklickt als "/seite-17".'
+      - id: b7
+        name: 'Geteilte Links zeigen Bild und Titel'
+        why: 'Ein Link ohne Bild wird in WhatsApp und Co. kaum angeklickt.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Sieht ein geteilter Link zu deiner Seite gut aus?
+        customer_impact: Ein Link ohne Bild und Titel wird in WhatsApp seltener angeklickt.
+      - id: b8
+        name: 'Kein doppelter Text auf mehreren Seiten'
+        why: 'Kopierte Seiten verdrängen sich bei Google gegenseitig.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {max_similarity: 0.8}
+        customer_question: Hat jede Seite eigenen Text?
+        customer_impact: Kopierte Seiten verdrängen sich gegenseitig bei Google.
+      - id: b9
+        name: 'Seite zeigt, wo man gerade ist'
+        why: 'Google zeigt diesen Pfad im Suchergebnis an, das bringt zusätzliche Klicks.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Zeigt deine Seite, wo man sich gerade befindet?
+        customer_impact: Google zeigt diesen Pfad im Suchergebnis an; das bringt Klicks.
+      - id: b10
+        name: 'Hilfreiche Fehlerseite'
+        why: 'Wer auf einer toten Seite landet, findet zurück, statt zu gehen.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Landet ein Besucher auf einer toten Seite, findet er zurück?
+        customer_impact: Sonst ist der Besucher weg.
+
+  - id: c
+    name: 'Inhalte und Leistungsseiten'
+    weight: 12
+    checks:
+      - id: c1
+        name: 'Eigene Seite je Leistung'
+        why: 'Wer „Dachsanierung“ sucht, bekommt von Google die Seite, die nur davon handelt, nicht deine Sammelseite.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Hat jede deiner Leistungen eine eigene Seite?
+        customer_impact: Google zeigt für "Dachsanierung" die Seite, die nur davon handelt, nicht die Sammelseite.
+      - id: c2
+        name: 'Seite für jede gesuchte Leistung in deinem Ort'
+        why: 'Für jede gesuchte Leistung ohne eigene Seite landet der Kunde beim Wettbewerber.'
+        source: paid
+        requires_paid: true
+        requires_access: false
+        thresholds: {min_volume: 10}
+        measured_by: DataForSEO Google-Ads-Suchvolumen (Deutschland) je Suchbegriff plus Ort
+        customer_question: Gibt es für jede gesuchte Leistung in deinem Ort eine Seite?
+        customer_impact: Für jede fehlende Seite gehen Suchende zum Wettbewerber.
+      - id: c3
+        name: 'Leistungsseiten mit Ablauf, Dauer und Preisrahmen'
+        why: 'Kunden wollen wissen, was sie erwartet, und Google zeigt dünne Seiten weit hinten.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {min_words: 300}
+        customer_question: Beantwortet jede Leistungsseite Ablauf, Dauer und Preisrahmen?
+        customer_impact: Dünne Seiten ranken nicht und überzeugen nicht.
+      - id: c4
+        name: 'Die Suchwörter der Kunden stehen im Text'
+        why: 'Google findet nur, was auch dasteht.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {max_density: 0.02}
+        customer_question: Stehen die Wörter, nach denen Kunden suchen, im Text?
+        customer_impact: Google findet nur, was auch dasteht.
+      - id: c5
+        name: 'Häufige Kundenfragen beantwortet'
+        why: 'Genau diese Fragen stellen Kunden auch KI-Assistenten, und genannt wird, wer sie beantwortet.'
+        source: serp
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Beantwortet deine Seite die Fragen, die Google unter "Nutzer fragen auch" zeigt?
+        customer_impact: Diese Fragen stellen Kunden auch KI-Assistenten; wer sie beantwortet, wird genannt.
+      - id: c6
+        name: 'Stadtteile und Nachbarorte im Text'
+        why: 'Nur so findet dich auch das Umland.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Nennt dein Text Stadtteile und Nachbarorte?
+        customer_impact: Nur der Stadtname im Titel reicht nicht, um für das Umland gefunden zu werden.
+      - id: c7
+        name: 'Nichts Veraltetes auf der Seite'
+        why: 'Alte Jahreszahlen oder Preise wirken, als gäbe es den Betrieb nicht mehr.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Steht auf deiner Seite nichts Veraltetes?
+        customer_impact: Alte Jahreszahlen und Preise wirken wie ein geschlossener Laden.
+      - id: c8
+        name: 'Über-uns mit Namen, Fotos und Qualifikation'
+        why: 'Kunden kaufen bei Menschen, und Google bewertet sichtbare Erfahrung höher.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Zeigt deine Seite, wer dahinter steht?
+        customer_impact: Google bewertet Erfahrung und Vertrauenswürdigkeit; Kunden auch.
+      - id: c9
+        name: 'Kontakt mit einem Tippen'
+        why: 'Klickbares Telefon, Formular und Karte; jeder Umweg kostet Anfragen.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Kann ein Kunde dich mit einem Tipp anrufen?
+        customer_impact: Jeder Umweg kostet Anfragen.
+      - id: c10
+        name: 'Ratgeber zu Themen aus deiner Region'
+        why: 'Regionale Themen holen Besucher, um die sich sonst niemand kümmert.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {min_posts: 5}
+        customer_question: Hat deine Seite Beiträge zu Themen aus deiner Region?
+        customer_impact: Regionale Themen bringen Besucher, die sonst niemand bedient.
+      - id: c11
+        name: 'Keine fast leeren Seiten'
+        why: 'Leere Seiten ziehen die Bewertung deiner ganzen Website nach unten.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {min_words: 100}
+        customer_question: Gibt es Seiten mit fast keinem Inhalt?
+        customer_impact: Sie ziehen die Bewertung der ganzen Seite nach unten.
+      - id: c12
+        name: 'Suchbegriffe, bei denen der Wettbewerber gefunden wird und du nicht'
+        why: 'Das ist die Liste der Aufträge, die heute bei anderen landen.'
+        source: paid
+        requires_paid: true
+        requires_access: false
+        thresholds: {}
+        measured_by: DataForSEO Labs Domain-Schnittmenge (Google Deutschland) je Wettbewerber-Domain
+        customer_question: Für welche Begriffe wird dein Wettbewerber gefunden und du nicht?
+        customer_impact: Das ist die Liste der Aufträge, die heute woanders landen.
+
+  - id: d
+    name: 'Firmendaten auf der Website'
+    weight: 6
+    checks:
+      - id: d1
+        name: 'Name, Adresse, Telefon auf jeder Seite als Text'
+        why: 'Google gleicht sie mit deinem Profil ab, und als Bild kann Google sie nicht lesen.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Stehen deine Firmendaten auf jeder Seite als Text?
+        customer_impact: Google gleicht sie mit deinem Profil ab; als Bild sind sie unsichtbar.
+      - id: d2
+        name: 'Adresse und Telefon überall gleich geschrieben'
+        why: 'Schon kleine Abweichungen lassen Google zweifeln, ob es dieselbe Firma ist.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Sind Adresse und Telefon überall gleich geschrieben?
+        customer_impact: Abweichungen lassen Google zweifeln, ob es dieselbe Firma ist.
+      - id: d3
+        name: 'Öffnungszeiten auf Website und Google gleich'
+        why: 'Falsche Zeiten kosten Besuche und bringen schlechte Bewertungen.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Stimmen deine Öffnungszeiten auf Website und Google überein?
+        customer_impact: Falsche Zeiten kosten Besuche und bringen schlechte Bewertungen.
+      - id: d4
+        name: 'Eigene Seite je Standort'
+        why: 'Sonst wird nur einer deiner Standorte gefunden.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Hat jeder Standort eine eigene Seite?
+        customer_impact: Sonst wird nur ein Standort gefunden.
+      - id: d5
+        name: 'Website verlinkt dein Google-Profil'
+        why: 'Das verbindet beides für Google zu einem Betrieb.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Verlinkt deine Seite auf dein Google-Profil?
+        customer_impact: Das verbindet Website und Profil für Google.
+      - id: d6
+        name: 'Telefon und E-Mail antippbar'
+        why: 'Am Handy tippt niemand eine Nummer ab.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Sind Telefonnummer und E-Mail antippbar?
+        customer_impact: Am Handy wählt sonst niemand eine Nummer ab.
+
+  - id: e
+    name: 'Unsichtbare Angaben für Google und KI'
+    weight: 7
+    checks:
+      - id: e1
+        name: 'Firmendaten maschinenlesbar auf der Startseite'
+        why: 'Mit diesen unsichtbaren Angaben kennen Google und KI-Assistenten Adresse, Zeiten und Leistungen sicher, statt zu raten.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Erklärt deine Seite Google und KI-Assistenten in deren Sprache, was du bist?
+        customer_impact: Ohne diese unsichtbaren Angaben raten Maschinen; mit ihnen wissen sie Adresse, Zeiten, Leistungen.
+      - id: e2
+        name: 'Logo für Google hinterlegt'
+        why: 'Google zeigt es dann neben deinem Namen.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Ist dein Logo für Google hinterlegt?
+        customer_impact: Google zeigt es dann neben deinem Namen.
+      - id: e3
+        name: 'Leistungen und Einsatzgebiet maschinenlesbar'
+        why: 'KI-Assistenten empfehlen Betriebe, deren Leistungen sie sicher kennen.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Sind deine Leistungen maschinenlesbar hinterlegt?
+        customer_impact: KI-Assistenten nennen Betriebe, deren Leistungen sie sicher kennen.
+      - id: e4
+        name: 'Häufige Fragen für Google markiert'
+        why: 'Google kann sie dann direkt im Suchergebnis zeigen.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Sind deine häufigen Fragen für Google markiert?
+        customer_impact: Google kann sie direkt im Suchergebnis zeigen.
+      - id: e5
+        name: 'Seitenpfad maschinenlesbar'
+        why: 'Damit zeigt Google den Pfad im Suchergebnis an.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Ist der Seitenpfad maschinenlesbar?
+        customer_impact: Ergibt den Pfad im Suchergebnis.
+      - id: e6
+        name: 'Sterne nur bei echten Bewertungen'
+        why: 'Falsch markierte Sterne bestraft Google.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Werden Sterne nur dort markiert, wo echte Bewertungen stehen?
+        customer_impact: Falsch markierte Sterne bestraft Google.
+      - id: e7
+        name: 'Unsichtbare Angaben fehlerfrei'
+        why: 'Fehlerhafte Angaben ignoriert Google komplett.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Sind die unsichtbaren Angaben fehlerfrei?
+        customer_impact: Fehlerhafte Angaben ignoriert Google komplett.
+      - id: e8
+        name: 'Website verweist auf alle deine Profile'
+        why: 'So erkennen Maschinen, dass alle Einträge zu einem Betrieb gehören.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Verweist deine Seite auf alle deine Profile?
+        customer_impact: So erkennen Maschinen, dass alle Einträge zu einer Firma gehören.
+
+  - id: f
+    name: 'Google-Unternehmensprofil'
+    weight: 14
+    checks:
+      - id: f1
+        name: 'Profil gehört dir und ist bestätigt'
+        why: 'Ohne Profil keine Karte, und ohne Besitz kann jeder deine Angaben ändern.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Hast du dein Google-Profil in der Hand?
+        customer_impact: Ohne Profil keine Karte; ohne Besitz kann jeder deine Daten ändern.
+      - id: f2
+        name: 'Hauptkategorie wie bei den stärksten Wettbewerbern'
+        why: 'Die Kategorie entscheidet, bei welchen Suchen du auf der Karte auftauchst.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Steht dein Profil in derselben Schublade wie deine Wettbewerber?
+        customer_impact: Die Kategorie entscheidet, bei welchen Suchen du auf der Karte erscheinst.
+      - id: f3
+        name: 'Drei bis neun Nebenkategorien'
+        why: 'Jede fehlende Kategorie ist eine Suche, bei der du nicht erscheinst.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {min: 3, max: 9}
+        customer_question: Deckt dein Profil alle deine Leistungen als Kategorien ab?
+        customer_impact: Jede fehlende Kategorie ist eine Suche, bei der du nicht erscheinst.
+      - id: f4
+        name: 'Beschreibung nutzt den Platz, Leistung und Ort vorn'
+        why: 'Die ersten Zeilen sieht jeder Interessent; sie müssen sagen, was du wo machst.'
+        source: places
+        measured_by: Google Maps im Browser; nur dort sichtbar, ohne Wert, wenn Maps sperrt
+        requires_paid: false
+        requires_access: false
+        thresholds: {min_chars: 600, max_chars: 750}
+        customer_question: Nutzt deine Profilbeschreibung den Platz?
+        customer_impact: Die ersten 250 Zeichen sieht jeder; sie müssen Leistung und Ort nennen.
+      - id: f5
+        name: 'Leistungen eingetragen'
+        why: 'Google zeigt Profile mit passenden Leistungen bevorzugt.'
+        source: places
+        measured_by: Google Maps im Browser; nur dort sichtbar, ohne Wert, wenn Maps sperrt
+        requires_paid: false
+        requires_access: false
+        thresholds: {max: 50}
+        customer_question: Sind deine Leistungen im Profil eingetragen?
+        customer_impact: Google zeigt Profile mit passenden Leistungen bevorzugt.
+      - id: f6
+        name: 'Produkte oder Angebote eingetragen'
+        why: 'Angebote im Profil bringen Anfragen, ohne dass jemand deine Website öffnet.'
+        source: places
+        measured_by: Google Maps im Browser; nur dort sichtbar, ohne Wert, wenn Maps sperrt
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Zeigt dein Profil Produkte oder Angebote?
+        customer_impact: Produkte bringen Anfragen direkt aus dem Profil.
+      - id: f7
+        name: 'Öffnungszeiten vollständig, auch an Feiertagen'
+        why: 'Wer „geschlossen“ liest oder vor verschlossener Tür steht, ruft beim Nächsten an.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Sind deine Öffnungszeiten vollständig?
+        customer_impact: '"Geschlossen" an einem Werktag ohne Angabe kostet Kunden.'
+      - id: f8
+        name: 'Mindestens zehn Fotos, Logo und Titelbild'
+        why: 'Profile mit Fotos bekommen mehr Anrufe und Routenanfragen.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {min_photos: 10}
+        customer_question: Zeigt dein Profil aktuelle Fotos?
+        customer_impact: Profile mit Fotos bekommen mehr Anrufe und Routenanfragen.
+      - id: f15
+        name: 'Neuestes Foto jünger als 90 Tage'
+        why: 'Alte Fotos wirken wie ein verlassener Betrieb; Kunden rufen lieber dort an, wo sie aktuelle Arbeit sehen.'
+        source: places
+        measured_by: Google Maps im Browser, Aufnahmedatum der Fotos im Fotobetrachter; ohne Wert, wenn Maps sperrt
+        requires_paid: false
+        requires_access: false
+        thresholds: {max_age_days: 90}
+        customer_question: Wie alt ist das neueste Foto in deinem Profil?
+        customer_impact: Alte Fotos wirken wie ein verlassener Betrieb; Kunden rufen lieber dort an, wo sie aktuelle Arbeit sehen.
+      - id: f9
+        name: 'Beitrag in den letzten 30 Tagen'
+        why: 'Google belohnt Profile, in denen sich etwas tut, mit besseren Plätzen.'
+        source: places
+        measured_by: Google Maps im Browser; nur dort sichtbar, ohne Wert, wenn Maps sperrt
+        requires_paid: false
+        requires_access: false
+        thresholds: {max_age_days: 30}
+        customer_question: Postest du regelmäßig in deinem Profil?
+        customer_impact: Google belohnt aktive Profile mit besserer Platzierung.
+      - id: f10
+        name: 'Kundenfragen im Profil beantwortet'
+        why: 'Sonst beantwortet sie irgendjemand, oft falsch.'
+        source: places
+        measured_by: Google Maps im Browser; nur dort sichtbar, ohne Wert, wenn Maps sperrt
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Sind die typischen Kundenfragen in deinem Profil beantwortet?
+        customer_impact: Sonst beantwortet sie irgendwer, oft falsch.
+      - id: f11
+        name: 'Einsatzorte eingetragen'
+        why: 'Nur dort erscheinst du bei Suchen aus dem Umland.'
+        source: places
+        measured_by: Google Maps im Browser; nur dort sichtbar, ohne Wert, wenn Maps sperrt
+        requires_paid: false
+        requires_access: false
+        thresholds: {max: 20}
+        customer_question: Sind deine Einsatzorte im Profil eingetragen?
+        customer_impact: Nur dort erscheinst du bei Suchen aus dem Umland.
+      - id: f12
+        name: 'Website, Terminbuchung und Nachrichten verknüpft'
+        why: 'Jeder zusätzliche Weg aus dem Profil zu dir bringt Anfragen.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Kann ein Kunde aus deinem Profil heraus Kontakt aufnehmen?
+        customer_impact: Jeder zusätzliche Weg bringt Anfragen.
+      - id: f13
+        name: 'Zahlungsarten und Besonderheiten eingetragen'
+        why: 'Kunden filtern danach, etwa nach Kartenzahlung oder Barrierefreiheit.'
+        source: places
+        measured_by: Google Maps im Browser; nur dort sichtbar, ohne Wert, wenn Maps sperrt
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Sind Zahlungsarten, Barrierefreiheit und Besonderheiten eingetragen?
+        customer_impact: Google filtert danach.
+      - id: f14
+        name: 'Profil verstößt gegen keine Google-Regel'
+        why: 'Werbewörter im Namen oder doppelte Profile können zur Sperre führen.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Verstößt dein Profil gegen Googles Regeln?
+        customer_impact: Schlüsselwörter im Namen oder doppelte Profile können zur Sperre führen.
+
+  - id: g
+    name: 'Bewertungen'
+    weight: 8
+    checks:
+      - id: g1
+        name: 'Mehr Bewertungen als die Betriebe neben dir auf der Karte'
+        why: 'Kunden wählen den mit mehr Bewertungen, auch wenn deine Arbeit besser ist.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Hast du mehr oder weniger Bewertungen als deine Wettbewerber?
+        customer_impact: Kunden wählen den mit mehr Bewertungen, Google auch.
+      - id: g2
+        name: 'Durchschnitt über 4,3 Sterne'
+        why: 'Unter 4 Sternen sortieren dich viele Kunden sofort aus.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {min_rating: 4.3}
+        customer_question: Liegt dein Schnitt über 4,3 Sternen?
+        customer_impact: Unter 4 Sternen filtern viele Kunden dich weg.
+      - id: g3
+        name: 'Mindestens zwei neue Bewertungen im Monat'
+        why: 'Alte Bewertungen zählen weniger; Kunden und Google wollen aktuelle.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {min_per_month: 2}
+        customer_question: Kommen laufend neue Bewertungen?
+        customer_impact: Alte Bewertungen zählen weniger; Google will aktuelle.
+      - id: g4
+        name: 'Du antwortest auf Bewertungen'
+        why: 'Unbeantwortete Bewertungen sehen aus, als wäre niemand erreichbar; ein kurzer Dank zeigt das Gegenteil.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {min_reply_rate: 0.8, max_reply_days: 7}
+        customer_question: Antwortest du auf Bewertungen?
+        customer_impact: Antworten zeigen Kunden und Google, dass jemand da ist.
+      - id: g5
+        name: 'Sachliche Antworten auf Kritik'
+        why: 'Eine gute Antwort auf eine schlechte Bewertung überzeugt mehr als zehn Sterne.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Reagierst du auf Kritik?
+        customer_impact: Eine gute Antwort auf eine schlechte Bewertung überzeugt mehr als zehn Sterne.
+      - id: g6
+        name: 'Kunden nennen in Bewertungen Leistung und Ort'
+        why: 'Google liest Bewertungen als Beleg dafür, was du kannst und wo.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Erwähnen Kunden in Bewertungen, was du für sie gemacht hast?
+        customer_impact: Google liest Bewertungen als Beleg für deine Leistungen.
+      - id: g7
+        name: 'Bewertungen auch auf anderen Portalen'
+        why: 'KI-Assistenten ziehen ihre Empfehlung aus mehreren Quellen.'
+        source: directories
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Gibt es dich auch auf anderen Bewertungsportalen?
+        customer_impact: KI-Assistenten ziehen aus mehreren Quellen.
+      - id: g8
+        name: 'Bewertungen sehen echt aus'
+        why: 'Auffällige Muster führen zur Löschung oder Sperre.'
+        source: places
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Sehen deine Bewertungen echt aus?
+        customer_impact: Auffällige Muster führen zu Löschung oder Sperre.
+
+  - id: h
+    name: 'Verzeichnisse und Einträge'
+    weight: 7
+    checks:
+      - id: h1
+        name: 'Eintrag in Apple Karten'
+        why: 'Viele iPhone-Nutzer suchen dort statt bei Google.'
+        source: directories
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Findet man dich auf dem iPhone in Apple Karten?
+        customer_impact: Viele iPhone-Nutzer suchen dort statt bei Google.
+      - id: h2
+        name: 'Eintrag bei Bing'
+        why: 'Dort suchen Windows-Nutzer und Microsofts KI-Assistent.'
+        source: directories
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Findet man dich bei Bing und in Copilot?
+        customer_impact: Windows-Nutzer und Microsofts KI suchen hier.
+      - id: h3
+        name: 'Einträge in Gelbe Seiten, Das Örtliche und 11880'
+        why: 'Diese Einträge bestätigen Google, dass es dich wirklich gibt.'
+        source: directories
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Stehst du in Gelbe Seiten, Das Örtliche, 11880 und Co.?
+        customer_impact: Diese Einträge bestätigen Google, dass es dich gibt.
+      - id: h4
+        name: 'Einträge bei Kammer, Innung und Fachportalen'
+        why: 'Fachportale bringen eigene Anfragen und Vertrauen.'
+        source: directories
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Stehst du bei Kammer, Innung und Fachportalen?
+        customer_impact: Fachportale bringen eigene Anfragen und Vertrauen.
+      - id: h5
+        name: 'Facebook und Instagram mit denselben Daten'
+        why: 'Abweichende Angaben verwirren Kunden und Maschinen.'
+        source: directories
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Stimmen deine Firmendaten in den sozialen Netzwerken?
+        customer_impact: Abweichungen verwirren Kunden und Maschinen.
+      - id: h6
+        name: 'Keine alten Adressen oder Nummern im Netz'
+        why: 'Sonst rufen Kunden die falsche Nummer an, und Google traut keiner Angabe.'
+        source: directories
+        requires_paid: false
+        requires_access: false
+        thresholds: {max_variants: 1}
+        customer_question: Gibt es alte Adressen oder Nummern von dir im Netz?
+        customer_impact: Kunden rufen die falsche Nummer an; Google vertraut keiner.
+      - id: h7
+        name: 'Eintrag bei Wikidata'
+        why: 'KI-Assistenten und das Infofeld bei Google schöpfen daraus.'
+        source: directories
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Kennt Wikidata deinen Betrieb?
+        customer_impact: KI-Assistenten und Googles Wissensfeld schöpfen daraus.
+
+  - id: i
+    name: 'Empfehlungen durch Links'
+    weight: 6
+    checks:
+      - id: i1
+        name: 'So viele Empfehlungs-Links wie die Wettbewerber'
+        why: 'Jeder Link von einer anderen Seite ist für Google eine Empfehlung.'
+        source: paid
+        requires_paid: true
+        requires_access: false
+        thresholds: {}
+        measured_by: DataForSEO Backlinks Summary der eigenen und der Wettbewerber-Domains
+        customer_question: Verlinken so viele Seiten auf dich wie auf deine Wettbewerber?
+        customer_impact: Links sind Empfehlungen; Google zählt sie.
+      - id: i2
+        name: 'Links von Vereinen, Partnern und Lokalpresse'
+        why: 'Empfehlungen aus der Region zählen für Suchen in der Region besonders.'
+        source: paid
+        requires_paid: true
+        requires_access: false
+        thresholds: {}
+        measured_by: DataForSEO Backlinks, die 100 stärksten verweisenden Domains (.de oder Ortsname)
+        customer_question: Verlinken Vereine, Partner und Lokalpresse auf dich?
+        customer_impact: Lokale Links zählen für lokale Suchen doppelt.
+      - id: i3
+        name: 'Keine Links von zwielichtigen Seiten'
+        why: 'Schlechte Nachbarschaft drückt deine Bewertung bei Google.'
+        source: paid
+        requires_paid: true
+        requires_access: false
+        thresholds: {}
+        measured_by: DataForSEO Backlinks Spam-Score der 100 stärksten verweisenden Domains
+        customer_question: Verlinkt Schrott auf deine Seite?
+        customer_impact: Schlechte Nachbarschaft drückt die Bewertung.
+      - id: i4
+        name: 'Nennungen deines Namens ohne Link'
+        why: 'Jede Nennung lässt sich oft mit einer kurzen Mail in eine Empfehlung verwandeln.'
+        source: serp
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Wird dein Name im Netz genannt, ohne dass verlinkt wird?
+        customer_impact: Jede Nennung lässt sich oft mit einer Mail in einen Link verwandeln.
+      - id: i5
+        name: 'Verlauf deiner Sichtbarkeit'
+        why: 'Zeigt, ob deine Seite bei Google steigt oder fällt.'
+        source: paid
+        requires_paid: true
+        requires_access: false
+        thresholds: {}
+        measured_by: DataForSEO Labs Ranking-Verlauf (Top-10-Begriffe, zwölf Monate); Domain-Alter aus der ersten Aufnahme der Wayback Machine (kostenlos)
+        customer_question: Wie hat sich deine Sichtbarkeit entwickelt?
+        customer_impact: Der Verlauf zeigt, ob etwas wirkt.
+      - id: i6
+        name: 'Links zu Herstellern, Verbänden und Partnern'
+        why: 'Zeigt Google, in welchem Umfeld du arbeitest.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Verlinkst du auf Hersteller, Verbände, Partner?
+        customer_impact: Zeigt Google dein Umfeld.
+
+  - id: j
+    name: 'Platzierung bei Google und Bing'
+    weight: 10
+    checks:
+      - id: j1
+        name: 'Platz bei den wichtigsten Suchen in deinem Ort'
+        why: 'Die obersten Plätze bekommen die meisten Klicks, ab Seite 2 fast niemand mehr.'
+        source: serp
+        requires_paid: false
+        requires_access: false
+        thresholds: {top: 3, good: 10, visible: 20}
+        customer_question: Auf welchem Platz stehst du für deine wichtigsten Suchen?
+        customer_impact: Die obersten Plätze bekommen die meisten Klicks, ab Seite 2 fast niemand mehr.
+      - id: j2
+        name: 'Unter den drei Betrieben auf der Karte'
+        why: 'Die Karte steht über allen Ergebnissen; wer dort fehlt, wird am Handy kaum gesehen.'
+        source: serp
+        requires_paid: false
+        requires_access: false
+        thresholds: {top: 3}
+        customer_question: Bist du einer der drei Betriebe auf der Karte?
+        customer_impact: Die Karte steht über allen Ergebnissen; wer dort fehlt, wird am Handy kaum gesehen.
+      - id: j3
+        name: 'Sichtbarkeit rund um deinen Standort'
+        why: 'Zeigt, aus welchen Stadtteilen dich heute kein Kunde findet.'
+        source: places
+        measured_by: Google Maps im Browser je Rasterpunkt mit vorgetäuschtem Standort; wenn Maps sperrt, Places API Text Search nur mit Kennungen
+        requires_paid: false
+        requires_access: false
+        thresholds: {grid: 5}
+        customer_question: Wo im Umkreis bist du auf der Karte sichtbar und wo nicht?
+        customer_impact: Zeigt, aus welchen Stadtteilen keine Kunden kommen können.
+      - id: j4
+        name: 'Platz 1 bei der Suche nach deinem Namen'
+        why: 'Wer nach dir sucht, hat sich fast entschieden; da darf nichts dazwischenstehen.'
+        source: serp
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Findet man dich, wenn man deinen Namen sucht?
+        customer_impact: Wer nach dir sucht, hat sich fast entschieden; da darf nichts dazwischen stehen.
+      - id: j5
+        name: 'Anzahl der Suchen, bei denen du gefunden wirst'
+        why: 'Jede Suche ist eine Tür zu dir; mehr Türen bringen mehr Kunden.'
+        source: paid
+        requires_paid: true
+        requires_access: false
+        thresholds: {}
+        measured_by: DataForSEO Labs Ranked Keywords (Google Deutschland) der eigenen und der Wettbewerber-Domains
+        customer_question: Für wie viele Suchen wirst du überhaupt gefunden?
+        customer_impact: Mehr Begriffe, mehr Türen.
+      - id: j6
+        name: 'Genannt in Googles KI-Antwort'
+        why: 'Diese Antwort steht ganz oben und verdrängt die normalen Ergebnisse.'
+        source: serp
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Nennt Googles KI-Antwort deinen Betrieb?
+        customer_impact: Diese Antwort steht ganz oben und verdrängt die normalen Ergebnisse.
+      - id: j7
+        name: 'Gefunden bei Bing'
+        why: 'Bing liefert Ergebnisse für Microsofts KI-Assistenten und die Suche in ChatGPT.'
+        source: serp
+        requires_paid: false
+        requires_access: false
+        thresholds: {good: 10}
+        customer_question: Wirst du auch bei Bing gefunden?
+        customer_impact: Bing speist Copilot und ChatGPT-Suche.
+      - id: j8
+        name: 'Deine Bilder in der Google-Bildersuche'
+        why: 'Für Handwerk und Gastronomie ein eigener Weg, über den Kunden kommen.'
+        source: serp
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Erscheinen deine Bilder bei Google Bilder?
+        customer_impact: Für Handwerk und Gastronomie ein eigener Kundenweg.
+      - id: j9
+        name: 'Entwicklung über die Zeit'
+        why: 'Zeigt Monat für Monat, ob die Arbeit wirkt.'
+        source: serp
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Geht es aufwärts?
+        customer_impact: Der Nachweis für das Abo.
+      - id: j10
+        name: 'Wettbewerber werben auf deinen Namen'
+        why: 'Wer Anzeigen auf deinen Namen schaltet, fängt deine Kunden ab.'
+        source: serp
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Schaltet ein Wettbewerber Werbung auf deinen Namen?
+        customer_impact: Er fängt deine Kunden ab.
+
+  - id: k
+    name: 'Sichtbarkeit in KI-Assistenten'
+    weight: 5
+    checks:
+      - id: k1
+        name: 'Genannt, wenn Kunden eine KI nach einem Betrieb fragen'
+        why: 'Immer mehr Kunden fragen zuerst ChatGPT und Co. statt Google.'
+        source: assistants
+        requires_paid: false
+        requires_access: false
+        thresholds: {min_rate: 0.3}
+        customer_question: Nennt ChatGPT dich, wenn jemand nach einem Betrieb wie deinem fragt?
+        customer_impact: Immer mehr Kunden fragen zuerst eine KI statt Google.
+      - id: k2
+        name: 'Genannt, wenn Kunden ihr Problem beschreiben'
+        why: 'Hier entstehen Aufträge, bevor der Kunde überhaupt einen Namen kennt.'
+        source: assistants
+        requires_paid: false
+        requires_access: false
+        thresholds: {min_rate: 0.1}
+        customer_question: Wirst du genannt, wenn jemand sein Problem beschreibt?
+        customer_impact: Hier entstehen die Aufträge, bevor der Kunde einen Namen kennt.
+      - id: k3
+        name: 'KI-Assistenten sagen Richtiges über dich'
+        why: 'Falsche Öffnungszeiten aus einer KI kosten Besuche.'
+        source: assistants
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Stimmt, was die KI über dich sagt?
+        customer_impact: Falsche Öffnungszeiten aus der KI kosten Besuche.
+      - id: k4
+        name: 'Präsent dort, wo KI-Assistenten nachlesen'
+        why: 'Meist sind das Google-Profil, Verzeichnisse, Bewertungsportale und Lokalpresse.'
+        source: assistants
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Stehst du dort, wo die KI nachliest?
+        customer_impact: Meist Google-Profil, Verzeichnisse, Bewertungsportale, Lokalpresse.
+      - id: k5
+        name: 'KI-Assistenten dürfen deine Seite lesen'
+        why: 'Wer sie aussperrt, kommt in keiner KI-Antwort vor.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Dürfen KI-Assistenten deine Seite lesen?
+        customer_impact: Wer sie aussperrt, kommt in keiner KI-Antwort vor.
+
+  - id: l
+    name: 'Recht und Vertrauen'
+    weight: 4
+    checks:
+      - id: l1
+        name: 'Impressum vollständig und schnell erreichbar'
+        why: 'Ein fehlendes Impressum ist der häufigste Grund für Abmahnungen.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {max_clicks: 2}
+        customer_question: Ist dein Impressum vollständig?
+        customer_impact: Ein fehlendes Impressum ist der häufigste Grund für Abmahnungen.
+      - id: l2
+        name: 'Datenschutzerklärung passt zur Seite'
+        why: 'Karten, Schriften oder Formulare ohne Erwähnung sind abmahnfähig.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Passt deine Datenschutzerklärung zu dem, was deine Seite tut?
+        customer_impact: Google Maps, Schriften und Formulare ohne Erwähnung sind abmahnfähig.
+      - id: l3
+        name: 'Fremde Dienste erst nach Zustimmung'
+        why: 'Lädt die Seite etwa Schriften von Google ohne Zustimmung, gilt das in Deutschland als Verstoß.'
+        source: crawler
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Lädt deine Seite fremde Dienste erst nach Zustimmung?
+        customer_impact: Google-Schriften vom Google-Server gelten in Deutschland als Verstoß.
+      - id: l4
+        name: 'Auch mit Einschränkungen nutzbar'
+        why: 'Gute Kontraste und Beschriftungen helfen allen Besuchern und zählen bei Google.'
+        source: pagespeed
+        requires_paid: false
+        requires_access: false
+        thresholds: {min_score: 80}
+        customer_question: Können auch Menschen mit Einschränkungen deine Seite nutzen?
+        customer_impact: Kontraste und Beschriftungen helfen allen und zählen bei Google.
+
+  - id: n
+    name: 'Werkzeuge auf der Website'
+    weight: 2
+    checks:
+      - id: n1
+        name: 'Chat oder Sofort-Kontakt auf der Website'
+        why: 'Wer abends eine Frage hat und niemanden erreicht, fragt beim Nächsten.'
+        source: crawler
+        measured_by: Quelltext der Startseite auf bekannte Chat- und Messenger-Einbindungen
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Kann ein Besucher dir sofort schreiben, auch außerhalb der Öffnungszeiten?
+        customer_impact: Wer abends eine Frage hat und niemanden erreicht, fragt beim Nächsten.
+      - id: n2
+        name: 'Besucherzählung eingebaut, mit Zustimmung'
+        why: 'Ohne Zählung weiß niemand, wie viele Kunden die Seite bringt und was eine Verbesserung bewirkt.'
+        source: crawler
+        measured_by: Quelltext der Startseite auf bekannte Zähldienste; ob sie erst nach Zustimmung laden, prüft l3
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Weißt du, wie viele Besucher deine Website hat?
+        customer_impact: Ohne Zählung weiß niemand, wie viele Kunden die Seite bringt und was eine Verbesserung bewirkt.
+      - id: n3
+        name: 'Eigene Google-Anzeigen geschaltet'
+        why: 'Zeigt, ob du gerade für Werbung zahlst und ob sie auf eine passende Seite führt.'
+        source: crawler
+        measured_by: Quelltext der Startseite auf Google-Ads-Kennungen (AW-) und Conversion-Einbindung
+        requires_paid: false
+        requires_access: false
+        thresholds: {}
+        customer_question: Bezahlst du gerade für Google-Anzeigen?
+        customer_impact: Zeigt, ob du gerade für Werbung zahlst und ob sie auf eine passende Seite führt.
+
+  - id: m
+    name: 'Wirkung mit Kundenzugang'
+    weight: 0
+    checks:
+      - id: m1
+        name: 'Anrufe, Routen und Aufrufe aus dem Google-Profil'
+        why: 'Die echte Zahl, an der sich jede Verbesserung messen lässt.'
+        source: access
+        requires_paid: false
+        requires_access: true
+        thresholds: {}
+        customer_question: Wie viele Menschen rufen dich über Google an?
+        customer_impact: Die Zahl, an der sich jede Maßnahme messen lässt.
+      - id: m2
+        name: 'Suchwörter, bei denen wirklich geklickt wird'
+        why: 'Echte Klickzahlen von Google statt Schätzungen.'
+        source: access
+        requires_paid: false
+        requires_access: true
+        thresholds: {}
+        customer_question: Wofür wirst du wirklich geklickt?
+        customer_impact: Ersetzt jede Schätzung durch Messung.
+      - id: m3
+        name: 'Besucher und Anfragen der Website'
+        why: 'Zeigt, ob deine Seite überzeugt oder nur gefunden wird.'
+        source: access
+        requires_paid: false
+        requires_access: true
+        thresholds: {}
+        customer_question: Wie viele Besucher werden zu Anfragen?
+        customer_impact: Zeigt, ob die Seite überzeugt oder nur gefunden wird.
+      - id: m4
+        name: 'Tatsächliche Antwortzeiten auf Bewertungen'
+        why: 'Grundlage für die laufende Bewertungsbetreuung.'
+        source: access
+        requires_paid: false
+        requires_access: true
+        thresholds: {}
+        customer_question: Wie schnell antwortest du wirklich?
+        customer_impact: Grundlage für die Bewertungsbetreuung im Abo.

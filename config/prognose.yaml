@@ -1,0 +1,50 @@
+# Click-through by organic position (German averages, ranges) and enquiry rates by industry group.
+# Every forecast in a report is shown as a low-high range and labelled as an estimate.
+organic_ctr:
+  1: [0.25, 0.35]
+  2: [0.12, 0.18]
+  3: [0.08, 0.12]
+  4: [0.05, 0.08]
+  5: [0.04, 0.06]
+  6-10: [0.02, 0.04]
+  11-20: [0.005, 0.015]
+  none: [0.0, 0.0]
+local_pack_ctr:
+  1: [0.15, 0.25]
+  2: [0.10, 0.15]
+  3: [0.07, 0.10]
+  none: [0.0, 0.0]
+enquiry_rate_by_industry:
+  # Keys are the group ids from branchen.yaml; older stored industries are mapped there first.
+  bauhandwerk: [0.05, 0.10]
+  haustechnik: [0.06, 0.10]
+  holz_innenausbau: [0.05, 0.09]
+  kfz: [0.04, 0.08]
+  friseur_kosmetik: [0.05, 0.10]
+  gastronomie: [0.03, 0.06]
+  baeckerei_lebensmittel: [0.03, 0.06]
+  arzt_zahnarzt: [0.08, 0.15]
+  therapie_pflege: [0.08, 0.15]
+  recht_steuern_beratung: [0.04, 0.08]
+  fitness_sport: [0.04, 0.08]
+  handel_dienstleistung: [0.03, 0.08]
+  default: [0.03, 0.08]
+volume_fallback_when_unknown:
+  small_city: [20, 80]
+  medium_city: [80, 300]
+  large_city: [300, 1200]
+# Values the sales report uses when it calls the forecast.
+report_target_position: 3
+report_city_size: medium_city
+city_size_labels:
+  small_city: Kleinstadt
+  medium_city: mittelgroße Stadt
+  large_city: Großstadt
+# Wording of the assumptions listed under every forecast. Placeholders are filled by the code.
+assumption_texts:
+  click_rates: "Klickraten je Platz sind deutsche Durchschnittswerte; Sie erhalten Klicks aus der normalen Suche und aus der Kartenliste."
+  target_position: "Nach der Optimierung wird für jeden Suchbegriff Platz {target} angenommen; wo Sie heute schon besser stehen, bleibt Ihr heutiger Platz."
+  enquiry_rate: "Von 100 Besuchern stellen {low} bis {high} eine Anfrage (Branche: {industry})."
+  enquiry_rate_fallback: "Für die Branche „{industry}“ liegt keine eigene Anfragequote vor; verwendet wird der Durchschnitt aller Branchen von {low} bis {high} Prozent."
+  volume_fallback: "Für „{phrase}“ ist kein Suchvolumen bekannt; angenommen werden {low} bis {high} Suchen im Monat, typisch für eine {city_size}."
+  unmeasured_keyword: "„{phrase}“ wurde in diesem Audit nicht gemessen und fließt nicht in die Schätzung ein."
