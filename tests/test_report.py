@@ -341,6 +341,7 @@ def test_monthly_context_compares_both_audits(
     assert context.charts.trend is not None
     assert "Das haben wir für Sie erledigt" in html
     assert "Das nehmen wir uns als Nächstes vor" in html
+    assert "Wir versprechen diese Arbeit, keine bestimmte Platzierung" in html
     assert "▲" in html
     assert "Was Ihr Google-Profil heute bringt" in html
     assert len(context.profile) == 9

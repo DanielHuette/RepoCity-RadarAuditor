@@ -31,7 +31,7 @@ Teststand ohne Kundenbetrieb.
 
 | Teil | Läuft wo | Zweck |
 |---|---|---|
-| `app/` | Cloudflare Pages unter app.radarauditor.speedofthespirit.dev, installierbare Web-App | Reiter Prüfen (Website-Adresse, Auswahl der Prüfungen, Fortschritt), Auswertung (erkannte Angaben, Gesprächstext, Hebel, alle Prüfungen, Bericht), Angebot (Positionen aus den offenen Punkten, Preise aus dem CRM, PDF, Entscheidung, Optimierung), Einstellungen |
+| `app/` | Cloudflare Pages unter app.radarauditor.speedofthespirit.dev, installierbare Web-App | Reiter Prüfen (Website-Adresse, Auswahl der Prüfungen, Fortschritt), Auswertung (erkannte Angaben, Gesprächstext, Hebel, alle Prüfungen, Bericht), Angebot (Positionen aus den offenen Punkten, Preise aus dem CRM, PDF, Entscheidung, Optimierung), Kunden (Betriebe eines Gewerks in einer Stadt nach Lücken im Google-Profil, erlaubte Kontaktwege, ins CRM, Audit starten), Einstellungen |
 | `site/` | Cloudflare Pages unter https://radarauditor.speedofthespirit.dev (veröffentlicht) | öffentliche Projektseite, Deutsch und Englisch |
 | `src/radarauditor/` | Docker-Container auf dem RepoCity-Server | sammelt Daten, bewertet Prüfungen, erzeugt Berichte und Dokumente, liest die Mails, die das CRM vorlegt, beantwortet den Assistenten im Cockpit |
 | `.claude/` und `skills/` | Claude Code auf dem Server, angemeldet mit dem Claude-Abo | macht aus Rohdaten Befunde, Lösungen und Berichtstexte (`/auswerten`) |
@@ -70,7 +70,8 @@ Prüfen aus dem Worker: `docker compose exec worker python -c "import urllib.req
 | [Betriebsanleitung](Dokumentation/BETRIEBSANLEITUNG.de.md) | jeder Schritt von der Website-Adresse bis zum Abschicken des Angebots, Optimierung und Vorher-Nachher-Bericht, mit Bildern |
 | [Einrichtung](Dokumentation/SETUP.de.md) | Supabase, Cloudflare Pages, Google Cloud, `.env`, Firmendaten, Mails lesen |
 | [Server](Dokumentation/SERVER.de.md) | Sammler auf einem gemieteten Ubuntu-Server: Docker, `.env`, Datenbank-Änderungen, einmalige Anmeldungen, Aktualisieren, Sicherungen |
-| [Architektur](Dokumentation/ARCHITEKTUR.de.md) | Teile, Datenflüsse, Übergabe an Claude Code, Grenzen, Entscheidungen |
+| [Architektur](Dokumentation/ARCHITEKTUR.de.md) | Teile, Datenflüsse, Kundensuche und Monatsservice, Übergabe an Claude Code, Grenzen, Entscheidungen |
+| [Kontaktwege](Dokumentation/KONTAKTWEGE.de.md) | welche Erstansprache der Kundensuche erlaubt ist, mit Quellen; was unsicher ist |
 | [Baubericht](Dokumentation/BUILD_REPORT.de.md) | Module, Testzahlen, Prüfergebnisse, offene Punkte |
 
 ## Befehle

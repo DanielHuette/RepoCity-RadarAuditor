@@ -12,6 +12,7 @@ from radarauditor.db.app_settings import (
     DEFAULT_SOURCES,
     WORKER_SETTINGS_KEYS,
     Source,
+    SourceSetting,
     SourcesSettings,
     WorkerCapabilities,
     WorkerHeartbeat,
@@ -102,3 +103,28 @@ def test_heartbeat_round_trips_as_json() -> None:
         },
     }
     assert WorkerHeartbeat.model_validate(dumped) == heartbeat
+
+
+def test_the_places_api_and_the_customer_search_have_their_own_euro_caps() -> None:
+    sources = parse_worker_settings({}).sources
+
+    assert sources.places.monthly_cost_cap_eur == Decimal(25)
+    assert sources.prospect_search == SourceSetting(
+        enabled=True, daily_cap=15, monthly_cost_cap_eur=Decimal(10)
+    )
+
+
+@pytest.mark.parametrize("source", [Source.PLACES, Source.PROSPECT_SEARCH, Source.DATAFORSEO])
+def test_a_stored_null_never_lifts_the_euro_cap_of_a_paid_source(source: Source) -> None:
+    stored = {source.value: {"enabled": True, "daily_cap": 5, "monthly_cost_cap_eur": None}}
+
+    setting = parse_worker_settings({"sources": stored}).sources.of(source)
+
+    assert setting.monthly_cost_cap_eur == DEFAULT_SOURCES[source].monthly_cost_cap_eur
+    assert setting.daily_cap == 5
+
+
+def test_a_stored_null_keeps_a_free_source_without_euro_cap() -> None:
+    stored = {"chatgpt": {"enabled": True, "monthly_cost_cap_eur": None}}
+
+    assert parse_worker_settings({"sources": stored}).sources.chatgpt.monthly_cost_cap_eur is None

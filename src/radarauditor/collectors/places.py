@@ -6,10 +6,15 @@ and reply time cannot be measured from this source; the review checks report tha
 instead of a value. The map grid uses Text Search with the identifier-only field mask, the
 cheapest request.
 Input: Business name and address, place_id, or a phrase and a point.
-Output: PlaceSnapshot with every field marked as read by the Places API, or ranked place ids.
+The customer search (search_prospects) asks one page of a Text Search with exactly the fields that
+show a neglected profile; reviews are not requested, so the request stays in the Enterprise SKU.
+Output: PlaceSnapshot with every field marked as read by the Places API, ranked place ids, or one
+page of a customer search.
 """
 
 from dataclasses import dataclass
+from decimal import Decimal
+from enum import StrEnum
 from typing import Any
 from urllib.parse import quote
 
@@ -63,6 +68,62 @@ SEARCH_FIELD_MASK = ",".join(f"places.{name}" for name in DETAIL_FIELDS)
 LISTING_FIELD_MASK = ",".join(
     f"places.{name}" for name in ("id", "displayName", "rating", "userRatingCount")
 )
+PROSPECT_FIELDS = (
+    "id",
+    "displayName",
+    "formattedAddress",
+    "nationalPhoneNumber",
+    "websiteUri",
+    "rating",
+    "userRatingCount",
+    "regularOpeningHours",
+    "photos",
+    "businessStatus",
+    "googleMapsUri",
+)
+PROSPECT_FIELD_MASK = ",".join([*(f"places.{name}" for name in PROSPECT_FIELDS), "nextPageToken"])
+
+
+class PlacesSku(StrEnum):
+    """Billing tiers (SKUs) of the requests this module sends; the field mask decides the tier."""
+
+    TEXT_SEARCH_IDS_ONLY = "text_search_essentials_ids_only"
+    TEXT_SEARCH_ENTERPRISE = "text_search_enterprise"
+    TEXT_SEARCH_ENTERPRISE_ATMOSPHERE = "text_search_enterprise_atmosphere"
+    PLACE_DETAILS_ENTERPRISE_ATMOSPHERE = "place_details_enterprise_atmosphere"
+
+
+# USD per 1,000 requests, first volume tier, from the Google Maps Platform core services price
+# list (developers.google.com/maps/billing-and-pricing/pricing, updated 2026-10-28). The free
+# monthly calls of each tier are not subtracted, so the booked spend is never below the bill.
+PRICE_USD_PER_THOUSAND: dict[PlacesSku, Decimal] = {
+    PlacesSku.TEXT_SEARCH_IDS_ONLY: Decimal(0),
+    PlacesSku.TEXT_SEARCH_ENTERPRISE: Decimal(35),
+    PlacesSku.TEXT_SEARCH_ENTERPRISE_ATMOSPHERE: Decimal(40),
+    PlacesSku.PLACE_DETAILS_ENTERPRISE_ATMOSPHERE: Decimal(25),
+}
+# Tier of each request: reviews make it Enterprise + Atmosphere, phone, website, rating or opening
+# hours Enterprise, the place id alone is free.
+FIND_PLACE_SKU = PlacesSku.TEXT_SEARCH_IDS_ONLY
+SEARCH_BUSINESSES_SKU = PlacesSku.TEXT_SEARCH_ENTERPRISE
+PLACE_DETAILS_SKU = PlacesSku.PLACE_DETAILS_ENTERPRISE_ATMOSPHERE
+TOP_COMPETITORS_SKU = PlacesSku.TEXT_SEARCH_ENTERPRISE_ATMOSPHERE
+RANKED_PLACE_IDS_SKU = PlacesSku.TEXT_SEARCH_IDS_ONLY
+LISTED_BUSINESSES_SKU = PlacesSku.TEXT_SEARCH_ENTERPRISE
+SEARCH_PROSPECTS_SKU = PlacesSku.TEXT_SEARCH_ENTERPRISE
+
+
+def request_cost_eur(sku: PlacesSku, eur_per_usd: Decimal) -> Decimal:
+    """Price of one request of a tier in euros.
+
+    Args:
+        sku: Billing tier of the request.
+        eur_per_usd: Euros per US dollar.
+
+    Returns:
+        The list price of one request converted to euros.
+    """
+    return PRICE_USD_PER_THOUSAND[sku] / 1000 * eur_per_usd
 
 
 class _ApiModel(BaseModel):
@@ -134,6 +195,34 @@ class ListedPlace:
     rating: float | None
 
 
+@dataclass(frozen=True)
+class ProspectPlace:
+    """One business of a customer search with the facts that show a neglected profile.
+
+    photo_count is capped at 10 by Google; has_opening_hours is False when the profile has none.
+    """
+
+    place_id: str
+    name: str
+    formatted_address: str
+    phone: str | None
+    website: str | None
+    maps_url: str | None
+    rating: float | None
+    review_count: int
+    photo_count: int
+    has_opening_hours: bool
+    business_status: str | None
+
+
+@dataclass(frozen=True)
+class ProspectPage:
+    """One page of a customer search; next_page_token is None on the last page."""
+
+    places: list[ProspectPlace]
+    next_page_token: str | None
+
+
 class _PlaceId(_ApiModel):
     id: str
 
@@ -144,6 +233,10 @@ class _IdSearchResponse(_ApiModel):
 
 class _SearchResponse(_ApiModel):
     places: list[_Place] = []
+
+
+class _ProspectResponse(_SearchResponse):
+    next_page_token: str | None = None
 
 
 async def find_place(name: str, address: str, api_key: SecretStr) -> str | None:
@@ -369,6 +462,57 @@ async def listed_businesses(
         )
         for place in result.places
     ]
+
+
+async def search_prospects(
+    phrase: str, api_key: SecretStr, page_token: str | None = None
+) -> ProspectPage:
+    """Return one page of the businesses Google lists for a trade in a city.
+
+    Args:
+        phrase: For example "Dachdecker in Münster".
+        api_key: Google Cloud key with the Places API (New) enabled.
+        page_token: Token of the previous page; None for the first page.
+
+    Returns:
+        Up to MAX_PAGE_SIZE businesses in Google's order and the token of the next page.
+
+    Raises:
+        TransientCollectionError: On rate limits or 5xx responses.
+        CollectionError: On an invalid key or a malformed answer.
+    """
+    body: dict[str, object] = {
+        "textQuery": phrase.strip(),
+        "languageCode": LANGUAGE_CODE,
+        "regionCode": REGION_CODE,
+        "pageSize": MAX_PAGE_SIZE,
+    }
+    if page_token is not None:
+        body["pageToken"] = page_token
+    payload = await _request(
+        "POST", SEARCH_TEXT_URL, api_key, PROSPECT_FIELD_MASK, source="Places prospects", json=body
+    )
+    result = _validate(_ProspectResponse, payload, "Places prospects")
+    return ProspectPage(
+        places=[_prospect(place) for place in result.places],
+        next_page_token=result.next_page_token or None,
+    )
+
+
+def _prospect(place: _Place) -> ProspectPlace:
+    return ProspectPlace(
+        place_id=place.id,
+        name=place.display_name.text if place.display_name else "",
+        formatted_address=place.formatted_address,
+        phone=place.national_phone_number or None,
+        website=place.website_uri or None,
+        maps_url=place.google_maps_uri or None,
+        rating=place.rating,
+        review_count=place.user_rating_count,
+        photo_count=len(place.photos),
+        has_opening_hours=bool(place.regular_opening_hours),
+        business_status=place.business_status,
+    )
 
 
 async def _request(

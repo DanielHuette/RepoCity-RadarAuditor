@@ -5,7 +5,8 @@ app/src/lib/documents.ts, DOCUMENT_FIELDS); the worker picks the rows up while i
 the form values into the builder's fields and completes the same row. A request that fails gets
 its error in data["error"] and is skipped until the error is removed. Package names and included
 services come from config/pakete.yaml, prices from the form. An audit_quote request (sales report
-plus CRM quote) goes to documents/audit_quote.py instead of the form translation.
+plus CRM quote) goes to documents/audit_quote.py and a review_replies request (reply drafts to
+unanswered reviews) to documents/review_replies.py instead of the form translation.
 Input: Requested Document rows, customer, first location, supplier settings, package catalogue.
 Output: Builder data and completed Document rows.
 """
@@ -26,6 +27,7 @@ from radarauditor.db.models import Customer, Document, DocumentKind, Location
 from radarauditor.db.repositories import Repositories
 from radarauditor.documents.audit_quote import build_audit_quote
 from radarauditor.documents.builder import Supplier, build_document, load_supplier
+from radarauditor.documents.review_replies import build_review_replies
 from radarauditor.errors import ConfigurationError, RadarError, RenderError
 
 logger = logging.getLogger(__name__)
@@ -421,6 +423,8 @@ def fulfil_request(
     """
     if document.kind is DocumentKind.AUDIT_QUOTE:
         return build_audit_quote(document, repositories, settings)
+    if document.kind is DocumentKind.REVIEW_REPLIES:
+        return build_review_replies(document, repositories, settings)
     customer = repositories.customer(document.customer_id)
     locations = repositories.locations(customer.id)
     supplier = load_supplier(repositories)

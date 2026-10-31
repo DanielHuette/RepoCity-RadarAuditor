@@ -7,6 +7,7 @@ Context: Unit tests with fake repositories; collectors, scoring and reporting ar
 import asyncio
 import os
 import signal
+import threading
 from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
@@ -738,6 +739,49 @@ async def test_report_picks_report_type_and_finishes_audit(
     assert payload["audit_id"] == str(job.audit_id)
 
 
+async def test_a_monthly_report_queues_the_monthly_service_before_it_is_reported(
+    fake_repositories: MagicMock,
+    settings: Settings,
+    make_job: JobFactory,
+    sample_audit: Audit,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """The reply and profile drafts of the month are queued once the before-after report exists."""
+    job = make_job(JobKind.REPORT)
+    pdf = tmp_path / "bericht.pdf"
+    monkeypatch.setattr(
+        "radarauditor.reporting.report.build_monthly_report", MagicMock(return_value=pdf)
+    )
+    monthly = sample_audit.model_copy(update={"purpose": AuditPurpose.MONTHLY})
+    fake_repositories.audit.return_value = monthly
+    fake_repositories.previous_audit.return_value = sample_audit
+
+    await worker.run_job(job, fake_repositories, settings)
+
+    names = [name for name, _, _ in fake_repositories.mock_calls]
+    assert names.index("queue_monthly_service") < names.index("set_audit_status")
+    fake_repositories.queue_monthly_service.assert_called_once_with(job.audit_id)
+
+
+async def test_a_sales_report_queues_no_monthly_service(
+    fake_repositories: MagicMock,
+    settings: Settings,
+    make_job: JobFactory,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Only a monthly audit gets the monthly service."""
+    monkeypatch.setattr(
+        "radarauditor.reporting.report.build_sales_report",
+        MagicMock(return_value=tmp_path / "bericht.pdf"),
+    )
+
+    await worker.run_job(make_job(JobKind.REPORT), fake_repositories, settings)
+
+    fake_repositories.queue_monthly_service.assert_not_called()
+
+
 @pytest.mark.parametrize("kind", [JobKind.COLLECT, JobKind.SCORE, JobKind.REPORT])
 async def test_audit_jobs_need_an_audit(
     fake_repositories: MagicMock, settings: Settings, make_job: JobFactory, kind: JobKind
@@ -1038,6 +1082,53 @@ async def test_serve_handles_document_requests_when_idle(
     await asyncio.wait_for(worker.serve(fake_repositories, settings, stop), timeout=2)
 
     documents.assert_called_once_with(fake_repositories, settings)
+
+
+async def test_document_requests_run_beside_the_heartbeat(
+    fake_repositories: MagicMock, settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A request that lets Claude Code write runs in a thread, so the event loop keeps beating."""
+    stop = asyncio.Event()
+    threads: list[str] = []
+
+    def issue(repositories: MagicMock, current: Settings) -> int:
+        threads.append(threading.current_thread().name)
+        stop.set()
+        return 0
+
+    monkeypatch.setattr(
+        "radarauditor.documents.requests.process_pending_requests", MagicMock(side_effect=issue)
+    )
+
+    await asyncio.wait_for(worker.serve(fake_repositories, settings, stop), timeout=2)
+
+    assert threads and threads[0] != threading.main_thread().name
+
+
+async def test_serve_runs_a_waiting_customer_search_before_claiming_jobs(
+    fake_repositories: MagicMock, settings: Settings, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """A customer search waits at most for the job that is running."""
+    stop = asyncio.Event()
+    order: list[str] = []
+
+    async def run_search(repositories: MagicMock, current: Settings) -> bool:
+        order.append("search")
+        return False
+
+    def claim(kind: JobKind, limit: int) -> list[Job]:
+        order.append("claim")
+        stop.set()
+        return []
+
+    search = AsyncMock(side_effect=run_search)
+    monkeypatch.setattr("radarauditor.prospects.search.run_next_search", search)
+    fake_repositories.claim_jobs.side_effect = claim
+
+    await asyncio.wait_for(worker.serve(fake_repositories, settings, stop), timeout=2)
+
+    search.assert_awaited_with(fake_repositories, settings)
+    assert order[:2] == ["search", "claim"]
 
 
 def test_document_request_errors_are_logged_not_raised(

@@ -31,7 +31,7 @@ Test stage without customer operation.
 
 | Part | Where it runs | Purpose |
 |---|---|---|
-| `app/` | Cloudflare Pages at app.radarauditor.speedofthespirit.dev, installable web app | tabs Prüfen (website address, choice of checks, progress), Auswertung (identified data, talk text, levers, every check, report), Angebot (positions from the open points, prices from the CRM, PDF, decision, optimisation), settings |
+| `app/` | Cloudflare Pages at app.radarauditor.speedofthespirit.dev, installable web app | tabs Prüfen (website address, choice of checks, progress), Auswertung (identified data, talk text, levers, every check, report), Angebot (positions from the open points, prices from the CRM, PDF, decision, optimisation), Kunden (businesses of a trade in a city ranked by gaps in their Google profile, lawful contact ways, into the CRM, start an audit), settings |
 | `site/` | Cloudflare Pages at https://radarauditor.speedofthespirit.dev (published) | public project page, German and English |
 | `src/radarauditor/` | Docker container on the RepoCity server | collects data, scores checks, renders reports and documents, reads the mails the CRM queues, answers the Cockpit assistant |
 | `.claude/` and `skills/` | Claude Code on the server, Claude subscription login | turns raw audit data into findings, fixes and report texts (`/auswerten`) |
@@ -70,7 +70,8 @@ Check from the worker: `docker compose exec worker python -c "import urllib.requ
 | [Operating manual](Dokumentation/BETRIEBSANLEITUNG.md) ([Deutsch](Dokumentation/BETRIEBSANLEITUNG.de.md)) | every step from the website address to sending the quote, optimisation and the monthly before-after report, with screenshots |
 | [Setup](Dokumentation/SETUP.md) ([Deutsch](Dokumentation/SETUP.de.md)) | Supabase, Cloudflare Pages, Google Cloud, `.env`, business data, mail reading |
 | [Server](Dokumentation/SERVER.md) ([Deutsch](Dokumentation/SERVER.de.md)) | worker on a rented Ubuntu server: Docker, `.env`, migrations, one-time logins, updates, backups |
-| [Architecture](Dokumentation/ARCHITEKTUR.md) ([Deutsch](Dokumentation/ARCHITEKTUR.de.md)) | parts, data flow, hand-off to Claude Code, limits, decisions |
+| [Architecture](Dokumentation/ARCHITEKTUR.md) ([Deutsch](Dokumentation/ARCHITEKTUR.de.md)) | parts, data flow, customer search and monthly service, hand-off to Claude Code, limits, decisions |
+| [Contact ways](Dokumentation/KONTAKTWEGE.md) ([Deutsch](Dokumentation/KONTAKTWEGE.de.md)) | which first approach of the customer search is lawful, with sources; what is uncertain |
 | [Build report](Dokumentation/BUILD_REPORT.md) ([Deutsch](Dokumentation/BUILD_REPORT.de.md)) | modules, test counts, check results, open points |
 
 ## Commands

@@ -10,7 +10,7 @@ export type JobKind =
   | "collect" | "score" | "analyse" | "report" | "serp_retry" | "optimize" | "apply";
 export type JobStatus = "queued" | "running" | "done" | "failed";
 export type DocumentKind =
-  | "quote" | "service_description" | "contract" | "proof_of_service" | "audit_quote";
+  | "quote" | "service_description" | "contract" | "proof_of_service" | "audit_quote" | "review_replies";
 export type OptimizationChangeStatus = "draft" | "approved" | "rejected" | "applied" | "failed" | "manual" | "manual_done";
 
 export interface Customer { id: string; name: string; website: string | null; industry: string; city: string; order_value_eur: number | null; created_at: string; crm_customer_id: string | null; }
@@ -23,6 +23,13 @@ export interface Job { id: string; kind: JobKind; status: JobStatus; audit_id: s
 export interface Doc { id: string; customer_id: string; kind: DocumentKind; number: string | null; issued_on: string | null; net_amount: number | null; vat_rate: number | null; gross_amount: number | null; data: Record<string, unknown>; file_path: string | null; created_at: string; }
 export interface OptimizationChange { id: string; order_id: string; audit_id: string | null; check_id: string | null; target: string; before: string | null; after: string; status: OptimizationChangeStatus; error: string | null; created_at: string; decided_at: string | null; applied_at: string | null; }
 export interface SourceUsage { day: string; source: string; count: number; }
+
+// Customer search (migration 016): one search per trade and city, its ranked results.
+export type ProspectStatus = "queued" | "running" | "done" | "failed" | "expired";
+export type ContactStatus = "allowed" | "uncertain" | "forbidden";
+export interface ContactWay { channel: string; label: string; status: ContactStatus; note: string; }
+export interface ProspectSearch { id: string; trade: string; city: string; status: ProspectStatus; error: string | null; result_count: number | null; requested_at: string; claimed_at: string | null; fetched_at: string | null; }
+export interface ProspectResult { id: string; search_id: string; rank: number; place_id: string; name: string; address: string; street: string; postal_code: string; city: string; phone: string | null; website: string | null; maps_url: string | null; rating: number | null; review_count: number; photo_count: number; has_opening_hours: boolean; score: number; signals: string[]; reasons: string; contact_ways: unknown; crm_customer_id: string | null; objected: boolean; }
 
 // Schema crm of the same project (repocity-crm); only the columns the Angebot page uses.
 export type CrmBilling = "once" | "monthly";

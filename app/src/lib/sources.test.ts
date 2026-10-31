@@ -15,14 +15,15 @@ describe("parseSources", () => {
   it("falls back to the defaults when nothing is stored", () => {
     const settings = parseSources(null);
     expect(settings).toEqual(DEFAULT_SOURCES);
-    expect(settings.places).toEqual({ enabled: true, daily_cap: 500 });
+    expect(settings.places).toEqual({ enabled: true, daily_cap: 500, monthly_cost_cap_eur: 25 });
+    expect(settings.prospect_search).toEqual({ enabled: true, daily_cap: 15, monthly_cost_cap_eur: 10 });
     expect(settings.dataforseo.monthly_cost_cap_eur).toBe(50);
     expect(SOURCE_IDS.filter((id) => !settings[id].enabled)).toEqual([]);
   });
 
   it("keeps stored switches and limits and drops unknown sources", () => {
     const settings = parseSources({ places: { enabled: true, daily_cap: 100 }, openai: { enabled: true } });
-    expect(settings.places).toEqual({ enabled: true, daily_cap: 100 });
+    expect(settings.places).toEqual({ enabled: true, daily_cap: 100, monthly_cost_cap_eur: 25 });
     expect(settings).not.toHaveProperty("openai");
     expect(settings.chatgpt).toEqual({ enabled: true, daily_cap: 200 });
   });
@@ -39,6 +40,17 @@ describe("parseSources", () => {
       daily_cap: 1000,
       monthly_cost_cap_eur: 50,
     });
+  });
+
+  it("keeps the default cost cap of a paid source when the stored cap is null", () => {
+    const settings = parseSources({
+      places: { enabled: true, daily_cap: 5, monthly_cost_cap_eur: null },
+      prospect_search: { enabled: true, monthly_cost_cap_eur: null },
+      dataforseo: { enabled: true, monthly_cost_cap_eur: "x" },
+    });
+    expect(settings.places).toEqual({ enabled: true, daily_cap: 5, monthly_cost_cap_eur: 25 });
+    expect(settings.prospect_search.monthly_cost_cap_eur).toBe(10);
+    expect(settings.dataforseo.monthly_cost_cap_eur).toBe(50);
   });
 
   it("uses the daily caps the worker enforces when none is stored", () => {
@@ -71,7 +83,9 @@ describe("limit inputs", () => {
     expect(parseCostCap("", true)).toHaveProperty("error");
     expect(parseCostCap("-1", false)).toHaveProperty("error");
     expect(costCapRequired("dataforseo")).toBe(true);
-    expect(costCapRequired("places")).toBe(false);
+    expect(costCapRequired("places")).toBe(true);
+    expect(costCapRequired("prospect_search")).toBe(true);
+    expect(costCapRequired("chatgpt")).toBe(false);
   });
 });
 

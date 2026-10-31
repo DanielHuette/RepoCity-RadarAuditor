@@ -5,6 +5,7 @@ replaced by a fake and fake repositories. | Input: Fixtures. | Output: Assertion
 """
 
 from datetime import UTC, datetime
+from decimal import Decimal
 from pathlib import Path
 from unittest.mock import MagicMock
 from uuid import uuid4
@@ -777,3 +778,33 @@ def test_identified_values_round_trip_in_the_raw_audit() -> None:
     value = IdentifiedValue(field="city", value="Münster", source="impressum")
 
     assert IdentifiedValue.model_validate_json(value.model_dump_json()) == value
+
+
+async def test_the_google_search_books_its_price(
+    repositories: MagicMock, industries: IndustryCatalogue, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The identify search asks for phone and website, so it costs a Text Search Enterprise."""
+    monkeypatch.setattr(
+        places,
+        "search_businesses",
+        FakeSearch([_candidate(website="http://dachdecker-hollenbeck.de")]),
+    )
+    ledger = MagicMock()
+    ledger.month_source_cost.return_value = Decimal(0)
+    ledger.add_source_cost.return_value = Decimal(1)
+    gate = SourceGate(SourcesSettings(), lambda source, cap: True, ledger)
+
+    await identify.identify_customer(
+        _customer(),
+        _location(),
+        [],
+        _site(legal_notice=None),
+        repositories=repositories,
+        industries=industries,
+        gate=gate,
+        api_key=KEY,
+        notes=[],
+        eur_per_usd=Decimal("0.9"),
+    )
+
+    ledger.add_source_cost.assert_called_once_with("places", Decimal("0.0315"))

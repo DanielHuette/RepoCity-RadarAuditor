@@ -1,0 +1,31 @@
+{# Reply drafts to real unanswered reviews, shown to a business that wants to think the offer over. Nothing here is posted on Google. #}
+{% extends "_layout.html" %}
+{% block title %}Antwortentwürfe {{ report.customer_name }}{% endblock %}
+{% block kind %}Antwortentwürfe auf Ihre Bewertungen{% endblock %}
+{% block meta %}Aus der Prüfung vom {{ report.audit_date|date }}{% endblock %}
+{% block cover_body %}
+<p class="introduction">Auf diese Bewertungen bei Google hat Ihr Betrieb noch nicht geantwortet. So könnten die Antworten klingen. Nichts davon ist veröffentlicht; jede Antwort geht erst online, wenn Sie zustimmen.</p>
+{% endblock %}
+
+{% block content %}
+<section>
+  <h2>{{ report.items|length }} Bewertungen, {{ report.items|length }} Antwortentwürfe</h2>
+  {% for item in report.items %}
+  <div class="finding keep-together">
+    <h3>Bewertung vom {{ item.date }}{% if item.stars is not none %} · {{ item.stars }} von 5 Sternen{% endif %}</h3>
+    {% if item.review %}
+    <p><span class="label">Die Bewertung:</span> {{ item.review }}</p>
+    {% else %}
+    <p><span class="label">Die Bewertung:</span> nur Sterne, ohne Text</p>
+    {% endif %}
+    <p><span class="label">Entwurf der Antwort:</span> {{ item.reply }}</p>
+  </div>
+  {% endfor %}
+</section>
+
+<section class="keep-together">
+  <h2>Was eine Antwort bewirkt</h2>
+  <p>Wer einen Betrieb sucht, liest die Bewertungen und die Antworten darauf. Eine sachliche, persönliche Antwort zeigt, dass Sie sich um Ihre Kunden kümmern, gerade bei Kritik.</p>
+  <p class="estimate-note">Wir versprechen Arbeit: Antworten schreiben, mit Ihnen abstimmen und nach Ihrer Freigabe veröffentlichen. Eine bestimmte Platzierung bei Google versprechen wir nicht; die legt allein Google fest.</p>
+</section>
+{% endblock %}

@@ -6,7 +6,8 @@ Output: Assertions.
 
 from collections.abc import Callable
 from dataclasses import dataclass, field
-from unittest.mock import AsyncMock
+from decimal import Decimal
+from unittest.mock import AsyncMock, MagicMock, call
 
 import pytest
 from pydantic import SecretStr
@@ -422,3 +423,22 @@ async def test_result_list_from_places_when_maps_blocks(
     ]
     assert quota.used[Source.PLACES.value] == 1
     assert notes == ["Google Maps blocked the browser (blocked), Places API used"]
+
+
+async def test_places_requests_book_the_price_of_their_tier(
+    fake_maps: FakeMaps, fake_places: FakePlaces
+) -> None:
+    ledger = MagicMock()
+    ledger.month_source_cost.return_value = Decimal(0)
+    ledger.add_source_cost.return_value = Decimal(1)
+    gate = SourceGate(SourcesSettings(), Quota().consume, ledger)
+    route = ProfileRoute(AsyncMock(spec=BrowserService), gate, KEY, eur_per_usd=Decimal("0.9"))
+    fake_maps.errors = [SearchBlockedError("blocked")]
+
+    await route.profile(ProfileTarget("Hollenbeck", "Münster", "ChIJ-own"), [])
+    await route.competitors("Dachdecker Münster", CENTRE, [], OWN, 3, [])
+
+    assert ledger.add_source_cost.call_args_list == [
+        call("places", Decimal("0.0225")),
+        call("places", Decimal("0.036")),
+    ]

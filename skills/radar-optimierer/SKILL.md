@@ -1,6 +1,6 @@
 ---
 name: radar-optimierer
-description: Bereitet für einen angenommenen RepoCity-Auftrag jede bestellte Leistung als konkrete Änderung vor (Seitentitel, Meta-Beschreibungen, Texte, strukturierte Daten, Firmendaten, Unternehmensprofil, Antworten auf Bewertungen) und schreibt sie als Entwürfe nach aenderungen.json. Wird vom Befehl /optimieren gelesen. Wendet nie etwas an.
+description: Bereitet für einen angenommenen RepoCity-Auftrag jede bestellte Leistung als konkrete Änderung vor (Seitentitel, Meta-Beschreibungen, Texte, strukturierte Daten, Firmendaten, Unternehmensprofil, Antworten auf Bewertungen) und schreibt sie als Entwürfe nach aenderungen.json; im Monatsservice nur Antworten auf neue Bewertungen und Profilpflege. Wird vom Befehl /optimieren gelesen. Wendet nie etwas an.
 ---
 
 # Radar-Optimierer
@@ -20,6 +20,16 @@ Du arbeitest für Daniel (Betreiber, "du"). Der Kunde hat ein Angebot angenommen
 | `zugang.json` | Welche Systeme erreichbar sind: `wordpress.available`, `wordpress.seo_plugin` (`rank_math`, `yoast` oder `null`), `business_profile.available`, jeweils `problem`, wenn nicht |
 | `wordpress.json` | nur mit WordPress-Zugang: veröffentlichte Seiten und die neuesten Beiträge mit `type`, `id`, `link`, `title`, `excerpt`, `content` (Rohtext, `content_truncated` = gekürzt), `meta_title`, `meta_description` |
 | `bewertungen.json` | nur mit Zugriff auf das Unternehmensprofil: Bewertungen mit `reviewId`, `rating`, `text`, `reviewReply` |
+| `monatsservice.json` | nur im Monatsservice (Monatsprüfung eines Abos): `letzte_pruefung`, `antworten_bekannt`, `neue_bewertungen` (seit der letzten Prüfung, ohne Antwort des Inhabers: `reviewId` oder `null`, `datum`, `sterne`, `text`) und `profil` (Fakten des Google-Profils aus dieser Prüfung) |
+
+## Monatsservice
+
+Liegt `monatsservice.json` im Ordner, ist das der monatliche Lauf eines Abos, kein Erstauftrag. Dann gilt nur dieser Abschnitt statt „Vorgehen“:
+
+1. Je Eintrag in `neue_bewertungen` genau eine Antwort nach den Regeln „Bewertungen (Bereich g)“. Mit `business_profile.available` und einer `reviewId`, die in `bewertungen.json` ohne `reviewReply` steht: Ziel `business_profile:review:<reviewId>:reply`. Sonst `manual:Antwort auf die Bewertung vom <datum>`, `after` ist der fertige Antworttext.
+2. Profilpflege aus `profil` und `check_results.json` (Bereich f): fehlende Öffnungszeiten, wenige oder alte Fotos (`photo_count`, `photo_newest_date`), lange kein Beitrag (`post_ages_days`), fehlende Beschreibung. Je Punkt höchstens eine Änderung: die Beschreibung als `business_profile:description` mit Zugriff, alles andere als `manual:` mit der fertigen Anleitung oder dem fertigen Text (zum Beispiel ein Beitrag, den Daniel einstellt).
+3. Keine Änderung an der Website (`wordpress:`); der Sammler lehnt sie im Monatsservice ab.
+4. Ist `antworten_bekannt` falsch, keine Antworten erfinden; dann nur Profilpflege.
 
 ## Vorgehen
 
@@ -71,6 +81,10 @@ Ein Ziel mit `wordpress:` braucht `wordpress.available` und eine `id` aus `wordp
 - **Unternehmensprofil (Bereich f)**: Beschreibung in Sie-Form ohne Telefonnummer, Links oder Werbesprache; Kategorie- oder Öffnungszeiten-Änderungen als `manual:`.
 - **Bewertungen (Bereich g)**: jede Bewertung ohne Antwort bekommt eine persönliche, kurze Antwort, die auf den Inhalt eingeht, mit Sie; bei Kritik sachlich, ohne Schuldzuweisung, mit Angebot zur Klärung. Keine Suchbegriffe hineinstopfen, keine Rabatte, keine persönlichen Daten.
 - **Recht (Bereich l)**: Impressum- und Datenschutz-Texte nie selbst formulieren; als `manual:` mit dem Hinweis, was fehlt.
+
+## Was versprochen wird
+
+Versprochen wird Arbeit, nie eine Platzierung. Kein Text kündigt einen bestimmten Platz bei Google, in Google Maps oder in KI-Assistenten an oder deutet ihn an.
 
 ## Sprache
 

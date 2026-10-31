@@ -86,11 +86,35 @@ German version: [BUILD_REPORT.de.md](BUILD_REPORT.de.md)
 | Python tests with PostgreSQL | `uv run pytest` | 1804 passed (run of 30 October 2026) |
 | App | `npm run check`, `npm test`, `npm run build` | no errors, 365 passed in 43 test files, built |
 
+## Customer search, reply drafts and monthly service
+**Context:** Roadmap item 6, built on 31 October 2026. | **Input:** State after migration 015. | **Output:** Migration 016, Cockpit migration 008, modules, app page, check results.
+
+| Finding | Change | Evidence |
+|---|---|---|
+| No search for businesses without a website address | Tab **Kunden**, `prospects/`, `search_prospects` in `collectors/places.py`, tables `prospect_searches` and `prospect_results`, list kept 24 hours, own source `prospect_search` with daily and euro monthly cap, price per request from Google's price list | `test_prospect_assessment.py`, `test_prospect_search.py`, `test_places.py`, `test_migration_016_database.py`, `Kundensuche.test.tsx` |
+| Contact ways without legal check, objection could be bypassed | `config/kundensuche.yaml`, no mail and no dial button, the CRM deal names the lawful way; objection list `advertising_objections` (name and city, phone, `place_id`; a name also as the start of the other, additions in brackets removed, an entry without city holds everywhere), mark in the list, CRM only with Daniel's entries | `KONTAKTWEGE.md`, `test_migration_016_database.py`, integration tests P1 to P17 |
+| Places fields only deleted while the server runs | pg_cron schedule `radar-prospect-purge` hourly at minute 53 in migration 016 | `test_migration_016_database.py`, integration test P17 |
+| A stored `null` lifted the euro cap of paid sources | the default cap stays for a missing or empty value (server and app) | `test_app_settings.py`, `sources.test.ts` |
+| Review replies only as text in the app | PDF of up to five reply drafts to real unanswered reviews, `/antworten` | `test_review_replies.py`, `test_reviews.py`, `ReviewReplies.test.tsx` |
+| Monthly audit without prepared work | `queue_monthly_service` only after the initial optimisation is finished, only drafts of the same audit replaced, `monatsservice.json`, Cockpit notice, approval per draft | `test_optimization.py`, `test_crm_repositories.py`, `test_worker.py`, integration tests S11 to S15 |
+| Promises of positions not ruled out | Rule in both skills, sentence in the monthly report and the reply PDF | `test_report.py`, `test_review_replies.py` |
+
+| Check | Result |
+|---|---|
+| `ruff check`, `ruff format --check`, `mypy --strict src` | clean |
+| `pytest` (with database tests) | 1913 passed (before 1804) |
+| App `npm run check`, `npm test`, `npm run build` | clean, 399 tests passed (before 365) |
+| Cockpit app `npm run check`, `npm test`, `npm run build` | clean, 108 tests passed |
+| `integration/` `pytest` | 446 passed; T12 depended on the time of day (day change Berlin and UTC) and is now independent of it |
+
 ## Open points
 **Context:** Not possible on the build machine. | **Input:** Code. | **Output:** List for the first real run.
 
 | Finding | Consequence | Evidence |
 |---|---|---|
+| Customer search and reply drafts only tested against doubles of Google and Claude Code | watch the first real search and the first reply PDF after migration 016 is applied | `test_prospect_search.py`, `test_review_replies.py` |
+| That 24 hours of cache of the Places fields are covered by Google's EEA terms is not settled (no caching permission except identifier and coordinates) | ask Google or lower the period; it is set in one place (`public.prospect_cache_hours()`) | `KONTAKTWEGE.md`, section storage |
+| Pictures of the manual do not show tab **Kunden** and the reply PDF yet | `uv run python scripts/screenshots.py` on a machine with Playwright | `scripts/screenshots.py` |
 | No run against a real business, Google, DataForSEO or Supabase; every external service is mocked in tests | first real run on the operator's PC after setup | `SETUP.md` |
 | Docker image not built (no Docker on the build machine); dependencies resolve in a fresh environment | watch the first `docker compose up -d` | `Dockerfile`, `requirements.txt` |
 | Business Profile interfaces usable only after Google's approval | checks m1 and m4 read "not measurable" until then | `SETUP.md` section 9 |

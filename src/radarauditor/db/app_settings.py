@@ -17,7 +17,10 @@ Shapes (missing rows, sources and fields fall back to the defaults below):
                                         "mail_reading_reason": "Claude Code ist nicht angemeldet"}}
 
 daily_cap counts external requests per calendar day in Europe/Berlin (one search, one question to
-an assistant, one API call). monthly_cost_cap_eur is optional and null means no cost cap.
+an assistant, one API call). monthly_cost_cap_eur is optional and null means no cost cap; the paid
+sources (places, dataforseo, prospect_search) book the price of every request against it and always
+keep one: a missing or null cap there falls back to the default.
+prospect_search is the customer search, which reads the Places API under its own caps.
 analysis_available is true when Claude Code is logged in and answered a short question;
 analysis_reason is the German reason when it is false, else null. While it is false the worker
 claims no new collect jobs. mail_reading_available is true when mail reading is switched on, Claude
@@ -49,6 +52,7 @@ class Source(StrEnum):
     GOOGLE_SEARCH = "google_search"
     GOOGLE_MAPS = "google_maps"
     DATAFORSEO = "dataforseo"
+    PROSPECT_SEARCH = "prospect_search"
 
 
 class SourceSetting(BaseModel):
@@ -62,7 +66,7 @@ class SourceSetting(BaseModel):
 
 
 DEFAULT_SOURCES: dict[Source, SourceSetting] = {
-    Source.PLACES: SourceSetting(enabled=True, daily_cap=500),
+    Source.PLACES: SourceSetting(enabled=True, daily_cap=500, monthly_cost_cap_eur=Decimal(25)),
     Source.CHATGPT: SourceSetting(enabled=True, daily_cap=200),
     Source.CLAUDE: SourceSetting(enabled=True, daily_cap=200),
     Source.GEMINI: SourceSetting(enabled=True, daily_cap=200),
@@ -72,7 +76,18 @@ DEFAULT_SOURCES: dict[Source, SourceSetting] = {
     Source.DATAFORSEO: SourceSetting(
         enabled=True, daily_cap=1000, monthly_cost_cap_eur=Decimal(50)
     ),
+    # The customer search has its own caps, so it never uses up what the audits need.
+    Source.PROSPECT_SEARCH: SourceSetting(
+        enabled=True, daily_cap=15, monthly_cost_cap_eur=Decimal(10)
+    ),
 }
+
+
+def _without_lifted_cap(given: Mapping[str, object], default: SourceSetting) -> dict[str, object]:
+    """The stored entry; a null euro cap is dropped where the default has one, so it stays."""
+    if default.monthly_cost_cap_eur is not None and given.get("monthly_cost_cap_eur") is None:
+        return {key: item for key, item in given.items() if key != "monthly_cost_cap_eur"}
+    return dict(given)
 
 
 class SourcesSettings(BaseModel):
@@ -88,6 +103,7 @@ class SourcesSettings(BaseModel):
     google_search: SourceSetting = DEFAULT_SOURCES[Source.GOOGLE_SEARCH]
     google_maps: SourceSetting = DEFAULT_SOURCES[Source.GOOGLE_MAPS]
     dataforseo: SourceSetting = DEFAULT_SOURCES[Source.DATAFORSEO]
+    prospect_search: SourceSetting = DEFAULT_SOURCES[Source.PROSPECT_SEARCH]
 
     @model_validator(mode="before")
     @classmethod
@@ -98,7 +114,8 @@ class SourcesSettings(BaseModel):
         for source, default in DEFAULT_SOURCES.items():
             given = value.get(source.value)
             if isinstance(given, Mapping):
-                merged[source.value] = {**default.model_dump(), **given}
+                stored = _without_lifted_cap(given, default)
+                merged[source.value] = {**default.model_dump(), **stored}
             elif given is not None:
                 merged[source.value] = given
         return merged

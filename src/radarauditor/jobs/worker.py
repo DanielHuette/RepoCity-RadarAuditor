@@ -12,6 +12,11 @@ while the heartbeat says mails can be read; after a problem only once Claude Cod
 which happens at once when it lost its login or its subscription is used up). An audit with
 purpose monthly (queued by the CRM for a subscription) that has an earlier reported audit gets the
 before-after report, every other audit the sales report.
+Before every claim a waiting customer search runs (prospects/search.py), so it waits at most for
+the job that is running. Document requests run in a thread, because the review reply drafts let
+Claude Code write for minutes and the heartbeat must go on meanwhile. A reported monthly audit
+queues the monthly service (public.queue_monthly_service): one optimize job that drafts replies to
+new reviews and profile care for the order of the customer's subscription.
 An audit carries its own selection of checks (audits.disabled_checks), the only one that counts;
 an empty selection runs every check. A collect job whose business has no findable city fails its
 audit at once with a German message instead of being retried. Beside the jobs, the requests of the
@@ -187,6 +192,7 @@ async def _claim_and_run(
     mails = MailReader(repositories, settings)
     paused: frozenset[JobKind] = frozenset()
     while not stop.is_set():
+        await _run_customer_search(repositories, settings)
         now_paused = paused_kinds(pulse.capabilities)
         if now_paused != paused:
             _log_pause(now_paused, pulse.capabilities)
@@ -199,11 +205,18 @@ async def _claim_and_run(
         if job is not None:
             await process_job(job, repositories, settings)
             continue
-        run_document_requests(repositories, settings)
+        await asyncio.to_thread(run_document_requests, repositories, settings)
         await _deliver_events(repositories, settings)
         await _read_mail(mails, settings, pulse)
         with contextlib.suppress(TimeoutError):
             await asyncio.wait_for(stop.wait(), timeout=POLL_SECONDS)
+
+
+async def _run_customer_search(repositories: Repositories, settings: Settings) -> None:
+    """Run the oldest waiting customer search; it records its own failures."""
+    from radarauditor.prospects import search
+
+    await search.run_next_search(repositories, settings)
 
 
 class MailProblem(NamedTuple):
@@ -684,6 +697,23 @@ def is_follow_up(audit: Audit, repositories: Repositories) -> bool:
     return repositories.previous_audit(audit) is not None
 
 
+def _queue_monthly_service(audit_id: UUID, repositories: Repositories) -> None:
+    """Queue the drafts of the month; a failure fails the report job, which is then retried.
+
+    Raises:
+        StorageError: If the job cannot be queued.
+    """
+    job_id = repositories.queue_monthly_service(audit_id)
+    if job_id is None:
+        logger.warning(
+            "Audit %s: no monthly drafts, the CRM has no subscription order or its first "
+            "optimisation is not finished yet",
+            audit_id,
+        )
+    else:
+        logger.info("Audit %s: monthly service queued as job %s", audit_id, job_id)
+
+
 def _report(
     audit_id: UUID, customer_id: UUID, repositories: Repositories, settings: Settings
 ) -> None:
@@ -696,6 +726,8 @@ def _report(
         pdf = build_sales_report(audit_id, repositories, settings)
     report_path = repositories.upload(REPORTS_BUCKET, f"{audit_id}/{pdf.name}", pdf)
     repositories.update_audit(audit_id, report_path=report_path)
+    if audit.purpose is AuditPurpose.MONTHLY:
+        _queue_monthly_service(audit_id, repositories)
     repositories.set_audit_status(audit_id, AuditStatus.REPORTED)
     repositories.new_event(
         AUDIT_REPORTED_EVENT,

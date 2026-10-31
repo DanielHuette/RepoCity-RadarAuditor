@@ -4,6 +4,7 @@ Context: Unit tests with mocked external calls. | Input: Fixtures. | Output: Ass
 """
 
 import json
+from decimal import Decimal
 
 import httpx
 import pytest
@@ -307,3 +308,86 @@ async def test_search_businesses_without_results() -> None:
     respx.post(places.SEARCH_TEXT_URL).mock(return_value=httpx.Response(200, json={}))
 
     assert await places.search_businesses("unbekannt.de", KEY) == []
+
+
+@respx.mock
+async def test_search_prospects_reads_profile_gaps_and_the_next_page() -> None:
+    """One page of a customer search with the fields that show a neglected profile."""
+    bare = _place("ChIJ-bare", "Dachdecker Ohne", businessStatus="OPERATIONAL")
+    route = respx.post(places.SEARCH_TEXT_URL).mock(
+        return_value=httpx.Response(
+            200, json={"places": [FULL_PLACE, bare], "nextPageToken": "seite-2"}
+        )
+    )
+
+    page = await places.search_prospects("Dachdecker in Münster", KEY)
+
+    request = route.calls[0].request
+    mask = request.headers["X-Goog-FieldMask"].split(",")
+    assert "nextPageToken" in mask
+    assert "places.reviews" not in mask
+    assert {"places.websiteUri", "places.regularOpeningHours", "places.photos"} <= set(mask)
+    body = json.loads(request.content)
+    assert body["textQuery"] == "Dachdecker in Münster"
+    assert body["pageSize"] == places.MAX_PAGE_SIZE
+    assert "pageToken" not in body
+    assert page.next_page_token == "seite-2"
+    full, empty = page.places
+    assert (full.website, full.photo_count, full.has_opening_hours) == (
+        "https://www.dachdecker-hollenbeck.de/",
+        2,
+        True,
+    )
+    assert (full.review_count, full.rating, full.phone) == (127, 4.8, "0251 123456")
+    assert full.maps_url == "https://maps.google.com/?cid=42"
+    assert (empty.website, empty.phone, empty.photo_count, empty.review_count) == (
+        None,
+        None,
+        0,
+        0,
+    )
+    assert empty.has_opening_hours is False
+    assert empty.business_status == "OPERATIONAL"
+
+
+@respx.mock
+async def test_search_prospects_sends_the_page_token() -> None:
+    """A later page repeats the query with the token Google returned."""
+    route = respx.post(places.SEARCH_TEXT_URL).mock(return_value=httpx.Response(200, json={}))
+
+    page = await places.search_prospects("Dachdecker in Münster", KEY, page_token="seite-2")
+
+    assert json.loads(route.calls[0].request.content)["pageToken"] == "seite-2"
+    assert page.places == [] and page.next_page_token is None
+
+
+def test_every_request_has_the_price_of_its_tier_from_the_google_price_list() -> None:
+    """USD per 1,000 requests, first volume tier, price list updated 2026-10-28."""
+    per_thousand = {
+        places.PlacesSku.TEXT_SEARCH_IDS_ONLY: "0",
+        places.PlacesSku.TEXT_SEARCH_ENTERPRISE: "35",
+        places.PlacesSku.TEXT_SEARCH_ENTERPRISE_ATMOSPHERE: "40",
+        places.PlacesSku.PLACE_DETAILS_ENTERPRISE_ATMOSPHERE: "25",
+    }
+    for sku, price in per_thousand.items():
+        assert places.request_cost_eur(sku, Decimal(1)) * 1000 == Decimal(price)
+    assert places.request_cost_eur(places.PlacesSku.TEXT_SEARCH_ENTERPRISE, Decimal("0.9")) == (
+        Decimal("0.0315")
+    )
+
+
+def test_the_tier_of_each_request_follows_its_field_mask() -> None:
+    """Reviews make a request Enterprise + Atmosphere, phone or website Enterprise, ids free."""
+    assert "places.reviews" not in places.PROSPECT_FIELD_MASK
+    assert "places.websiteUri" in places.PROSPECT_FIELD_MASK
+    assert places.SEARCH_PROSPECTS_SKU is places.PlacesSku.TEXT_SEARCH_ENTERPRISE
+    assert "places.reviews" in places.SEARCH_FIELD_MASK
+    assert places.TOP_COMPETITORS_SKU is places.PlacesSku.TEXT_SEARCH_ENTERPRISE_ATMOSPHERE
+    assert "reviews" in places.DETAIL_FIELD_MASK.split(",")
+    assert places.PLACE_DETAILS_SKU is places.PlacesSku.PLACE_DETAILS_ENTERPRISE_ATMOSPHERE
+    assert "places.nationalPhoneNumber" in places.IDENTIFY_FIELD_MASK
+    assert places.SEARCH_BUSINESSES_SKU is places.PlacesSku.TEXT_SEARCH_ENTERPRISE
+    assert "places.userRatingCount" in places.LISTING_FIELD_MASK
+    assert places.LISTED_BUSINESSES_SKU is places.PlacesSku.TEXT_SEARCH_ENTERPRISE
+    assert places.RANKED_PLACE_IDS_SKU is places.PlacesSku.TEXT_SEARCH_IDS_ONLY
+    assert places.FIND_PLACE_SKU is places.PlacesSku.TEXT_SEARCH_IDS_ONLY

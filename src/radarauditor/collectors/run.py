@@ -215,7 +215,9 @@ async def collect_audit(
             repositories=repositories,
             gate=gate,
             browser=browser,
-            profiles=ProfileRoute(browser, gate, settings.google_api_key),
+            profiles=ProfileRoute(
+                browser, gate, settings.google_api_key, settings.google_eur_per_usd
+            ),
         )
         logger.info("Collecting audit %s for %s", audit_id, customer.name)
         return await _collect(audit_id, context)
@@ -297,6 +299,7 @@ async def _identify(
         gate=context.gate,
         api_key=context.settings.google_api_key,
         notes=notes,
+        eur_per_usd=context.settings.google_eur_per_usd,
     )
     warnings.extend(f"identify: {note}" for note in notes)
     if not result.identified:

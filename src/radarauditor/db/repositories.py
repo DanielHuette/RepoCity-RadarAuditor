@@ -54,6 +54,7 @@ from radarauditor.db.models import (
     Location,
     OptimizationChange,
     OptimizationChangeStatus,
+    ProspectSearch,
     Ranking,
 )
 from radarauditor.errors import StorageError, UnreadableMailError
@@ -861,6 +862,50 @@ class Repositories:
         query = self._crm().rpc("fail_assistant_request", params)
         self._run(query, f"record failure of assistant request {request_id}", idempotent=False)
 
+    def claim_prospect_search(self) -> ProspectSearch | None:
+        """Take the oldest waiting customer search; stored lists past their cache days are purged.
+
+        Returns:
+            The search now running, or None when none waits.
+        """
+        query = self._client.rpc("claim_prospect_search", {})
+        rows = _rows(self._run(query, "claim customer search", idempotent=False))
+        return ProspectSearch.model_validate(rows[0]) if rows else None
+
+    def finish_prospect_search(
+        self, search_id: UUID, results: list[dict[str, object]], note: str | None
+    ) -> int:
+        """Store the ranked list of a running search in one transaction.
+
+        Args:
+            search_id: The claimed search.
+            results: Rows in the shape of ProspectResult.model_dump(mode="json").
+            note: Why the list is incomplete, or None.
+
+        Returns:
+            How many results the search now has.
+        """
+        params: dict[str, Any] = {"p_search": str(search_id), "p_results": results, "p_note": note}
+        query = self._client.rpc("finish_prospect_search", params)
+        value: object = self._run(query, f"store customer search {search_id}").data
+        return value if isinstance(value, int) else len(results)
+
+    def fail_prospect_search(self, search_id: UUID, error: str) -> None:
+        """Record the German reason why a running search failed."""
+        params = {"p_search": str(search_id), "p_error": error}
+        query = self._client.rpc("fail_prospect_search", params)
+        self._run(query, f"record failure of customer search {search_id}")
+
+    def queue_monthly_service(self, audit_id: UUID) -> UUID | None:
+        """Queue the optimize job of the monthly service for a monthly audit (migration 016).
+
+        Returns:
+            The job id, or None when the customer has no subscription order in the CRM.
+        """
+        query = self._client.rpc("queue_monthly_service", {"p_audit": str(audit_id)})
+        value: object = self._run(query, f"queue monthly service of audit {audit_id}").data
+        return UUID(value) if isinstance(value, str) else None
+
     def optimization_changes(
         self, order_id: UUID, status: OptimizationChangeStatus | None = None
     ) -> list[OptimizationChange]:
@@ -871,8 +916,13 @@ class Repositories:
         rows = _rows(self._run(query.order("created_at"), f"load changes of order {order_id}"))
         return [OptimizationChange.model_validate(row) for row in rows]
 
-    def replace_draft_changes(self, order_id: UUID, changes: list[OptimizationChange]) -> None:
-        """Replace the undecided drafts of an order; decided changes stay untouched.
+    def replace_draft_changes(
+        self, order_id: UUID, audit_id: UUID | None, changes: list[OptimizationChange]
+    ) -> None:
+        """Replace the undecided drafts an order got from one audit; all other rows stay.
+
+        Drafts of another audit, such as the open drafts of the first optimisation while a monthly
+        run stores its own, are never touched.
 
         Raises:
             StorageError: If deleting or inserting fails.
@@ -882,6 +932,11 @@ class Repositories:
             .delete()
             .eq("order_id", str(order_id))
             .eq("status", OptimizationChangeStatus.DRAFT.value)
+        )
+        delete = (
+            delete.is_("audit_id", "null")
+            if audit_id is None
+            else delete.eq("audit_id", str(audit_id))
         )
         self._run(delete, f"clear drafts of order {order_id}")
         if not changes:

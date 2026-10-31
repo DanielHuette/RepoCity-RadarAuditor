@@ -1,9 +1,26 @@
 -- The part of the CRM schema that the RadarAuditor migrations use, with the CRM's grants and policies.
 -- Context: the CRM migrations live in their own repository and run in the shared project between
 -- RadarAuditor migrations 005 and 006; migration tests need their tables, not their logic. | Input:
--- migrations 001-005 (public.is_admin). | Output: schema crm with customers, products and orders.
+-- migrations 001-005 (public.is_admin). | Output: schema crm with customers, products and orders;
+-- pg_cron's job table with schedule and unschedule, which CRM migration 003 brings in the project.
 
 create schema if not exists crm;
+
+create schema if not exists cron;
+create table if not exists cron.job (
+  jobid bigserial primary key,
+  jobname text unique,
+  schedule text not null,
+  command text not null
+);
+create or replace function cron.schedule(p_name text, p_schedule text, p_command text) returns bigint
+language sql as $$
+  insert into cron.job (jobname, schedule, command) values (p_name, p_schedule, p_command)
+  on conflict (jobname) do update set schedule = excluded.schedule, command = excluded.command
+  returning jobid
+$$;
+create or replace function cron.unschedule(p_job bigint) returns boolean
+language sql as $$ delete from cron.job where jobid = p_job returning true $$;
 
 create table if not exists crm.customers (
   id uuid primary key default gen_random_uuid(),

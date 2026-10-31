@@ -56,11 +56,31 @@ Kein Pflichtfeld darf leer sein. Fehlt `texte.json` oder ist sie ungültig, setz
 }
 ```
 
+## Bewertungen
+
+Gilt für die Prüfgruppe Bewertungen (Gruppe g im Prüfkatalog) und für `review_replies`. Grundlage sind nur die Bewertungstexte in `raw.json`.
+
+**Zusammenfassen, bevor Befunde geschrieben werden:**
+1. Grundstimmung in einem Satz, mit Zahl der gelesenen Bewertungen und der Plattform, von der sie stammen.
+2. Höchstens drei Stärken: die häufigsten lobenden Themen, je ein kurzes wörtliches Zitat.
+3. Höchstens drei Schwachstellen: die häufigsten Kritikpunkte, je ein kurzes wörtliches Zitat.
+
+Gibt es weniger Bewertungen oder Themen, weniger nennen statt auffüllen. Die Zusammenfassung ist kein eigenes Feld in `texte.json`: sie dient als Beleg in `explanation` der Bewertungs-Befunde und als Stoff für Punkt 3 von `talk_text`. Zitate kürzen, nie umformulieren; Namen von Bewertenden weglassen.
+
+**Antwortvorschläge (`review_replies`) in fünf Schritten:**
+1. Den Ärger direkt anerkennen.
+2. Das konkrete Anliegen kurz benennen, ohne die Vorwürfe zu wiederholen.
+3. Verantwortung oder Bedauern ruhig ausdrücken.
+4. Den nächsten Schritt nennen, den der Betrieb wirklich anbietet (zum Beispiel Rückruf, Termin zur Nachbesserung).
+5. Mit einem freundlichen Schluss enden, der das Gespräch offenhält.
+
+Ruhig, nicht verteidigend, nicht spöttisch, nicht unterwürfig; keine Floskeln. Keine Erstattung, Kulanz, Rabatte oder Zusagen, die nicht aus `audit.json` oder vom Betreiber stammen; fehlt ein Angebot, bleibt Schritt 4 bei „melden Sie sich gern direkt bei uns“ mit dem Kontaktweg aus dem Google-Profil. Kurz: zwei bis vier Sätze, mit „Sie“, unterschrieben mit dem Betriebsnamen.
+
 ## Regeln
 
 - Deutsch, "du" gegenüber dem Betreiber, "Sie" gegenüber dem Kunden in Berichtstexten.
 - Jede Abkürzung ausschreiben. Keine Fachbegriffe ohne Erklärung im selben Satz.
-- Keine Zusagen: Prognosen sind Spannen und heißen Schätzung.
+- Keine Zusagen: Prognosen sind Spannen und heißen Schätzung. Versprochen wird Arbeit, nie eine Platzierung; kein Text kündigt einen bestimmten Platz bei Google, in Google Maps oder in KI-Assistenten an.
 - Nichts erfinden: jede Zahl stammt aus `raw.json`, `check_results.json` oder `rankings.json`.
 - Bewertungsfilter (nur Zufriedene zu Google leiten) nie empfehlen; Googles Richtlinie verbietet das.
 - Leistung-mal-Ort-Seiten nur empfehlen, wo Nachfrage belegt ist.

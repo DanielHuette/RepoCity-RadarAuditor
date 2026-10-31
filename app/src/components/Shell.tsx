@@ -15,6 +15,7 @@ const NAV: readonly NavItem[] = [
   { href: "/", label: "Prüfen", icon: "check", matches: ["/"] },
   { href: "/auswertung", label: "Auswertung", icon: "chart", matches: ["/auswertung"] },
   { href: "/angebot", label: "Angebot", icon: "quote", matches: ["/angebot"] },
+  { href: "/kunden", label: "Kunden", icon: "people", matches: ["/kunden"] },
 ];
 
 function isActive(item: NavItem, path: string): boolean {

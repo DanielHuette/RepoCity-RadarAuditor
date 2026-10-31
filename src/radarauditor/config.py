@@ -18,6 +18,7 @@ from radarauditor.industries import INDUSTRIES_FILE
 DEFAULT_CATALOGUE_PATH = Path("config/pruefkatalog.yaml")
 QUESTIONS_FILE = "fragen.yaml"
 PACKAGES_FILE = "pakete.yaml"
+PROSPECT_CRITERIA_FILE = "kundensuche.yaml"
 ALIVE_FILE = "worker-alive"
 DEFAULT_ANALYSIS_TIMEOUT_SECONDS = 900
 DEFAULT_ASSISTANT_TIMEOUT_SECONDS = 120
@@ -47,6 +48,12 @@ def _packages_next_to_catalogue(values: dict[str, Any]) -> Path:
     """Default package catalogue: pakete.yaml in the folder of the check catalogue."""
     catalogue = values.get("catalogue_path", DEFAULT_CATALOGUE_PATH)
     return Path(catalogue).parent / PACKAGES_FILE
+
+
+def _prospect_criteria_next_to_catalogue(values: dict[str, Any]) -> Path:
+    """Default customer search criteria: kundensuche.yaml in the folder of the check catalogue."""
+    catalogue = values.get("catalogue_path", DEFAULT_CATALOGUE_PATH)
+    return Path(catalogue).parent / PROSPECT_CRITERIA_FILE
 
 
 def _industries_next_to_catalogue(values: dict[str, Any]) -> Path:
@@ -79,11 +86,13 @@ class Settings(BaseSettings):
     questions_path: Path = Field(default_factory=_questions_next_to_catalogue)
     packages_path: Path = Field(default_factory=_packages_next_to_catalogue)
     industries_path: Path = Field(default_factory=_industries_next_to_catalogue)
+    prospect_criteria_path: Path = Field(default_factory=_prospect_criteria_next_to_catalogue)
     event_endpoint: HttpUrl | None = None
     dataforseo_login: str | None = None
     dataforseo_password: SecretStr | None = None
     # DataForSEO bills in US dollars; 1 counts every dollar as a euro, which errs on the safe side.
     dataforseo_eur_per_usd: Decimal = Field(default=Decimal(1), gt=0)
+    google_eur_per_usd: Decimal = Field(default=Decimal(1), gt=0)
     openai_api_key: SecretStr | None = None
     gemini_api_key: SecretStr | None = None
     perplexity_api_key: SecretStr | None = None

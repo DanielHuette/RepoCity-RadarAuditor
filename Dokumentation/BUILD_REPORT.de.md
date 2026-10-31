@@ -86,11 +86,35 @@ Englische Fassung: [BUILD_REPORT.md](BUILD_REPORT.md)
 | Python-Tests mit PostgreSQL | `uv run pytest` | 1804 bestanden (Lauf vom 30. Oktober 2026) |
 | App | `npm run check`, `npm test`, `npm run build` | keine Fehler, 365 bestanden in 43 Testdateien, gebaut |
 
+## Kundensuche, Antwortentwürfe und Monatsservice
+**Context:** Fahrplan-Punkt 6, gebaut am 31. Oktober 2026. | **Input:** Bestand nach Migration 015. | **Output:** Migration 016, Cockpit-Migration 008, Module, App-Seite, Prüfergebnisse.
+
+| Befund | Änderung | Nachweis |
+|---|---|---|
+| Keine Suche nach Betrieben ohne Website-Adresse | Reiter **Kunden**, `prospects/`, `search_prospects` in `collectors/places.py`, Tabellen `prospect_searches` und `prospect_results`, Liste 24 Stunden, eigene Quelle `prospect_search` mit Tages- und Euro-Monatslimit, Preis je Abfrage aus Googles Preisliste | `test_prospect_assessment.py`, `test_prospect_search.py`, `test_places.py`, `test_migration_016_database.py`, `Kundensuche.test.tsx` |
+| Kontaktwege ohne Rechtsprüfung, Widerspruch umgehbar | `config/kundensuche.yaml`, kein Mail- und kein Wählknopf, CRM-Vorgang nennt den erlaubten Weg; Sperrliste `advertising_objections` (Name und Ort, Telefon, `place_id`; Name auch als Anfang des anderen, Klammerzusätze entfernt, Eintrag ohne Ort gilt überall), Marke in der Liste, CRM nur mit Daniels Angaben | `KONTAKTWEGE.de.md`, `test_migration_016_database.py`, Integrationstests P1 bis P17 |
+| Places-Felder nur gelöscht, wenn der Server läuft | pg_cron-Zeitplan `radar-prospect-purge` stündlich zur Minute 53 in Migration 016 | `test_migration_016_database.py`, Integrationstest P17 |
+| Gespeichertes `null` hob das Euro-Limit bezahlter Quellen auf | Standardlimit bleibt bei fehlendem oder leerem Wert (Server und App) | `test_app_settings.py`, `sources.test.ts` |
+| Bewertungsantworten nur als Text in der App | PDF mit bis zu fünf Antwortentwürfen auf echte unbeantwortete Bewertungen, `/antworten` | `test_review_replies.py`, `test_reviews.py`, `ReviewReplies.test.tsx` |
+| Monatsprüfung ohne vorbereitete Arbeit | `queue_monthly_service` erst nach fertiger Erstoptimierung, Ersetzen nur der Entwürfe derselben Prüfung, `monatsservice.json`, Mitteilung im Cockpit, Freigabe je Entwurf | `test_optimization.py`, `test_crm_repositories.py`, `test_worker.py`, Integrationstests S11 bis S15 |
+| Versprechen von Platzierungen nicht ausgeschlossen | Regel in beiden Skills, Satz im Monatsbericht und im Antwort-PDF | `test_report.py`, `test_review_replies.py` |
+
+| Prüfung | Ergebnis |
+|---|---|
+| `ruff check`, `ruff format --check`, `mypy --strict src` | ohne Befund |
+| `pytest` (mit Datenbanktests) | 1913 bestanden (vorher 1804) |
+| App `npm run check`, `npm test`, `npm run build` | ohne Befund, 399 Tests bestanden (vorher 365) |
+| Cockpit-App `npm run check`, `npm test`, `npm run build` | ohne Befund, 108 Tests bestanden |
+| `integration/` `pytest` | 446 bestanden; T12 hing von der Uhrzeit ab (Tageswechsel Berlin und UTC) und ist jetzt uhrzeitfest |
+
 ## Offene Punkte
 **Context:** Nicht im Prüfsystem möglich. | **Input:** Code. | **Output:** Liste für den ersten echten Lauf.
 
 | Befund | Folge | Nachweis |
 |---|---|---|
+| Kundensuche und Antwortentwürfe nur gegen Nachbildungen von Google und Claude Code getestet | erste echte Suche und erstes Antwort-PDF nach dem Einspielen von Migration 016 beobachten | `test_prospect_search.py`, `test_review_replies.py` |
+| Dass 24 Stunden Zwischenspeicher der Places-Felder von Googles EEA-Bedingungen gedeckt sind, ist nicht belegt (keine Erlaubnis zum Zwischenspeichern außer Kennung und Koordinaten) | bei Google anfragen oder die Dauer senken; sie steht an einer Stelle (`public.prospect_cache_hours()`) | `KONTAKTWEGE.de.md`, Abschnitt Speicherung |
+| Bilder der Betriebsanleitung zeigen den Reiter **Kunden** und das Antwort-PDF noch nicht | `uv run python scripts/screenshots.py` auf einem Rechner mit Playwright | `scripts/screenshots.py` |
 | Kein Lauf gegen eine echte Firma, Google, DataForSEO oder Supabase; alle Fremddienste in den Tests nachgebildet | Erster echter Lauf auf dem PC des Betreibers nach der Einrichtung | `SETUP.de.md` |
 | Docker-Abbild nicht gebaut (kein Docker im Prüfsystem); Abhängigkeiten lösen sich in frischer Umgebung auf | `docker compose up -d` beim ersten Mal beobachten | `Dockerfile`, `requirements.txt` |
 | Unternehmensprofil-Schnittstellen erst nach Googles Freigabe nutzbar | Prüfungen m1 und m4 bis dahin „nicht messbar“ | `SETUP.de.md` Abschnitt 9 |

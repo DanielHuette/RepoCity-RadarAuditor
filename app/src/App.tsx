@@ -18,6 +18,7 @@ const SIGN_IN_PATH = "/anmelden";
 const Auswertung = lazy(() => import("./pages/Auswertung").then((module) => module.Auswertung));
 const Angebot = lazy(() => import("./pages/Angebot").then((module) => module.Angebot));
 const Settings = lazy(() => import("./pages/Settings").then((module) => module.Settings));
+const Kundensuche = lazy(() => import("./pages/Kundensuche").then((module) => module.Kundensuche));
 
 /** The former Dokumente tab; old bookmarks land on Prüfen. */
 function ToStart() {
@@ -47,6 +48,7 @@ function SignedIn({ admin, email }: { admin: boolean | undefined; email: string 
           <Route path="/auswertung/:auditId" component={Auswertung} />
           <Route path="/angebot/:auditId?" component={Angebot} />
           <Route path="/dokumente" component={ToStart} />
+          <Route path="/kunden" component={Kundensuche} />
           <Route path="/einstellungen" component={Settings} />
           <Route default component={NotFound} />
         </Router>

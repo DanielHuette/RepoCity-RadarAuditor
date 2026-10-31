@@ -13,6 +13,7 @@ import enum
 import logging
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
+from decimal import Decimal
 from typing import Literal
 
 from playwright.async_api import Error as PlaywrightError
@@ -65,17 +66,25 @@ class Business:
 class ProfileRoute:
     """Reads Google profile data for one job, browser first, Places API on a block."""
 
-    def __init__(self, browser: BrowserService, gate: SourceGate, api_key: SecretStr) -> None:
+    def __init__(
+        self,
+        browser: BrowserService,
+        gate: SourceGate,
+        api_key: SecretStr,
+        eur_per_usd: Decimal = Decimal(1),
+    ) -> None:
         """Bind the route to the job's browser, gate and Places key.
 
         Args:
             browser: Shared browser of the job.
             gate: Source switches and caps of the job.
             api_key: Google Cloud key for the Places API (New).
+            eur_per_usd: Euros per US dollar, to book the price of each Places request.
         """
         self.browser = browser
         self.gate = gate
         self.api_key = api_key
+        self._eur_per_usd = eur_per_usd
         self._blocked: str | None = None
         self._browser_used = False
         self._listings: dict[tuple[str, float, float], list[MapListing]] = {}
@@ -193,6 +202,7 @@ class ProfileRoute:
             return _result_list(phrase, listings, own, route="browser")
         self.gate.acquire(Source.PLACES)
         found = await places.listed_businesses(phrase, *centre, self.api_key, RANKING_RADIUS_METERS)
+        self._charge(places.LISTED_BUSINESSES_SKU)
         listed = [
             MapListing(item.name, "", item.place_id, item.rating, item.review_count)
             for item in found
@@ -278,7 +288,9 @@ class ProfileRoute:
         if place_id is None:
             return None
         self.gate.acquire(Source.PLACES)
-        return await places.place_details(place_id, self.api_key)
+        snapshot = await places.place_details(place_id, self.api_key)
+        self._charge(places.PLACE_DETAILS_SKU)
+        return snapshot
 
     async def _places_competitors(
         self,
@@ -292,6 +304,7 @@ class ProfileRoute:
         candidates = await places.top_competitors(
             phrase, *centre, self.api_key, limit=min(count + SEARCH_SPARE, places.MAX_PAGE_SIZE)
         )
+        self._charge(places.TOP_COMPETITORS_SKU)
         return [place for place in candidates if not _is_known_place(place, exclude, own)][:count]
 
     async def _places_position(
@@ -302,6 +315,7 @@ class ProfileRoute:
             raise CollectionError(f"the Places API knows no profile of {own.name} to rank")
         self.gate.acquire(Source.PLACES)
         ranked = await places.ranked_place_ids(phrase, *centre, self.api_key, radius)
+        self._charge(places.RANKED_PLACE_IDS_SKU)
         return ranked.index(own_id) + 1 if own_id in ranked else None
 
     async def _places_id(self, name: str, address: str, *known: str | None) -> str | None:
@@ -313,7 +327,12 @@ class ProfileRoute:
         if key not in self._places_ids:
             self.gate.acquire(Source.PLACES)
             self._places_ids[key] = await places.find_place(name, address, self.api_key)
+            self._charge(places.FIND_PLACE_SKU)
         return self._places_ids[key]
+
+    def _charge(self, sku: places.PlacesSku) -> None:
+        """Book the price of one answered Places request against the monthly euro cap."""
+        self.gate.record_cost(Source.PLACES, places.request_cost_eur(sku, self._eur_per_usd))
 
 
 def _is_known(listing: MapListing, exclude: list[PlaceSnapshot], own: Business) -> bool:

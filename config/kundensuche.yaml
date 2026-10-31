@@ -1,0 +1,81 @@
+# Kundensuche: Merkmale eines vernachlässigten Google-Profils, ihre Punkte und Schwellwerte und die
+# Kontaktwege mit ihrer Rechtslage. Einzige Quelle für den Server; die App zeigt, was der Server je
+# Treffer speichert. Begründung der Kontaktwege mit Quellen: Dokumentation/KONTAKTWEGE.de.md.
+#
+# Nur Merkmale, die die Textsuche der Places API (New) wirklich liefert: websiteUri,
+# regularOpeningHours, nationalPhoneNumber, photos (höchstens 10 je Betrieb, ohne Datum),
+# userRatingCount und businessStatus. Antworten des Inhabers auf Bewertungen und das Alter der Fotos
+# liefert sie nicht; beides misst erst ein Audit (Prüfungen g4 und f8).
+#
+# signals: je Merkmal die Punkte und der Satzteil für die Begründung. {photos}, {reviews} und
+#   {median} werden mit den Zahlen des Betriebs und der Liste gefüllt.
+# thresholds:
+#   few_photos_below: weniger Fotos als diese Zahl gelten als "wenige Fotos"
+#   few_reviews_share: weniger Bewertungen als dieser Anteil des Medians der Liste gelten als "wenige"
+#   few_reviews_min_median: unter diesem Median der Liste wird nicht verglichen (zu wenig Bewertungen)
+# max_pages: Seiten der Textsuche je Suche, je Seite höchstens 20 Betriebe und eine Abfrage der Quelle
+#   "prospect_search" (eigenes Tages- und Monatslimit in den Einstellungen); Google liefert höchstens 60.
+# contact_ways: in dieser Reihenfolge je Treffer gezeigt; status allowed, uncertain oder forbidden;
+#   needs: address oder phone, wenn der Weg die Anschrift oder die Nummer braucht.
+
+max_pages: 3
+
+thresholds:
+  few_photos_below: 5
+  few_reviews_share: 0.5
+  few_reviews_min_median: 4
+
+signals:
+  no_website:
+    points: 3
+    text: keine Webseite im Profil
+  no_opening_hours:
+    points: 2
+    text: keine Öffnungszeiten
+  no_phone:
+    points: 1
+    text: keine Telefonnummer
+  no_photos:
+    points: 2
+    text: keine Fotos
+  few_photos:
+    points: 1
+    text: "nur {photos} Fotos"
+  no_reviews:
+    points: 2
+    text: noch keine Bewertung
+  few_reviews:
+    points: 2
+    text: "{reviews} Bewertungen, wo die Hälfte der Betriebe in der Liste mindestens {median} hat"
+
+no_signal_text: Das Profil zeigt keine der Lücken, die die Google-Schnittstelle erkennen lässt.
+
+contact_ways:
+  - channel: letter
+    label: Brief
+    status: allowed
+    needs: address
+    note: >-
+      Erlaubt, solange der Betrieb nicht widersprochen hat und kein Aufkleber gegen Werbung am
+      Briefkasten klebt. Im Brief sagen, dass die Anschrift aus dem Google-Profil stammt und dass der
+      Betrieb jederzeit widersprechen kann.
+  - channel: visit
+    label: Persönlicher Besuch
+    status: allowed
+    needs: address
+    note: >-
+      Grundsätzlich erlaubt, zu den Geschäftszeiten. Ein Schild gegen Vertreter oder ein Nein sofort
+      beachten und nicht wiederkommen.
+  - channel: phone
+    label: Anruf
+    status: uncertain
+    needs: phone
+    note: >-
+      Nur mit mutmaßlicher Einwilligung erlaubt. Dass die Leistung dem Betrieb nützen würde, reicht
+      nach der Rechtsprechung nicht. Ohne konkreten Anlass nicht anrufen.
+  - channel: email
+    label: E-Mail
+    status: forbidden
+    note: >-
+      Werbung per E-Mail nur mit vorheriger ausdrücklicher Einwilligung, auch unter Betrieben. Eine
+      Kaltakquise-Mail gibt es hier deshalb nicht.

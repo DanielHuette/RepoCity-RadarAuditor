@@ -4,10 +4,15 @@ Context: The app accepts a CRM quote (crm.accept_quote creates the order) and qu
 with start_optimization(order_id). The worker writes one folder per job with the order, the audit
 and what is reachable (WordPress pages and posts, Business Profile reviews), runs /optimieren
 headless (skills/radar-optimierer/SKILL.md), validates aenderungen.json and replaces the order's
-undecided drafts in optimization_changes. Nothing is applied here; Daniel approves each draft in
-the app and the apply job performs it. The folder never holds a password.
+undecided drafts of the same audit in optimization_changes. Nothing is applied here; Daniel approves
+each draft in the app and the apply job performs it. The folder never holds a password.
+A job for a monthly audit is the monthly service (queued by public.queue_monthly_service once the
+first optimisation of the order is finished): its folder also gets monatsservice.json with the
+unanswered reviews published since the previous audit and the profile facts of this audit, and the
+drafts may only be replies, profile changes or work by hand, never a change of the website. A run
+replaces only the undecided drafts of its own audit, so the open drafts of another run stay.
 Input: Claimed optimize job with order_id and audit_id.
-Output: Draft rows, event optimization.drafted.
+Output: Draft rows, event optimization.drafted with the audit and its purpose.
 """
 
 import asyncio
@@ -24,9 +29,12 @@ from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, ValidationError
 
 from radarauditor.collectors.access import owner_reviews
 from radarauditor.collectors.google_auth import access_token
+from radarauditor.collectors.snapshot import RawAudit
 from radarauditor.config import Settings
 from radarauditor.db.crm import CrmOrder, CrmProduct, CrmQuote, CrmQuoteItem
 from radarauditor.db.models import (
+    Audit,
+    AuditPurpose,
     CheckResult,
     Finding,
     Job,
@@ -46,6 +54,7 @@ from radarauditor.optimization.targets import (
     WordPressField,
     parse_target,
 )
+from radarauditor.reviews import unanswered_reviews
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +66,22 @@ ACCESS_FILE = "zugang.json"
 WORDPRESS_FILE = "wordpress.json"
 REVIEWS_FILE = "bewertungen.json"
 CHANGES_FILE = "aenderungen.json"
+MONTHLY_FILE = "monatsservice.json"
+PROFILE_FACTS = frozenset(
+    {
+        "name",
+        "phone",
+        "website",
+        "rating",
+        "review_count",
+        "has_opening_hours",
+        "photo_count",
+        "photo_newest_date",
+        "description",
+        "post_ages_days",
+        "question_count",
+    }
+)
 DRAFTED_EVENT = "optimization.drafted"
 MAX_CHANGES = 200
 MAX_TEXT_CHARS = 60_000
@@ -117,6 +142,28 @@ class AccessSummary(BaseModel):
 
     wordpress: WordPressAccess
     business_profile: ProfileAccess
+
+
+class NewReview(BaseModel):
+    """An unanswered review published since the previous audit, as listed in monatsservice.json."""
+
+    review_id: str | None = Field(serialization_alias="reviewId")
+    datum: str
+    sterne: float | None
+    text: str
+
+
+class MonthlyInput(BaseModel):
+    """Content of monatsservice.json.
+
+    antworten_bekannt is False when the audit read reviews through the Places API, which cannot
+    tell answered from unanswered; neue_bewertungen is then empty.
+    """
+
+    letzte_pruefung: datetime | None
+    antworten_bekannt: bool
+    neue_bewertungen: list[NewReview]
+    profil: dict[str, object] | None
 
 
 class DraftChange(BaseModel):
@@ -213,8 +260,11 @@ async def _profile_part(
 
 async def materialise(
     job: Job, order_id: UUID, folder: Path, repositories: Repositories, settings: Settings
-) -> None:
+) -> Audit:
     """Write every input file of one optimize job into its folder.
+
+    Returns:
+        The audit of the job.
 
     Raises:
         OptimizationError: If the job has no audit or the order no ordered services.
@@ -238,6 +288,55 @@ async def materialise(
         business_profile=await _profile_part(job, repositories, folder, settings),
     )
     _write_json(folder / ACCESS_FILE, summary)
+    if audit.purpose is AuditPurpose.MONTHLY:
+        _write_monthly(audit, folder, repositories)
+    return audit
+
+
+def monthly_input(raw: RawAudit | None, previous: Audit | None) -> MonthlyInput:
+    """What the monthly service works on: new unanswered reviews and the profile facts.
+
+    Args:
+        raw: Raw data of the monthly audit, None when it has none.
+        previous: The audit before it; without one every unanswered review counts as new.
+
+    Returns:
+        The content of monatsservice.json.
+    """
+    since = previous.requested_at if previous is not None else None
+    if raw is None:
+        return MonthlyInput(
+            letzte_pruefung=since, antworten_bekannt=False, neue_bewertungen=[], profil=None
+        )
+    picked = unanswered_reviews(raw, since=since)
+    return MonthlyInput(
+        letzte_pruefung=since,
+        antworten_bekannt=picked.reply_data_available,
+        neue_bewertungen=[
+            NewReview(
+                review_id=review.review_id,
+                datum=review.date_text,
+                sterne=review.stars,
+                text=review.text,
+            )
+            for review in picked.reviews
+        ],
+        profil=raw.place.model_dump(mode="json", include=set(PROFILE_FACTS)) if raw.place else None,
+    )
+
+
+def _write_monthly(audit: Audit, folder: Path, repositories: Repositories) -> None:
+    raw_file = folder / handoff.RAW_FILE
+    try:
+        raw = (
+            RawAudit.model_validate_json(raw_file.read_text(encoding="utf-8"))
+            if raw_file.exists()
+            else None
+        )
+    except (OSError, ValidationError) as exc:
+        raise OptimizationError(f"{raw_file}: raw data unreadable: {exc}") from exc
+    content = monthly_input(raw, repositories.previous_audit(audit))
+    handoff.write_atomic(folder / MONTHLY_FILE, content.model_dump_json(indent=2, by_alias=True))
 
 
 def _write_audit_results(audit_id: UUID, folder: Path, repositories: Repositories) -> None:
@@ -258,6 +357,7 @@ class _Context:
     access: AccessSummary
     wordpress: dict[tuple[str, int], bool]
     review_ids: set[str]
+    monthly: bool
 
 
 def _read_context(folder: Path) -> _Context:
@@ -287,6 +387,7 @@ def _read_context(folder: Path) -> _Context:
         access=access,
         wordpress=wordpress,
         review_ids=review_ids,
+        monthly=(folder / MONTHLY_FILE).exists(),
     )
 
 
@@ -338,6 +439,8 @@ def _check_draft(draft: DraftChange, context: _Context) -> Target:
     if draft.before is not None and draft.before.strip() == draft.after.strip():
         raise ValueError("after equals before")
     if target.system is System.WORDPRESS:
+        if context.monthly:
+            raise ValueError("the monthly service drafts no website changes")
         _check_wordpress(target, context)
     elif target.system is System.BUSINESS_PROFILE:
         _check_profile(target, context)
@@ -425,7 +528,7 @@ async def optimize_order(
         raise OptimizationError(f"optimize job {job.id} has no order id")
     folder = settings.radar_work_dir / OPTIMIZE_DIR / str(job.id)
     try:
-        await materialise(job, job.order_id, folder, repositories, settings)
+        audit = await materialise(job, job.order_id, folder, repositories, settings)
         (folder / CHANGES_FILE).unlink(missing_ok=True)
         await asyncio.to_thread(runner, folder, settings)
         changes = validate_drafts(folder, job.order_id, job.audit_id)
@@ -433,13 +536,15 @@ async def optimize_order(
         # A failed attempt is retried from scratch; nothing of it must be reused.
         shutil.rmtree(folder, ignore_errors=True)
         raise
-    repositories.replace_draft_changes(job.order_id, changes)
+    repositories.replace_draft_changes(job.order_id, job.audit_id, changes)
     repositories.new_event(
         DRAFTED_EVENT,
         {
             "order_id": str(job.order_id),
             "job_id": str(job.id),
             "customer_id": str(job.customer_id),
+            "audit_id": str(audit.id),
+            "purpose": audit.purpose.value,
             "drafts": len(changes),
         },
     )

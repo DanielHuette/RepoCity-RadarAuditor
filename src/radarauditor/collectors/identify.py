@@ -19,6 +19,7 @@ import logging
 import re
 from collections.abc import Callable
 from dataclasses import dataclass, field
+from decimal import Decimal
 from uuid import uuid4
 
 import httpx
@@ -188,6 +189,7 @@ async def identify_customer(
     gate: SourceGate,
     api_key: SecretStr,
     notes: list[str],
+    eur_per_usd: Decimal = Decimal(1),
 ) -> Identification:
     """Fill in what an audit started with only the website lacks and store it.
 
@@ -201,6 +203,7 @@ async def identify_customer(
         gate: Source switches and caps of the job (Places API).
         api_key: Google Cloud key with the Places API (New) enabled.
         notes: Receives a line for every source that could not be read.
+        eur_per_usd: Euros per US dollar, to book the price of the Places search.
 
     Returns:
         The updated customer, location and keywords and the identified values with their sources;
@@ -216,7 +219,7 @@ async def identify_customer(
     found = _Found()
     if missing.name or missing.city:
         await _read_website(site, found, notes)
-    await _ask_google(customer, location, found, missing, gate, api_key, notes)
+    await _ask_google(customer, location, found, missing, gate, api_key, eur_per_usd, notes)
     return _store(customer, location, keywords, found, missing, industries, repositories, notes)
 
 
@@ -402,6 +405,7 @@ async def _ask_google(
     missing: _Missing,
     gate: SourceGate,
     api_key: SecretStr,
+    eur_per_usd: Decimal,
     notes: list[str],
 ) -> None:
     """Search the business on Google and keep the first candidate that is clearly the customer."""
@@ -416,6 +420,9 @@ async def _ask_google(
     try:
         gate.acquire(Source.PLACES)
         candidates = await places.search_businesses(query, api_key)
+        gate.record_cost(
+            Source.PLACES, places.request_cost_eur(places.SEARCH_BUSINESSES_SKU, eur_per_usd)
+        )
     except CollectionError as error:
         notes.append(f"Google profile not searched: {error}")
         return

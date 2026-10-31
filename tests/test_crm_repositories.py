@@ -104,12 +104,26 @@ def test_replace_draft_changes_deletes_only_drafts(client: MagicMock, settings: 
         applied_at=None,
     )
 
-    Repositories(settings).replace_draft_changes(ORDER_ID, [draft])
+    Repositories(settings).replace_draft_changes(ORDER_ID, None, [draft])
 
     assert ("eq", ("status", "draft")) in delete.calls
+    assert ("is_", ("audit_id", "null")) in delete.calls
     rows = insert.calls[0][1][0]
     assert rows[0]["target"] == "manual:x"
     assert "applied_at" not in rows[0]
+
+
+def test_replace_draft_changes_keeps_the_drafts_of_other_audits(
+    client: MagicMock, settings: Settings
+) -> None:
+    delete = RecordingQuery([])
+    client.table.side_effect = [delete]
+    audit_id = uuid4()
+
+    Repositories(settings).replace_draft_changes(ORDER_ID, audit_id, [])
+
+    assert ("eq", ("order_id", str(ORDER_ID))) in delete.calls
+    assert ("eq", ("audit_id", str(audit_id))) in delete.calls
 
 
 def test_finish_change_updates_only_an_approved_change(

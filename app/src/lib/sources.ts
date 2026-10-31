@@ -7,7 +7,7 @@ import { parseAmount } from "./format";
 export const SOURCES_KEY = "sources";
 
 export const SOURCE_IDS = [
-  "google_search", "google_maps", "places", "dataforseo", "chatgpt", "claude", "gemini", "perplexity",
+  "google_search", "google_maps", "places", "prospect_search", "dataforseo", "chatgpt", "claude", "gemini", "perplexity",
 ] as const;
 export type SourceId = (typeof SOURCE_IDS)[number];
 
@@ -41,6 +41,12 @@ export const SOURCE_INFO: Record<SourceId, SourceInfo> = {
       "Bezahlte Google-Schnittstelle, springt ein, wenn Google Maps im Browser gesperrt ist: Profil, Wettbewerber und Kartenraster. Kosten pro Abfrage.",
     paid: true,
   },
+  prospect_search: {
+    label: "Kundensuche",
+    explanation:
+      "Bezahlte Google-Schnittstelle für den Reiter Kunden, mit eigenen Limits, damit die Prüfungen nie zu kurz kommen. Je 20 Betriebe eine Abfrage.",
+    paid: true,
+  },
   dataforseo: {
     label: "DataForSEO",
     explanation: "Bezahlte Google-Daten für Suchnachfrage und Verweise, Kosten pro Abfrage.",
@@ -71,11 +77,14 @@ export const SOURCE_INFO: Record<SourceId, SourceInfo> = {
 // Same values as DEFAULT_SOURCES in src/radarauditor/db/app_settings.py: the worker always enforces a
 // daily cap and uses these when the stored entry has none, so the app shows what actually applies.
 const DATAFORSEO_MONTHLY_CAP_EUR = 50;
+const PLACES_MONTHLY_CAP_EUR = 25;
+const PROSPECT_SEARCH_MONTHLY_CAP_EUR = 10;
 
 export const DEFAULT_SOURCES: SourceSettings = {
   google_search: { enabled: true, daily_cap: 300 },
   google_maps: { enabled: true, daily_cap: 500 },
-  places: { enabled: true, daily_cap: 500 },
+  places: { enabled: true, daily_cap: 500, monthly_cost_cap_eur: PLACES_MONTHLY_CAP_EUR },
+  prospect_search: { enabled: true, daily_cap: 15, monthly_cost_cap_eur: PROSPECT_SEARCH_MONTHLY_CAP_EUR },
   dataforseo: { enabled: true, daily_cap: 1000, monthly_cost_cap_eur: DATAFORSEO_MONTHLY_CAP_EUR },
   chatgpt: { enabled: true, daily_cap: 200 },
   claude: { enabled: true, daily_cap: 200 },
@@ -95,7 +104,8 @@ function parseSetting(value: unknown, fallback: SourceSetting): SourceSetting {
   if (!isRecord(value)) return fallback;
   const setting: SourceSetting = { enabled: typeof value.enabled === "boolean" ? value.enabled : fallback.enabled };
   const daily = limit(value.daily_cap) ?? fallback.daily_cap;
-  const monthly = "monthly_cost_cap_eur" in value ? limit(value.monthly_cost_cap_eur) : fallback.monthly_cost_cap_eur;
+  // A paid source keeps its default cost cap when the stored one is missing or not a number.
+  const monthly = limit(value.monthly_cost_cap_eur) ?? fallback.monthly_cost_cap_eur;
   if (daily !== undefined) setting.daily_cap = daily;
   if (monthly !== undefined) setting.monthly_cost_cap_eur = monthly;
   return setting;

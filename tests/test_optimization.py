@@ -20,6 +20,9 @@ from pydantic import SecretStr
 from radarauditor.config import Settings
 from radarauditor.db.crm import CrmOrder, CrmProduct, CrmQuote, CrmQuoteItem
 from radarauditor.db.models import (
+    Audit,
+    AuditPurpose,
+    AuditStatus,
     CustomerAccess,
     Job,
     JobKind,
@@ -283,7 +286,9 @@ async def test_optimize_with_the_fake_cli_stores_validated_drafts(
     ]
     assert all(draft.status is OptimizationChangeStatus.DRAFT for draft in drafts)
     assert drafts[1].before == "Willkommen"
-    order_repositories.replace_draft_changes.assert_called_once_with(ORDER_ID, drafts)
+    order_repositories.replace_draft_changes.assert_called_once_with(
+        ORDER_ID, order_job.audit_id, drafts
+    )
     assert order_repositories.new_event.call_args.args[0] == prepare.DRAFTED_EVENT
     folder = claude_settings.radar_work_dir / prepare.OPTIMIZE_DIR / str(order_job.id)
     written = "".join(path.read_text(encoding="utf-8") for path in folder.glob("*.json"))
@@ -503,6 +508,127 @@ async def test_materialise_needs_an_audit(
         await prepare.materialise(job, ORDER_ID, tmp_path / "job", order_repositories, settings)
 
     assert not (tmp_path / "job").exists()
+
+
+# Monthly service -----
+
+
+def _monthly_raw() -> str:
+    from radarauditor.collectors.snapshot import PlaceSnapshot, RawAudit
+
+    def review(day: str, text: str, reply: object = None) -> dict[str, object]:
+        return {"publishTime": f"{day}T10:00:00Z", "rating": 4, "text": text, "reviewReply": reply}
+
+    place = PlaceSnapshot(
+        place_id="ChIJ-own",
+        name="Dachdeckerei Muster",
+        formatted_address="Hiltruper Str. 210, 48165 Münster",
+        phone="0251 1",
+        website=None,
+        primary_type=None,
+        types=[],
+        rating=4.5,
+        review_count=12,
+        has_opening_hours=False,
+        photo_count=3,
+        recent_reviews=[
+            review("2026-08-20", "Vor der letzten Prüfung"),
+            review("2026-09-20", "Neu und offen"),
+            review("2026-09-22", "Neu, beantwortet", reply={"text": "Danke"}),
+        ],
+        business_status="OPERATIONAL",
+        post_ages_days=[120],
+        value_routes={"recent_reviews": "browser"},
+    )
+    return RawAudit(
+        website=None,
+        pagespeed=None,
+        place=place,
+        competitor_places=[],
+        serps=[],
+        directories=[],
+        assistant_answers=[],
+        collected_at=FIXED_TIME,
+        warnings=[],
+    ).model_dump_json()
+
+
+@pytest.fixture
+def monthly_repositories(order_repositories: MagicMock, sample_audit: Audit) -> MagicMock:
+    """A monthly audit of the subscription with reviews read in the browser."""
+    order_repositories.audit.return_value = sample_audit.model_copy(
+        update={"purpose": AuditPurpose.MONTHLY, "status": AuditStatus.REPORTED}
+    )
+    order_repositories.previous_audit.return_value = sample_audit.model_copy(
+        update={"id": uuid4(), "requested_at": datetime(2026, 9, 1, tzinfo=UTC)}
+    )
+    order_repositories.wordpress_password.return_value = None
+
+    def download(bucket: str, remote_path: str, local_file: Path) -> Path:
+        local_file.write_text(_monthly_raw(), encoding="utf-8")
+        return local_file
+
+    order_repositories.download.side_effect = download
+    return order_repositories
+
+
+def monthly_writer(changes: list[dict[str, Any]]) -> Any:
+    def write(folder: Path, settings: Settings) -> None:
+        (folder / prepare.CHANGES_FILE).write_text(json.dumps({"changes": changes}))
+
+    return write
+
+
+async def test_the_monthly_service_hands_new_unanswered_reviews_and_profile_facts(
+    monthly_repositories: MagicMock, settings: Settings, order_job: Job
+) -> None:
+    seen: dict[str, Any] = {}
+    changes = [
+        entry("manual:Antwort auf die Bewertung vom 20.09.2026", "Vielen Dank!", check_id=None),
+        entry("manual:Öffnungszeiten eintragen", "Mo–Fr 7–17 Uhr eintragen.", check_id=None),
+    ]
+
+    def write(folder: Path, current: Settings) -> None:
+        seen.update(json.loads((folder / prepare.MONTHLY_FILE).read_text(encoding="utf-8")))
+        monthly_writer(changes)(folder, current)
+
+    drafts = await optimize_order(order_job, monthly_repositories, settings, runner=write)
+
+    assert seen["neue_bewertungen"] == [
+        {"reviewId": None, "datum": "20.09.2026", "sterne": 4, "text": "Neu und offen"}
+    ]
+    assert seen["antworten_bekannt"] is True
+    assert seen["letzte_pruefung"] == "2026-09-01T00:00:00Z"
+    assert seen["profil"]["has_opening_hours"] is False
+    assert seen["profil"]["post_ages_days"] == [120]
+    assert [draft.target for draft in drafts] == [item["target"] for item in changes]
+    kind, payload = monthly_repositories.new_event.call_args.args
+    assert kind == prepare.DRAFTED_EVENT
+    assert payload["purpose"] == "monthly"
+    assert payload["audit_id"] == str(order_job.audit_id)
+
+
+async def test_a_sales_optimize_job_gets_no_monthly_file(
+    order_repositories: MagicMock, settings: Settings, order_job: Job
+) -> None:
+    seen: list[bool] = []
+
+    def write(folder: Path, current: Settings) -> None:
+        seen.append((folder / prepare.MONTHLY_FILE).exists())
+        monthly_writer([])(folder, current)
+
+    await optimize_order(order_job, order_repositories, settings, runner=write)
+
+    assert seen == [False]
+    assert order_repositories.new_event.call_args.args[1]["purpose"] == "sales"
+
+
+def test_monthly_drafts_never_touch_the_website(tmp_path: Path) -> None:
+    write_folder(tmp_path, [entry("wordpress:page:42:title")])
+    (tmp_path / prepare.MONTHLY_FILE).write_text("{}")
+
+    with pytest.raises(OptimizationError, match="the monthly service drafts no website changes"):
+        validate_drafts(tmp_path, ORDER_ID, None)
 
 
 # Apply -----

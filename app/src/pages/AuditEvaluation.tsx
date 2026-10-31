@@ -13,6 +13,7 @@ import { JobStatusBadge } from "../components/JobStatusBadge";
 import { Levers } from "../components/Levers";
 import { openInNewTab } from "../components/openUrl";
 import { RadarChart } from "../components/RadarChart";
+import { ReviewReplies } from "../components/ReviewReplies";
 import { ScoreRing } from "../components/ScoreRing";
 import { TalkBox } from "../components/TalkBox";
 import { TextSuggestions } from "../components/TextSuggestions";
@@ -301,6 +302,7 @@ function EvaluationView({ loaded }: { loaded: LoadedAudit }) {
         <ReportButton audit={audit} />
       </div>
       {hint !== null && <p class={audit.status === "failed" ? "notice notice--bad" : "notice"}>{hint}</p>}
+      {customer !== null && <ReviewReplies auditId={audit.id} auditStatus={audit.status} customerId={customer.id} />}
 
       <PotentialSummary totals={potentialTotals(checks)} />
       <ScoreSection checks={checks} previous={previous} previousChecks={previousChecks} audit={audit} />

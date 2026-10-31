@@ -245,6 +245,8 @@ def fake_repositories(
     repositories.claim_jobs.return_value = []
     repositories.claim_mail_triage.return_value = []
     repositories.claim_assistant_request.return_value = None
+    repositories.claim_prospect_search.return_value = None
+    repositories.queue_monthly_service.return_value = None
     repositories.requeue_running_jobs.return_value = 0
     repositories.pending_events.return_value = []
     repositories.pending_documents.return_value = []

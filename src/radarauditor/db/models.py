@@ -238,6 +238,7 @@ class DocumentKind(StrEnum):
     CONTRACT = "contract"
     PROOF_OF_SERVICE = "proof_of_service"
     AUDIT_QUOTE = "audit_quote"
+    REVIEW_REPLIES = "review_replies"
 
 
 class Document(BaseModel):
@@ -296,3 +297,27 @@ class OptimizationChange(BaseModel):
     created_at: datetime
     decided_at: datetime | None
     applied_at: datetime | None
+
+
+class ProspectSearchStatus(StrEnum):
+    """Lifecycle of a customer search (migration 016)."""
+
+    QUEUED = "queued"
+    RUNNING = "running"
+    DONE = "done"
+    FAILED = "failed"
+    EXPIRED = "expired"
+
+
+class ProspectSearch(BaseModel):
+    """A customer search for one trade in one city."""
+
+    id: UUID
+    trade: str
+    city: str
+    status: ProspectSearchStatus
+    error: str | None = None
+    result_count: int | None = None
+    requested_at: datetime
+    claimed_at: datetime | None = None
+    fetched_at: datetime | None = None
