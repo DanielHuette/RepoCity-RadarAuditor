@@ -2681,7 +2681,7 @@ html[data-reiter]:not([data-reiter="projekt"]) .buehne {
   }
 
   .film__kapitel {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-columns: repeat(9, minmax(0, 1fr));
   }
 
   .nabe__quelle {
@@ -2754,7 +2754,7 @@ html[data-reiter]:not([data-reiter="projekt"]) .buehne {
   display: none;
 }
 
-/* Phones: chapters become eight numbered buttons in one row, and the stage shrinks on short
+/* Phones: chapters become nine numbered buttons in one row, and the stage shrinks on short
    screens, so stage and controls sit above the tab bar. Chapters are a sequence, hence numbers. */
 @media (max-width: 719px) {
   .film__bild {
@@ -2763,7 +2763,7 @@ html[data-reiter]:not([data-reiter="projekt"]) .buehne {
   }
 
   .film__kapitel {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-columns: repeat(9, minmax(0, 1fr));
     counter-reset: kapitel;
   }
 

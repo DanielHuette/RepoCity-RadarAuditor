@@ -437,6 +437,21 @@
     </div>
   </section>
 
+  <section class="section" id="kunden" aria-labelledby="kunden-titel">
+    <div class="wrap">
+      <h2 id="kunden-titel">Before and after the audit</h2>
+      <p class="section__intro">The app finds businesses that would benefit from an audit, gives undecided customers real reply drafts to take away and prepares the work for every month of a subscription. What is promised is this work, never a particular position on Google.</p>
+      <ol class="steps">
+        <li><strong>Finding customers</strong>In the “Kunden” (customers) tab the operator enters a trade and a town, for example roofers in Münster. The server reads up to 60 businesses from Google Maps and sorts them by gaps in their Google profile, each with one sentence saying why: no website, no opening hours, no phone number, few photos or clearly fewer reviews than half of the list.</li>
+        <li><strong>Add or audit right away</strong>“Ins CRM als Interessent” (add to the CRM as a prospect) creates the business in the customer relationship management system (CRM) with an open case. Only what the operator copies from the public Google profile is stored. “Audit starten” (start audit) checks the business's website just like the “Prüfen” (audit) tab.</li>
+        <li><strong>Only permitted ways of contact</strong>Each business shows the ways that section 7 of the German Act against Unfair Competition allows: letter and personal visit, a phone call only with a concrete reason, an advertising email without consent never. That is why there is neither an email nor a dial button. Anyone who has objected to advertising is on a block list and appears without any way of contact.</li>
+        <li><strong>Costs and storage time capped</strong>The customer search has its own daily limit and a monthly limit in euros, so the audits never run short. After 24 hours the database deletes the list by itself, even when the server is off.</li>
+        <li><strong>Reply drafts as a PDF</strong>When a customer says “let me think about it”, the server writes up to five replies to their real reviews that have no reply yet and presents them as a PDF. Nothing is published on Google.</li>
+        <li><strong>Monthly service</strong>Once the first optimisation is finished, drafts are prepared after every monthly audit of a subscription: replies to new reviews and suggestions for looking after the profile, such as opening hours, photos, posts and description, never a change to the website. The operator approves each draft on its own.</li>
+      </ol>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="built">
     <div class="wrap">
       <h2 id="built">Built as a product, not as a demo</h2>
@@ -444,8 +459,8 @@
         <table>
           <caption class="visually-hidden">Technical facts about RadarAuditor</caption>
           <tbody>
-            <tr><th scope="row">Python tests</th><td><b>1804</b> passing</td></tr>
-            <tr><th scope="row">App tests</th><td><b>365</b> passing</td></tr>
+            <tr><th scope="row">Python tests</th><td><b>1913</b> passing</td></tr>
+            <tr><th scope="row">App tests</th><td><b>399</b> passing</td></tr>
             <tr><th scope="row">Check catalogue</th><td><b>108</b> checks in 14 areas in one file, the single source for weights and thresholds</td></tr>
             <tr><th scope="row">App</th><td>Installable web app for phone, tablet and PC</td></tr>
             <tr><th scope="row">Collector</th><td>Docker container on the RepoCity server</td></tr>
@@ -455,6 +470,10 @@
             <tr><th scope="row">Quotes</th><td>On site in the app: positions from the open points of the audit with products and prices from the CRM; audit report and quote as one PDF, sent through the CRM</td></tr>
             <tr><th scope="row">Orders</th><td>After acceptance Claude Code prepares the changes to website and Google profile as drafts, and the collector applies the approved ones; the CRM handles the order, the invoice and the monthly audit of the subscription</td></tr>
             <tr><th scope="row">Mail</th><td>On the server, Claude Code sorts replies to quotes and enquiries from unknown senders, without any tools</td></tr>
+            <tr><th scope="row">Customer search</th><td>Trade and town, up to <b>60</b> businesses from Google Maps sorted by gaps in their Google profile; own daily limit and monthly limit in euros, list deleted after 24 hours</td></tr>
+            <tr><th scope="row">Ways of contact</th><td>Letter and visit; phone call only with a concrete reason, advertising email without consent never (section 7 of the German Act against Unfair Competition); block list for objections to advertising</td></tr>
+            <tr><th scope="row">Reply drafts</th><td>Up to five replies to real, unanswered reviews as a PDF; nothing is published on Google</td></tr>
+            <tr><th scope="row">Monthly service</th><td>Drafts of replies to new reviews and of profile care, each approved on its own; what is promised is work, never a position on Google</td></tr>
           </tbody>
         </table>
       </div>
@@ -467,7 +486,7 @@
       <div class="audience">
         <div>
           <h3>Businesses</h3>
-          <p>The remote audit needs nothing from you: no access, no password, no appointment. For ongoing care you grant access to your Google profile once and, if you use it, to Search Console. Following the guide this takes about five minutes, and your password stays with you. After that a report arrives every month showing what has changed.</p>
+          <p>The remote audit needs nothing from you: no access, no password, no appointment. For ongoing care you grant access to your Google profile once and, if you use it, to Search Console. Following the guide this takes about five minutes, and your password stays with you. After that a report arrives every month showing what has changed, together with drafts of replies to new reviews and of care for your profile, which are only carried out once approved. What is promised is this work, not a particular position on Google.</p>
           <div class="links"><a href="mailto:kontakt@speedofthespirit.dev?subject=Audit%20request%3A%20RadarAuditor">Request an audit: kontakt@speedofthespirit.dev</a></div>
         </div>
         <div>
@@ -493,7 +512,7 @@
           <ol class="org__stationen">
             <li class="station" data-station="1">
               <h3 class="station__titel">App on phone, tablet and PC</h3>
-              <p class="station__tut">The operator enters only the website address, picks the checks and starts the remote audit. Open audit requests from the CRM are listed below the “Prüfen” (audit) button; a request with a website fills in the address field.</p>
+              <p class="station__tut">The operator enters only the website address, picks the checks and starts the remote audit. Open audit requests from the CRM are listed below the “Prüfen” (audit) button; a request with a website fills in the address field. In the “Kunden” (customers) tab the operator finds the businesses of one trade in one town.</p>
               <p class="station__ort">Cloudflare Pages</p>
               <ul class="station__skills" aria-label="Skills">
                 <li>Installable web app (Progressive Web App)</li>
@@ -544,7 +563,7 @@
             </li>
             <li class="station" data-station="6">
               <h3 class="station__titel">Report as PDF</h3>
-              <p class="station__tut">Print-ready report with charts and a forecast as a range; for the monthly audit a before-after report.</p>
+              <p class="station__tut">Print-ready report with charts and a forecast as a range; for the monthly audit a before-after report. On request also up to five reply drafts to real reviews.</p>
               <p class="station__ort">in the collector container</p>
               <ul class="station__skills" aria-label="Skills">
                 <li>PDF with WeasyPrint</li>
@@ -572,8 +591,9 @@
               </ul>
             </li>
           </ol>
+          <p class="org__schleife"><strong>Customer search</strong> Trade and town in the “Kunden” (customers) tab: the server reads up to 60 businesses from Google Maps, sorts them by gaps in their Google profile and names the permitted ways of contact for each, letter and visit. “Ins CRM als Interessent” (add to the CRM as a prospect) creates the business in the CRM, “Audit starten” (start audit) puts the remote audit of its website into the queue. Businesses on the block list for objections to advertising appear without any way of contact and without a button.</p>
           <p class="org__schleife"><strong>Audit request</strong> An audit request in the CRM names the business, the meeting type (on site, phone or video) and a free hour from Daniel's calendar. In the Cockpit it arrives with “Bestätigen” (confirm), “Anderen Termin vorschlagen” (propose another time) and “Prüfen” (audit); “Prüfen” puts the remote audit of its website into the queue.</p>
-          <p class="org__schleife" data-schleife><strong>Monthly audit</strong> Once a month the CRM marks a subscription due. One tap in the Cockpit puts the order back into the queue, and the report then shows before and after.</p>
+          <p class="org__schleife" data-schleife><strong>Monthly audit</strong> Once a month the CRM marks a subscription due. One tap in the Cockpit puts the order back into the queue, and the report then shows before and after. Then the collector prepares the monthly service: drafts of replies to new reviews and of profile care, which the operator approves one by one.</p>
         </div>
         <p class="org__band">Every change to the code runs through the same checks with GitHub Actions: formatting and style with ruff, types with mypy, tests with pytest, plus check, tests and build of the app.</p>
       </div>
@@ -779,21 +799,21 @@
         </div>
         <p class="quelle">Source: <code>config/pruefkatalog.yaml</code>, fields <code>weight</code>, <code>source</code>, <code>requires_paid</code> and <code>requires_access</code>.</p>
 
-        <h3 class="messung__zwischen">Check runs on 30 October 2026</h3>
-        <p class="messung__satz messung__satz--frei">The same checks run automatically on every push. On 30 October 2026 all of them passed.</p>
+        <h3 class="messung__zwischen">Check runs on 31 October 2026</h3>
+        <p class="messung__satz messung__satz--frei">The same checks run automatically on every push. On 31 October 2026 all of them passed.</p>
         <div class="kacheln">
           <div class="kachel">
-            <p class="kachel__zahl">1804</p>
+            <p class="kachel__zahl">1913</p>
             <p class="kachel__was"><span class="kachel__ok" aria-hidden="true"></span>Python tests passed</p>
             <p class="kachel__wie">with PostgreSQL for the database migrations</p>
           </div>
           <div class="kachel">
-            <p class="kachel__zahl">365</p>
+            <p class="kachel__zahl">399</p>
             <p class="kachel__was"><span class="kachel__ok" aria-hidden="true"></span>app tests passed</p>
-            <p class="kachel__wie">in 43 test files</p>
+            <p class="kachel__wie">in 47 test files</p>
           </div>
           <div class="kachel">
-            <p class="kachel__zahl">83</p>
+            <p class="kachel__zahl">89</p>
             <p class="kachel__was"><span class="kachel__ok" aria-hidden="true"></span>source files without type errors</p>
             <p class="kachel__wie">mypy in strict mode</p>
           </div>
@@ -803,24 +823,35 @@
             <p class="kachel__wie">ruff check and ruff format</p>
           </div>
         </div>
-        <p class="quelle">Source: <code>Dokumentation/BUILD_REPORT.md</code>, section of the latest check runs.</p>
+        <p class="quelle">Source: runs of <code>pytest</code>, <code>npm test</code>, <code>mypy src</code> and <code>ruff</code> on 31 October 2026; test counts also in <code>Dokumentation/BUILD_REPORT.md</code>.</p>
       </div>
     </section>
   </div>
   <div class="reiter-tafel" id="praesentation" data-reiter-tafel role="tabpanel" aria-labelledby="reiter-praesentation">
     <section class="section section--tafel" aria-labelledby="film-titel">
       <div class="wrap">
-        <h2 id="film-titel">RadarAuditor in eight scenes</h2>
+        <h2 id="film-titel">RadarAuditor in nine scenes</h2>
         <div class="film" data-film>
           <div class="film__bild">
-            <section class="szene szene--frage" aria-roledescription="scene" aria-label="1 of 8: The question">
+            <section class="szene szene--frage" aria-roledescription="scene" aria-label="1 of 9: The question">
               <div class="szene__motiv" aria-hidden="true">
                 <div class="radar"><span class="radar__strahl"></span><span class="radar__punkt"></span><span class="radar__punkt"></span><span class="radar__punkt radar__punkt--gold"></span></div>
                 <p class="szene__marke">RadarAuditor</p>
               </div>
               <p class="szene__text">Customers look for a business nearby. Will they find yours?</p>
             </section>
-            <section class="szene szene--eingabe" aria-roledescription="scene" aria-label="2 of 8: Input">
+            <section class="szene szene--kunden" aria-roledescription="scene" aria-label="2 of 9: Finding customers">
+              <div class="szene__motiv" aria-hidden="true">
+                <div class="handy">
+                  <p class="handy__kopf">Customers</p>
+                  <p class="handy__feld"><span class="handy__tippen">Roofers, Münster</span></p>
+                  <p class="handy__knopf">Find businesses</p>
+                  <ul class="handy__schritte"><li>No website in profile</li><li>No opening hours</li><li>Few reviews</li><li>Letter or visit</li><li>Add to CRM as prospect</li></ul>
+                </div>
+              </div>
+              <p class="szene__text">A trade and a town are enough. The app finds up to 60 businesses with gaps in their Google profile.</p>
+            </section>
+            <section class="szene szene--eingabe" aria-roledescription="scene" aria-label="3 of 9: Input">
               <div class="szene__motiv" aria-hidden="true">
                 <div class="handy">
                   <p class="handy__kopf">Check</p>
@@ -831,7 +862,7 @@
               </div>
               <p class="szene__text">A website address is enough. The server works out business, city and industry by itself.</p>
             </section>
-            <section class="szene szene--sammeln" aria-roledescription="scene" aria-label="3 of 8: Collecting">
+            <section class="szene szene--sammeln" aria-roledescription="scene" aria-label="4 of 9: Collecting">
               <div class="szene__motiv" aria-hidden="true">
                 <div class="nabe">
                   <p class="nabe__mitte">Collector</p>
@@ -845,7 +876,7 @@
               </div>
               <p class="szene__text">The collector fetches the data from the web the way a customer sees it.</p>
             </section>
-            <section class="szene szene--bewerten" aria-roledescription="scene" aria-label="4 of 8: Scoring">
+            <section class="szene szene--bewerten" aria-roledescription="scene" aria-label="5 of 9: Scoring">
               <div class="szene__motiv" aria-hidden="true">
                 <div class="tacho">
                   <svg viewBox="0 0 120 120"><circle class="tacho__spur" cx="60" cy="60" r="50"/><circle class="tacho__wert" cx="60" cy="60" r="50"/></svg>
@@ -854,7 +885,7 @@
               </div>
               <p class="szene__text">Fixed rules award the points. No language model does the maths.</p>
             </section>
-            <section class="szene szene--schreiben" aria-roledescription="scene" aria-label="5 of 8: Writing">
+            <section class="szene szene--schreiben" aria-roledescription="scene" aria-label="6 of 9: Writing">
               <div class="szene__motiv" aria-hidden="true">
                 <div class="befund">
                   <p class="befund__titel">Google finds no company data on the home page</p>
@@ -867,7 +898,7 @@
               </div>
               <p class="szene__text">Claude Code writes every finding in plain language, with a ready fix to copy.</p>
             </section>
-            <section class="szene szene--bericht" aria-roledescription="scene" aria-label="6 of 8: Report">
+            <section class="szene szene--bericht" aria-roledescription="scene" aria-label="7 of 9: Report">
               <div class="szene__motiv" aria-hidden="true">
                 <div class="stapel">
                   <span class="blatt"></span>
@@ -875,9 +906,9 @@
                   <span class="blatt blatt--vorn"><span class="blatt__kopf"></span><span class="blatt__saeulen"><i></i><i></i><i></i><i></i></span><span class="blatt__zeile"></span><span class="blatt__zeile blatt__zeile--kurz"></span></span>
                 </div>
               </div>
-              <p class="szene__text">Report and quote come to the customer meeting as one PDF.</p>
+              <p class="szene__text">Report and quote come to the meeting as one PDF, with reply drafts to real reviews for thinking it over.</p>
             </section>
-            <section class="szene szene--crm" aria-roledescription="scene" aria-label="7 of 8: Hand-over">
+            <section class="szene szene--crm" aria-roledescription="scene" aria-label="8 of 9: Hand-over">
               <div class="szene__motiv" aria-hidden="true">
                 <ul class="kreis">
                   <li>Order</li>
@@ -886,9 +917,9 @@
                   <li>Monthly audit</li>
                 </ul>
               </div>
-              <p class="szene__text">The CRM takes over: order, invoice and a fresh audit every month.</p>
+              <p class="szene__text">The CRM takes over order and invoice. Every month a fresh audit follows, with drafts to approve.</p>
             </section>
-            <section class="szene szene--werkzeuge" aria-roledescription="scene" aria-label="8 of 8: Built with">
+            <section class="szene szene--werkzeuge" aria-roledescription="scene" aria-label="9 of 9: Built with">
               <div class="szene__motiv">
                 <ul class="werkzeuge" aria-label="Skills">
                   <li>Python</li>
@@ -912,6 +943,7 @@
             <button type="button" class="film__knopf" aria-pressed="false" data-abspielen="Play" data-anhalten="Pause"><span class="film__knopf-zeichen" aria-hidden="true"></span><span class="film__knopf-text">Play</span></button>
             <ol class="film__kapitel" aria-label="Chapters">
               <li><button type="button" data-kapitel><span class="kapitel__name">The question</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
+              <li><button type="button" data-kapitel><span class="kapitel__name">Finding customers</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
               <li><button type="button" data-kapitel><span class="kapitel__name">Input</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
               <li><button type="button" data-kapitel><span class="kapitel__name">Collecting</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>
               <li><button type="button" data-kapitel><span class="kapitel__name">Scoring</span><span class="kapitel__balken" aria-hidden="true"></span></button></li>

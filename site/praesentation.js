@@ -1,4 +1,4 @@
-// Präsentation tab: eight scenes that play by themselves like a short promo film.
+// Präsentation tab: nine scenes that play by themselves like a short promo film.
 // Timing lives in CSS: the active chapter's progress bar fills over --szene-dauer and its
 // animationend moves the film on; pausing freezes every animation inside the film.
 // The film starts when its tab opens and stops when the tab or the browser window is left; once

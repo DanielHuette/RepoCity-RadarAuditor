@@ -18,6 +18,13 @@
 ## Quotes and orders
 The operator builds the quote on site in the app from the open points of the audit, with products and prices from the CRM; audit report and quote go out as one PDF through the CRM. After acceptance Claude Code prepares the changes to website and Google profile as drafts, and the collector applies the approved ones. The CRM handles the order, invoices and the monthly audit of a subscription; the RadarAuditor writes no invoices.
 
+## Finding customers, reply drafts and monthly service
+- Customer search: in the app's "Kunden" (customers) tab the operator enters a trade and a town; the server reads up to 60 businesses from Google Maps and sorts them by gaps in their Google profile (no website, no opening hours, no phone number, few photos, clearly fewer reviews than half of the list), each with a one-sentence reason. "Add to the CRM as a prospect" stores only what the operator copies from the public Google profile; "Start audit" checks the business's website.
+- Ways of contact follow section 7 of the German Act against Unfair Competition (UWG): letter and personal visit; a phone call only with a concrete reason; an advertising email without prior consent never, so the app has neither an email nor a dial button. A block list keeps every business that objected to advertising out of reach.
+- The customer search has its own daily limit and monthly limit in euros; the list is deleted by the database after 24 hours.
+- Reply drafts: when a customer wants to think it over, the server writes up to five replies to their real reviews that have no owner reply yet, as a PDF. Nothing is published on Google.
+- Monthly service: once the first optimisation is finished, after every monthly audit of a subscription drafts of replies to new reviews and suggestions for profile care (opening hours, photos, posts, description) are prepared; the operator approves each one individually. What is promised is this work, never a particular position on Google.
+
 ## Thirteen weighted areas (weights add up to 100)
 Website technology 9; Page structure 10; Content and service pages 12; Company details on the website 6; Hidden data for Google and AI 7; Google Business Profile 14; Reviews 8; Directories and listings 7; Recommendations through links 6; Ranking on Google and Bing 10; Visibility in AI assistants 5; Law and trust 4; Tools on the website 2. A fourteenth area, Results with customer access, shows calls, clicks and enquiries and does not count towards the score.
 
@@ -25,12 +32,12 @@ Website technology 9; Page structure 10; Content and service pages 12; Company d
 Calls, clicks and enquiries need customer access. Owner replies to reviews and several Google profile fields are read from Google Maps in the browser and are missing when Maps blocks the browser. New reviews per month are an estimate because Google Maps dates reviews only roughly. Links from other sites, search volume, competitors' search terms and the visibility trend come from a paid data service with a monthly limit. Searches in the browser can hit a block page; the server fetches the missing positions later.
 
 ## Status
-Built and tested (1804 Python tests, 365 app tests). The first run against a real business is still to come.
+Built and tested (1913 Python tests including database tests against PostgreSQL, 399 app tests in 47 test files, measured on 31 October 2026). The first run against a real business is still to come.
 
 ## Pages
 - German: https://radarauditor.speedofthespirit.dev/
 - English: https://radarauditor.speedofthespirit.dev/en/
-- Tabs (same anchors in both languages): #projekt (project page), #organigramm (how an order flows through app, queue, collector, scoring, Claude Code, report, quote and CRM), #benchmarks (measured figures from the check catalogue and the test runs), #praesentation (the project in eight scenes)
+- Tabs (same anchors in both languages): #projekt (project page), #organigramm (how an order flows through app, queue, collector, scoring, Claude Code, report, quote and CRM, plus customer search, audit requests and the monthly audit with monthly service), #benchmarks (measured figures from the check catalogue and the test runs), #praesentation (the project in nine scenes)
 - Main site: https://speedofthespirit.dev/
 - Contact: kontakt@speedofthespirit.dev
 - LinkedIn: https://www.linkedin.com/in/danielhuette
